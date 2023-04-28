@@ -23,6 +23,9 @@ use ZipStream\ZipStream;
  */
 class ZipStreamTest extends TestCase
 {
+    public const OSX_ARCHIVE_UTILITY =
+        '/System/Library/CoreServices/Applications/Archive Utility.app/Contents/MacOS/Archive Utility';
+
     public function testFileNotFoundException(): void
     {
         $this->expectException(\ZipStream\Exception\FileNotFoundException::class);
@@ -219,6 +222,34 @@ class ZipStreamTest extends TestCase
         $zipArch->close();
     }
 
+    public function testDecompressFileWithMacUnarchiver(): void
+    {
+        if (!file_exists(self::OSX_ARCHIVE_UTILITY)) {
+            $this->markTestSkipped('The Mac OSX Archive Utility is not available.');
+        }
+
+        [$tmp, $stream] = $this->getTmpFileStream();
+
+        $options = new ArchiveOptions();
+        $options->setOutputStream($stream);
+
+        $zip = new ZipStream(null, $options);
+
+        $folder = uniqid('', true);
+
+        $zip->addFile($folder . '/sample.txt', 'Sample Data');
+        $zip->finish();
+        fclose($stream);
+
+        exec(escapeshellarg(self::OSX_ARCHIVE_UTILITY) . ' ' . escapeshellarg($tmp), $output, $returnStatus);
+
+        $this->assertSame(0, $returnStatus);
+        $this->assertCount(0, $output);
+
+        $this->assertFileExists(dirname($tmp) . '/' . $folder . '/sample.txt');
+        $this->assertStringEqualsFile(dirname($tmp) . '/' . $folder . '/sample.txt', 'Sample Data');
+    }
+
     public function testAddFileFromPath(): void
     {
         [$tmp, $stream] = $this->getTmpFileStream();
@@ -317,7 +348,7 @@ class ZipStreamTest extends TestCase
         // it works fine with file stream
         $streamExample = fopen(__FILE__, 'rb');
         $zip->addFileFromStream('sample.txt', $streamExample);
-        //        fclose($streamExample);
+//        fclose($streamExample);
 
         $fileOptions = new FileOptions();
         $fileOptions->setMethod(Method::STORE());
@@ -326,7 +357,7 @@ class ZipStreamTest extends TestCase
         fwrite($streamExample2, 'More Simple Sample Data');
         rewind($streamExample2); // move the pointer back to the beginning of file.
         $zip->addFileFromStream('test/sample.txt', $streamExample2, $fileOptions);
-        //        fclose($streamExample2);
+//        fclose($streamExample2);
 
         $zip->finish();
         fclose($stream);
@@ -356,13 +387,13 @@ class ZipStreamTest extends TestCase
         fwrite($streamExample, 'Sample String Data');
         rewind($streamExample); // move the pointer back to the beginning of file.
         $zip->addFileFromStream('sample.txt', $streamExample, $fileOptions);
-        //        fclose($streamExample);
+//        fclose($streamExample);
 
         $streamExample2 = fopen('php://temp', 'bw+');
         fwrite($streamExample2, 'More Simple Sample Data');
         rewind($streamExample2); // move the pointer back to the beginning of file.
         $zip->addFileFromStream('test/sample.txt', $streamExample2);
-        //        fclose($streamExample2);
+//        fclose($streamExample2);
 
         $zip->finish();
         fclose($stream);

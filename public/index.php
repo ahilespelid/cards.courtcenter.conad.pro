@@ -7,7 +7,7 @@ function glob_tree_search($path, $pattern, $_base_path = null){$ret = []; $_base
     return $ret;}
 ///*/
 try{
-    if(!file_exists($autoloadPath = $_SERVER['DOCUMENT_ROOT'].DS.'vendor'.DS.'autoload.php')){
+    if(!file_exists($autoloadPath = dirname($_SERVER['DOCUMENT_ROOT']).DS.'vendor'.DS.'autoload.php')){
         throw new Exception('Composer autoload file not found: '.$autoloadPath);
     }include_once($autoloadPath);}
 catch(\Exception $e){
@@ -28,9 +28,9 @@ catch(\Exception $e){
 ///*/
 if(isset($_REQUEST['checkserver'])){\Btx\CRest::checkServer(); exit;}
 
-$result = \Btx\CRest::call('profile');
+//$result = \Btx\CRest::call('profile');
 
-pa($result);
+//pa($result);
 (new \App\Controllers\HomeController)->render();
 
 //

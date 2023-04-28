@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInitf9bd2185e96f5ff643ff83bb391aa4be
 {
     public static $files = array (
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '4bf8222d6bd5ae90602d5699ca369f94' => __DIR__ . '/../..' . '/functions.php',
     );
@@ -15,6 +16,10 @@ class ComposerStaticInitf9bd2185e96f5ff643ff83bb391aa4be
         'Z' => 
         array (
             'ZipStream\\' => 10,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
         ),
         'P' => 
         array (
@@ -51,6 +56,10 @@ class ComposerStaticInitf9bd2185e96f5ff643ff83bb391aa4be
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
         'Psr\\SimpleCache\\' => 
         array (

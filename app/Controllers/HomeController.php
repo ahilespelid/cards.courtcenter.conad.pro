@@ -6,11 +6,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing; /// */
 
 class HomeController {
-    public function __construct(
-        string $file = ''
-    ){
-        $this->file = (is_writable($dir = realpath($_SERVER['DOCUMENT_ROOT']).DS.'files')) ? $dir.DS.'resume.xlsx' : (mkdir($dir,777) ? $dir.DS : '').'resume.xlsx';
-    }
+    public function __construct(){}
     
 public function run():?object{/*/// if(function_exists('pa')){pa(new Resume);return $this;}///*/ return null;}    
 
@@ -33,7 +29,7 @@ public function write():bool{
     }
     public function render(array $data = [], string $view = 'first'):?object{
         $view = str_replace(['?', '\\', '/', ':', '"', '*', '>', '<', '|'], '',$view);
-        $view = $_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'resource'.DIRECTORY_SEPARATOR.'veiw'.DIRECTORY_SEPARATOR.$view.DIRECTORY_SEPARATOR.'index.php';
+        $view = dirname($_SERVER['DOCUMENT_ROOT']).DIRECTORY_SEPARATOR.'resource'.DIRECTORY_SEPARATOR.'veiw'.DIRECTORY_SEPARATOR.$view.DIRECTORY_SEPARATOR.'index.php';
 
         if(is_readable($view)){
             $detect = new \Detection\MobileDetect; $data['device'] = ($detect->isMobile() ? ($detect->isTablet() ? 'tablet' : 'phone') : 'computer');
@@ -41,5 +37,4 @@ public function write():bool{
         } else {throw new \Exception("Файл на вид по пути '$view' не найден.");}
         return null;
     }
-    public function __set(string $name, mixed $value):void {$this->{$name} = $value;}
 }
