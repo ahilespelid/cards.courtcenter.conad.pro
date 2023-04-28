@@ -1,0 +1,13 @@
+###> MacOS files ###
+.idea
+.DS_Store
+
+###> Other files ###
+yarn.lock
+composer.lock
+
+#--------DIR-------#
+/node_modules
+/logs
+/vendor
+
