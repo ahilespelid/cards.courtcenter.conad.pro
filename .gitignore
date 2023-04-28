@@ -1,6 +1,8 @@
 ###> MacOS files ###
 .idea
 .DS_Store
+error.txt
+requests.txt
 
 ###> Other files ###
 yarn.lock

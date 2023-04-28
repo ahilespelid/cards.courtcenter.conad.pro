@@ -25,21 +25,8 @@ catch(\Exception $e){
                                                            ' #agent# '.$_SERVER['HTTP_USER_AGENT']);
     }
 }
-///*/
-if(isset($_REQUEST['checkserver'])){\Btx\CRest::checkServer(); exit;}
 
-//$result = \Btx\CRest::call('profile');
+///*/ pa($result = CRest::call('profile')); ///*/
+(new \App\Controllers\HomeController)->render(['profile' => \CRest::call('profile')['result']]);
 
-//pa($result);
-(new \App\Controllers\HomeController)->render();
-
-//
-/*/
-if($get = ($_REQUEST[$resume->hash] ?? false)){
-    if(function_exists('send_file_apache')){send_file_apache($resume->file);}
-    if(function_exists('pa')){pa($get);}
-    echo $resume->file;
-}
-///* /
-$resume->render()?->run()?->write();
-///*/ 
+///*/ $resume->render()?->run()?->write(); ///*/

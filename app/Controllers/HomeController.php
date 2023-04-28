@@ -1,6 +1,4 @@
-<?php 
-namespace App\Controllers;
-use Btx\Crest;
+<?php namespace App\Controllers;
 /// */ Юзаем PhpOffice 
 use PhpOffice\PhpSpreadsheet\Spreadsheet; use PhpOffice\PhpSpreadsheet\Style\Fill; use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -29,7 +27,6 @@ public function write():bool{
     return ((new Xlsx($spreadsheet))->save($this->file)) ? true : false;
     }
     public function render(array $data = [], string $view = 'first'):?object{
-        pa($result = \Btx\CRest::call('profile'));
         $view = str_replace(['?', '\\', '/', ':', '"', '*', '>', '<', '|'], '',$view);
         $view = dirname($_SERVER['DOCUMENT_ROOT']).DIRECTORY_SEPARATOR.'resource'.DIRECTORY_SEPARATOR.'veiw'.DIRECTORY_SEPARATOR.$view.DIRECTORY_SEPARATOR.'index.php';
 
