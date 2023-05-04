@@ -1,32 +1,55 @@
 <?php
-setlocale(LC_ALL, 'ru_RU.utf8'); error_reporting(E_ALL & ~E_DEPRECATED); header('Content-type: text/html; charset=utf-8');define('DS',DIRECTORY_SEPARATOR);
 
-function glob_tree_search($path, $pattern, $_base_path = null){$ret = []; $_base_path = (is_null($_base_path)) ? '' : $_base_path.($path).DS; 
-    foreach(glob($path.DS.$pattern, GLOB_BRACE) as $file){$ret[] = $_base_path.($file);}
-    foreach(glob($path.DS.'*', GLOB_ONLYDIR) as $file){$ret = array_merge($ret, glob_tree_search($file, $pattern, $_base_path));} 
-    return $ret;}
-///*/
-try{
-    if(!file_exists($autoloadPath = dirname($_SERVER['DOCUMENT_ROOT']).DS.'vendor'.DS.'autoload.php')){
-        throw new Exception('Composer autoload file not found: '.$autoloadPath);
-    }include_once($autoloadPath);}
-catch(\Exception $e){
-    file_put_contents(DS.'logs'.DS.'exception.txt', $crash = (new \DateTime())->format('Y-m-d H:i:s').' '.
-                                                $e->getMessage().' '.PHP_EOL.
-                                                $e->getFile().':'.
-                                                $e->getLine().PHP_EOL.PHP_EOL, FILE_APPEND);
-    $autoloadPath = (file_exists($autoloadPath)) ? $autoloadPath : 
-        (!empty($searhAutoloadPath = glob_tree_search(realpath($_SERVER['DOCUMENT_ROOT']), 'vendor'.DS.'autoload.php')[0]) ? $searhAutoloadPath : false);
-    if($autoloadPath){include_once($autoloadPath);}
-    else{header('Location: mailto:ahilespelid@gmail.com?cc=ahilespelid@yandex.ru'.
-                                                      '&subject=Please, send for me this is post | Прошу отправить это письмо мне.'.
-                                                      '&body=#crash# '.preg_replace('/\R/u', "\t",$crash).
-                                                           ' #host# '.$_SERVER['HTTP_HOST'].
-                                                           ' #agent# '.$_SERVER['HTTP_USER_AGENT']);
-    }
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
+
+define('LARAVEL_START', microtime(true));
+
+/*
+|--------------------------------------------------------------------------
+| Check If The Application Is Under Maintenance
+|--------------------------------------------------------------------------
+|
+| If the application is in maintenance / demo mode via the "down" command
+| we will load this file so that any pre-rendered content can be shown
+| instead of starting the framework, which could cause an exception.
+|
+*/
+
+if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+    require $maintenance;
 }
 
-///*/ pa($result = CRest::call('profile')); ///*/
-(new \App\Controllers\HomeController)->render(['profile' => \CRest::call('profile')['result']]);
+/*
+|--------------------------------------------------------------------------
+| Register The Auto Loader
+|--------------------------------------------------------------------------
+|
+| Composer provides a convenient, automatically generated class loader for
+| this application. We just need to utilize it! We'll simply require it
+| into the script here so we don't need to manually load our classes.
+|
+*/
 
-///*/ $resume->render()?->run()?->write(); ///*/
+require __DIR__.'/../vendor/autoload.php';
+
+/*
+|--------------------------------------------------------------------------
+| Run The Application
+|--------------------------------------------------------------------------
+|
+| Once we have the application, we can handle the incoming request using
+| the application's HTTP kernel. Then, we will send the response back
+| to this client's browser, allowing them to enjoy our application.
+|
+*/
+
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+$kernel = $app->make(Kernel::class);
+
+$response = $kernel->handle(
+    $request = Request::capture()
+)->send();
+
+$kernel->terminate($request, $response);
