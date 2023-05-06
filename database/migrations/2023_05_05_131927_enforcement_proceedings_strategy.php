@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CourtsStrategyCassation extends Migration
+class EnforcementProceedingsStrategy extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CourtsStrategyCassation extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_cassation_strategy', function (Blueprint $table) {
+        Schema::create('enforcement_proceedings_strategy', function (Blueprint $table) {
             $table->id();
             $table->text('strategy');
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
     /**
@@ -25,5 +26,5 @@ class CourtsStrategyCassation extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_cassation_strategy');}
+    public function down(){Schema::dropIfExists('enforcement_proceedings_strategy');}
 }

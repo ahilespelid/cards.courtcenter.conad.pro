@@ -15,13 +15,14 @@ class FirstInstanceCurrentStateCaseMany extends Migration
         Schema::create('first_instance_current_state_case__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('first_instance_id')->unsigned();
-            $table->unsignedBigInteger('first_instance_current_state_case_id')->unsigned();
+            $table->unsignedBigInteger('current_state_case_id')->unsigned();
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
            $table->foreign('first_instance_id')->references('id')->on('first_instance')->onDelete('cascade');
-           $table->foreign('first_instance_current_state_case_id')->references('id')->on('first_instance_current_state_case')->onDelete('cascade'); 
+           $table->foreign('current_state_case_id')->references('id')->on('first_instance_current_state_case')->onDelete('cascade'); 
         });
     }
 

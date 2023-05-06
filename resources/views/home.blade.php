@@ -44,9 +44,9 @@ BX24.init(function(){
     </div>
   </div><div></div><div></div>
   <div>
-    <div class="form"><?//pa($_REQUEST, 3);pa($_SERVER);?>
+    <div class="content"><?//pa($_REQUEST, 3);pa($_SERVER);?>
         <form action="/" method="post">
-            <table>
+           <table>
                 <tr>
                     <td><label for="name">Название сделки, внутренний номер</label></td>
                     <td><input type="text" id="name" name="name"></td>
@@ -68,7 +68,8 @@ BX24.init(function(){
                     <td><span></span></td>
                 </tr>
         
-            </table>
+            </table>    
+
         <footer><a href="#submit" class="button">Выгрузить</a><button type="submit" type="button" class="button">Сохранить</button></footer>
         </form>
     </div>

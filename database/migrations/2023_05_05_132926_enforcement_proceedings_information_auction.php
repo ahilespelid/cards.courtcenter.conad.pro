@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CourtsCassationDateUpcomingCase extends Migration
+class EnforcementProceedingsInformationAuction extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CourtsCassationDateUpcomingCase extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_сassation_date_upcoming_case', function (Blueprint $table) {
+        Schema::create('enforcement_proceedings_information_auction', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date_upcoming_case')->nullable();
+            $table->text('information_auction');
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
@@ -26,5 +27,5 @@ class CourtsCassationDateUpcomingCase extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_сassation_date_upcoming_case');}
+    public function down(){Schema::dropIfExists('enforcement_proceedings_information_auction');}
 }

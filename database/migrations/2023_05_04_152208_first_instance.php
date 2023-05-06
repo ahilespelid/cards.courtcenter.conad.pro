@@ -33,7 +33,7 @@ class FirstInstance extends Migration{
             $table->text('result_case'); ///*/ Результат рассмотрения дела ///*/ 
             $table->integer('sum_case')->nullable(); ///*/ Сумма заявленных требований и удовлетворенных судом ///*/ 
             $table->timestamp('date_force_case')->nullable(); ///*/ Дата вступления судебного акта в законную силу ///*/ 
-            $table->text('appeal_limit'); ///*/ Срок на обжалование ///*/ 
+            $table->text('time_limit'); ///*/ Срок на обжалование ///*/ 
             $table->timestamp('date_production_case')->nullable(); ///*/ Дата фактического изготовления судом решения ///*/ 
             $table->timestamp('date_receipt_case')->nullable(); ///*/ Дата получения решения ///*/ 
             $table->text('appeal_case'); ///*/ Сведения о необходимости обжалования судебного акта ///*/ 

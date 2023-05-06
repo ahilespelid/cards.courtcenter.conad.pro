@@ -15,13 +15,14 @@ class CourtsAppealStrategyMany extends Migration
         Schema::create('courts_appeal_strategy__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('courts_appeal_id')->unsigned();
-            $table->unsignedBigInteger('courts_appeal_strategy_id')->unsigned();
+            $table->unsignedBigInteger('strategy_id')->unsigned();
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
            $table->foreign('courts_appeal_id')->references('id')->on('courts_appeal')->onDelete('cascade');
-           $table->foreign('courts_appeal_strategy_id')->references('id')->on('courts_appeal_strategy')->onDelete('cascade'); 
+           $table->foreign('strategy_id')->references('id')->on('courts_appeal_strategy')->onDelete('cascade'); 
         });
     }
 

@@ -15,13 +15,14 @@ class CourtsAppealDateUpcomingCaseMany extends Migration
         Schema::create('courts_appeal_date_upcoming_case__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('courts_appeal_id')->unsigned();
-            $table->unsignedBigInteger('courts_appeal_date_upcoming_case_id')->unsigned();
+            $table->unsignedBigInteger('date_upcoming_case_id')->unsigned();
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
 
            $table->foreign('courts_appeal_id')->references('id')->on('courts_appeal')->onDelete('cascade');
-           $table->foreign('courts_appeal_date_upcoming_case_id')->references('id')->on('courts_appeal_date_upcoming_case')->onDelete('cascade'); 
+           $table->foreign('date_upcoming_case_id')->references('id')->on('courts_appeal_date_upcoming_case')->onDelete('cascade'); 
         });
     }
 

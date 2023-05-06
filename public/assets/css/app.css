@@ -48,8 +48,8 @@ section * {}
     text-align: center;
     line-height: 40px;
 }
-.form td{padding: 10px;}
-.form input{width: 350px;}
+.content td{padding: 10px;}
+.content input{width: 350px;}
 .button{
     cursor: pointer;
     font-family: 'Roboto';
@@ -73,7 +73,7 @@ section * {}
     */
 }
 footer, header {text-align: center;} footer {color:#00f;} header {color:#f00;} a{text-decoration: none; color: var(--color_font, #000);}
-footer {
+.footer {
     position: absolute;
     left: 0;
     bottom: 0;

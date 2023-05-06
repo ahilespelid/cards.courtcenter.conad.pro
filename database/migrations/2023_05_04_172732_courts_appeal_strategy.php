@@ -18,6 +18,7 @@ class CourtsAppealStrategy extends Migration
             
             $table->rememberToken();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
     /**

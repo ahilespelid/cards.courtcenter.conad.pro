@@ -1,16 +1,14 @@
 <?php
+
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class FirstInstance extends Model{use SoftDeletes;
-
-    public $timestamps = false;
+class FirstInstance extends Model{
+    use HasFactory, SoftDeletes;
     
-    protected $dates = ['deleted_at'];
-
-    protected $table = 'first_instance';
-
-    protected $fillable = ['*'];
+    public $timestamps = true;
+    
+    protected $dates = ['deleted_at'], $fillable = ['*'], $table = 'first_instance';
 }
