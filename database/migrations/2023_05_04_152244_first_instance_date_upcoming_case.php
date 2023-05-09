@@ -14,7 +14,7 @@ class FirstInstanceDateUpcomingCase extends Migration
     public function up(){
         Schema::create('first_instance_date_upcoming_case', function (Blueprint $table) {
             $table->id();
-            $table->timpstamp('data')->nullable();
+            $table->timestamp('data')->nullable();
             
             $table->string('created_at')->nullable();
             $table->string('updated_at')->nullable();

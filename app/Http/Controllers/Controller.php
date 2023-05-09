@@ -343,7 +343,7 @@ return (!empty($ret = $this->mergeLabel($data, 'bankruptcy'))) ? $ret : null;}
 public function getMediation(int $id):?array{
     if(empty($id)){return null;}
     
-    if(!empty($data = Mediation::where('id', '=', $id)->first()->toArray())){
+    if(!empty($data = Mediation::where('id', '=', $id)->first())){
         $data = $data->toArray();
         ///*/ Стратегия ///*/    
         if(empty($_id = MediationStrategyMany::where('deleted_at', '=', NULL)
@@ -358,7 +358,10 @@ public function getMediation(int $id):?array{
         }
         ///*/ Определение типа долга ///*/
         if(!empty($_ob = MediationTypeDebt::where('deleted_at', '=', NULL)->get())){
-        $data['type_debt'] = json_encode($_ob->toArray());
+        $type_debt = (!empty($data['type_debt'])) ? $data['type_debt'] : 1; unset($data['type_debt']);
+       
+        $data['type_debt']['data'] = json_encode($_ob->toArray());
+        $data['type_debt']['selected'] = $type_debt;
         }
         ///*/ Расчет дисконта ///*/
         if(empty($_id = MediationDiscountCalculationMany::where('deleted_at', '=', NULL)

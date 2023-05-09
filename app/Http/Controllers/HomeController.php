@@ -226,9 +226,15 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         if(isset($val['type']) && 'o' == $val['type']){
             if('mediation' == $view){
                 $MediationTypeDebt = MediationTypeDebt::where('deleted_at', '=', NULL)->get()->toArray();
-                $data[$view][$key]['selected'] = (!empty($selected = json_decode($val['data'], true))) ? $selected['id'] : null; 
+                
+                $option = (!empty($data[$view][$key]['data']['data'])) ? $data[$view][$key]['data']['data'] : '';
+                $selected = (!empty($data[$view][$key]['data']['selected'])) ? $data[$view][$key]['data']['selected'] : 1;
+                
+                $data[$view][$key]['data'] = $option;
+                $data[$view][$key]['selected'] = $selected;
             }
-            $data[$view][$key]['data'] = (!empty($val['data'] = json_decode($val['data'], true))) ?: (('mediation' == $view) ? $MediationTypeDebt : ['option' => 'Not found']);
+            $data[$view][$key]['data'] = (!empty($data[$view][$key]['data'] = json_decode($data[$view][$key]['data'], true))) ? $data[$view][$key]['data'] : (('mediation' == $view) ? $MediationTypeDebt : ['option' => 'Not found']);
+            //pa($data[$view][$key]); exit;
         }
         if(isset($val['type']) && 'm' == $val['type']){
             ///*/ Поебёмся с датами во множественных полях, спасибо постгрис ///*/
@@ -664,14 +670,14 @@ public function save(Request $request){
                 $push->data = $request->discount_calculation; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationDiscountCalculationMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationDiscountCalculationMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = MediationDiscountCalculationMany::create(['id' => $subpush_id, 'mediation_id' => $ob_->id, 'discount_calculation_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
-                $subpush->mediation_id = $ob_->id; $subpush->stage_id = $push->id; $subpush->save();
+                $subpush->mediation_id = $ob_->id; $subpush->discount_calculation_id = $push->id; $subpush->save();
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationSecondOfferDebtor)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationSecondOfferDebtor)->table.";"))) ? $_id[0]->maxid : null;
             if(!empty($request->second_offer_debtor) && $push = MediationSecondOfferDebtor::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->second_offer_debtor; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationSecondOfferDebtorMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationSecondOfferDebtorMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = MediationSecondOfferDebtorMany::create(['id' => $subpush_id, 'mediation_id' => $ob_->id, 'second_offer_debtor_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
-                $subpush->mediation_id = $ob_->id; $subpush->information_court_id = $push->id; $subpush->save();
+                $subpush->mediation_id = $ob_->id; $subpush->second_offer_debtor_id = $push->id; $subpush->save();
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
         }        
 

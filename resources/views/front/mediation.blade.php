@@ -31,7 +31,7 @@
                         <select size="1" name="{{ $key }}">
                             <option disabled>Выберите тип</option>
                             @foreach($val['data'] as $k => $v)
-                            <option value="{{ $v['id'] ?? '' }}">{{ $v['option'] }}</option>
+                            <option value="{{ $v['id'] ?? '' }}" @if($v['id'] == $val['selected']) selected @endif>{{ $v['option'] }}</option>
                             @endforeach
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'])
