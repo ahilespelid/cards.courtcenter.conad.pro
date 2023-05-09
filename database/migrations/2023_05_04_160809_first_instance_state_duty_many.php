@@ -14,12 +14,12 @@ class FirstInstanceStateDutyMany extends Migration
     public function up(){
         Schema::create('first_instance_state_duty__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('first_instance_id')->unsigned();
-            $table->unsignedBigInteger('state_duty_id')->unsigned();
+            $table->unsignedBigInteger('first_instance_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('state_duty_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('first_instance_id')->references('id')->on('first_instance')->onDelete('cascade');
            $table->foreign('state_duty_id')->references('id')->on('first_instance_state_duty')->onDelete('cascade'); 

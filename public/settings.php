@@ -1,8 +1,8 @@
 <?php
-///*/ Application ID ///*/
-define('C_REST_CLIENT_ID','local.6446d607ba03c7.06728029');
-///*/ Application key ///*/
-define('C_REST_CLIENT_SECRET','4qeoAi9awRs4SDMRH0QOYOrA0iyDviFyhPi7Vop3aSLbiAouUj');
+///*/ Application ID ///*/define('C_REST_CLIENT_ID','local.6446d607ba03c7.06728029');
+define('C_REST_CLIENT_ID','local.645784dc1dcaa1.09907222');
+///*/ Application key ///*/define('C_REST_CLIENT_SECRET','4qeoAi9awRs4SDMRH0QOYOrA0iyDviFyhPi7Vop3aSLbiAouUj');
+define('C_REST_CLIENT_SECRET','b185DJ0ghsfjVj2Uc0EHsnu9xZ8YhnS22nl8AUQDxRp1DWV7lW');
 ///*/ Directory log ///*/
 define('C_REST_LOGS_DIR', dirname(__DIR__).DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR); ///*/ echo(C_REST_LOGS_DIR); ///*/
 /*///

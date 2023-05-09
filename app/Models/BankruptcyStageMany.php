@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BankruptcyStageMany extends Model{
     use HasFactory, SoftDeletes;
     
-    public $timestamps = true;
+    public $timestamps = true, $table = 'bankruptcy_stage__many';
     
-    protected $dates = ['deleted_at'], $fillable = ['*'], $table = 'bankruptcy_stage__many';
+    protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
 }

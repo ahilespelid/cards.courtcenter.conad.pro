@@ -14,12 +14,12 @@ class EnforcementProceedingsStrategyMany extends Migration
     public function up(){
         Schema::create('enforcement_proceedings_strategy__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned();
-            $table->unsignedBigInteger('strategy_id')->unsigned();
+            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('strategy_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('enforcement_proceedings_id')->references('id')->on('enforcement_proceedings')->onDelete('cascade');
            $table->foreign('strategy_id')->references('id')->on('enforcement_proceedings_strategy')->onDelete('cascade'); 

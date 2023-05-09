@@ -14,11 +14,11 @@ class MediationStrategy extends Migration
     public function up(){
         Schema::create('mediation_strategy', function (Blueprint $table) {
             $table->id();
-            $table->text('strategy');
+            $table->text('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
     /**

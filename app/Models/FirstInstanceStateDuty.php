@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FirstInstanceStateDuty extends Model{
     use HasFactory, SoftDeletes;
     
-    public $timestamps = true;
+    public $timestamps = true, $table = 'first_instance_state_duty';
     
-    protected $dates = ['deleted_at'], $fillable = ['*'], $table = 'first_instance_state_duty';
+    protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
 }

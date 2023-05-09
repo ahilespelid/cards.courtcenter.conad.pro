@@ -14,11 +14,11 @@ class EnforcementProceedingsDateVisitBailiff extends Migration
     public function up(){
         Schema::create('enforcement_proceedings_date_visit_bailiff', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('date_upcoming_case')->nullable();
+            $table->string('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 

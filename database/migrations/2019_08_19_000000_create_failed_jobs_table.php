@@ -20,8 +20,11 @@ class CreateFailedJobsTable extends Migration
             $table->text('queue');
             $table->longText('payload');
             $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
-            $table->timestamp('deleted_at')->nullable();
+
+            $table->string('failed_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 

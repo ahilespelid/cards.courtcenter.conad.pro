@@ -6,4 +6,9 @@ if(!function_exists('pa')){
         echo $fileinfo.$sbr.$mes.(empty($t) ? '' : '<'.$t.'>'); print_r($a=(!empty($a)?$a:[])); echo(empty($t) ? '' : '</'.$t.'>').PHP_EOL;
         return true;
 }}
+if(!function_exists('is_date')){
+function is_date($value){ // */  проверка строки на дату  // */
+    if(!$value){return null;}
+    try{return $d = (new \DateTime($value));}catch(\Exception $e){return null;}}
+}
 ?>

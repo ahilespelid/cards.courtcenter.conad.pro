@@ -14,12 +14,12 @@ class BankruptcyStageMany extends Migration
     public function up(){
         Schema::create('bankruptcy_stage__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('bankruptcy_id')->unsigned();
-            $table->unsignedBigInteger('stage_id')->unsigned();
+            $table->unsignedBigInteger('bankruptcy_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('stage_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('bankruptcy_id')->references('id')->on('bankruptcy')->onDelete('cascade');
            $table->foreign('stage_id')->references('id')->on('bankruptcy_stage')->onDelete('cascade'); 

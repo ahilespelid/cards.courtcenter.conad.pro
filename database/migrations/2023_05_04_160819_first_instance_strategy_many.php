@@ -14,15 +14,15 @@ class FirstInstanceStrategyMany extends Migration
     public function up(){
         Schema::create('first_instance_strategy__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('first_instance_id')->unsigned();
-            $table->unsignedBigInteger('strategy_id')->unsigned();
-            
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->unsignedBigInteger('first_instance_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('strategy_id')->unsigned()->nullable();
 
-           $table->foreign('first_instance_id')->references('id')->on('first_instance')->onDelete('cascade');
-           $table->foreign('strategy_id')->references('id')->on('first_instance_strategy')->onDelete('cascade'); 
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
+
+            $table->foreign('first_instance_id')->references('id')->on('first_instance')->onDelete('cascade');
+            $table->foreign('strategy_id')->references('id')->on('first_instance_strategy')->onDelete('cascade'); 
         });
     }
 

@@ -14,12 +14,12 @@ class EnforcementProceedingsInformationProgressMany extends Migration
     public function up(){
         Schema::create('enforcement_proceedings_information_progress__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned();
-            $table->unsignedBigInteger('information_progress_id')->unsigned();
+            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('information_progress_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('enforcement_proceedings_id')->references('id')->on('enforcement_proceedings')->onDelete('cascade');
            $table->foreign('information_progress_id')->references('id')->on('enforcement_proceedings_information_progress')->onDelete('cascade'); 

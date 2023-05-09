@@ -14,12 +14,12 @@ class MediationDiscountCalculationMany extends Migration
     public function up(){
         Schema::create('mediation_discount_calculation__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('mediation_id')->unsigned();
-            $table->unsignedBigInteger('discount_calculation_id')->unsigned();
+            $table->unsignedBigInteger('mediation_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('discount_calculation_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('mediation_id')->references('id')->on('mediation')->onDelete('cascade');
            $table->foreign('discount_calculation_id')->references('id')->on('mediation_discount_calculation')->onDelete('cascade'); 

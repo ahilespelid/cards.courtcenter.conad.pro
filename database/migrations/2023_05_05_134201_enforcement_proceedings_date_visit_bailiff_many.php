@@ -14,15 +14,15 @@ class EnforcementProceedingsDateVisitBailiffMany extends Migration
     public function up(){
         Schema::create('enforcement_proceedings_date_visit_bailiff__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned();
-            $table->unsignedBigInteger('date_visit_bailiff')->unsigned();
+            $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('date_visit_bailiff_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('enforcement_proceedings_id')->references('id')->on('enforcement_proceedings')->onDelete('cascade');
-           $table->foreign('date_visit_bailiff')->references('id')->on('enforcement_proceedings_date_visit_bailiff')->onDelete('cascade'); 
+           $table->foreign('date_visit_bailiff_id')->references('id')->on('enforcement_proceedings_date_visit_bailiff')->onDelete('cascade'); 
         });
     }
 

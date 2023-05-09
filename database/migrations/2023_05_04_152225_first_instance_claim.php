@@ -14,12 +14,11 @@ class FirstInstanceClaim extends Migration
     public function up(){
         Schema::create('first_instance_claim', function (Blueprint $table) {
             $table->id();
-            $table->text('claim');
-            $table->integer('claim_price')->nullable();
+            $table->text('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
     /**

@@ -12,13 +12,13 @@ class CourtsCassationStrategy extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_сassation_strategy', function (Blueprint $table) {
+        Schema::create('courts_сassation_strategy', function (Blueprint $table){
             $table->id();
-            $table->text('strategy');
+            $table->text('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
     /**

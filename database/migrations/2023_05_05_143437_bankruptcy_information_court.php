@@ -14,11 +14,11 @@ class BankruptcyInformationCourt extends Migration
     public function up(){
         Schema::create('bankruptcy_information_court', function (Blueprint $table) {
             $table->id();
-            $table->text('information_court');
+            $table->text('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
     /**

@@ -14,12 +14,12 @@ class FirstInstanceClaimMany extends Migration
     public function up(){
         Schema::create('first_instance_claim__many', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('first_instance_id')->unsigned();
-            $table->unsignedBigInteger('claim_id')->unsigned();
+            $table->unsignedBigInteger('first_instance_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('claim_id')->unsigned()->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
 
            $table->foreign('first_instance_id')->references('id')->on('first_instance')->onDelete('cascade');
            $table->foreign('claim_id')->references('id')->on('first_instance_claim')->onDelete('cascade'); 

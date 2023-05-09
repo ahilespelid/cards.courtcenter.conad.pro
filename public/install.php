@@ -1,6 +1,6 @@
 <?php
 require_once (__DIR__.'/crest.php');
-$handler = 'https://cards.courtcenter.conad.pro/index.php';
+$handler = 'https://cards.courtcenter.conad.pro/';
 $result = CRest::installApp();
 if($result['rest_only'] === false):?>
     <head>
@@ -22,7 +22,8 @@ if($result['rest_only'] === false):?>
                             GROUP_NAME: 'undefaind'
                         },
                     });
-                    BX24.callBatch(requests, function(data){console.log('Инициализация завершена!', BX24.placement.info(), data);});
+                    ///*/ 
+                    BX24.callBatch(requests, function(data){console.log('Инициализация завершена!', BX24.placement.info(), data);}); ///*/
                                           
                     sleep(10000).then(() => {BX24.installFinish();});
                 });
@@ -30,20 +31,19 @@ if($result['rest_only'] === false):?>
         <?php endif;?>
     </head>
     <body>
-        <?php if($result['install'] == true):
-        
-    CRest::call('placement.bind',[
-        'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',
-        'HANDLER' => $handler,
-        'LANG_ALL' => [
-            'ru' => [
-            'TITLE' => 'Карточки инстанции',
-            'DESCRIPTION' => 'Локальное приложение "Карточки инстанции" разработанно @ahilespelid',
-            'GROUP_NAME' => 'undefaind',
-            ],
-        ],
-    ]);
-        ?>
+<?php //
+/*/ 
+if($result['install'] == true):
+pa(CRest::call('placement.bind',[
+'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',
+'HANDLER' => $handler,
+'LANG_ALL' => [
+'ru' => [
+'TITLE' => 'Карточки инстанции',
+'DESCRIPTION' => 'Локальное приложение "Карточки инстанции" разработанно @ahilespelid',
+'GROUP_NAME' => 'undefaind',
+],],]));
+///*/?>
             installation has been finished
         <?php else:?>
             installation error

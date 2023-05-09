@@ -14,29 +14,31 @@ class Bankruptcy extends Migration
     public function up(){
         Schema::create('bankruptcy', function (Blueprint $table){
             $table->id();
-            $table->text('applicant'); ///*/ Заявитель ///*/
-            $table->text('debtor'); ///*/ Должник ///*/
-            $table->text('bankruptcy_trustee'); ///*/ Конкурсный управляющий ///*/
-            //$table->text('strategy'); ///*/ Стратегия ///*/
-            $table->text('state_duty'); ///*/ Госпошлина ///*/
-            $table->text('deposit'); ///*/ Депозит ///*/
-            $table->text('number_case'); ///*/ Номер дела ///*/
-            $table->text('link'); ///*/ Ссылка на дело в суде ///*/
-            //$table->text('stage'); ///*/ Стадия банкротства ///*/
-            $table->timestamp('date_current_stage'); ///*/ Дата окончания текущей стадии ///*/
-            $table->text('information_creditors'); ///*/ Информация о кредиторах ///*/
-            $table->text('property_valuation'); ///*/ Информация об имуществе должника и его оценка ///*/
-            $table->text('bank_accounts'); ///*/ Информация о банковских счетах должника ///*/
-            $table->text('information_invalidation'); ///*/ Информация о признании сделок/платежей недействительными ///*/
-            //$table->text('information_court'); ///*/ Информация об участии финансового управляющего на судебных заседаниях ///*/
+            $table->string('deal_id')->nullable();
+            $table->string('deal_into_id')->nullable();
+            $table->text('applicant')->nullable(); ///*/ Заявитель ///*/
+            $table->text('debtor')->nullable(); ///*/ Должник ///*/
+            $table->text('bankruptcy_trustee')->nullable(); ///*/ Конкурсный управляющий ///*/
+            //$table->text('strategy')->nullable(); ///*/ Стратегия ///*/
+            $table->text('state_duty')->nullable(); ///*/ Госпошлина ///*/
+            $table->text('deposit')->nullable(); ///*/ Депозит ///*/
+            $table->text('number_case')->nullable(); ///*/ Номер дела ///*/
+            $table->text('link')->nullable(); ///*/ Ссылка на дело в суде ///*/
+            //$table->text('stage')->nullable(); ///*/ Стадия банкротства ///*/
+            $table->string('date_current_stage')->nullable(); ///*/ Дата окончания текущей стадии ///*/
+            $table->text('information_creditors')->nullable(); ///*/ Информация о кредиторах ///*/
+            $table->text('property_valuation')->nullable(); ///*/ Информация об имуществе должника и его оценка ///*/
+            $table->text('bank_accounts')->nullable(); ///*/ Информация о банковских счетах должника ///*/
+            $table->text('information_invalidation')->nullable(); ///*/ Информация о признании сделок/платежей недействительными ///*/
+            //$table->text('information_court')->nullable(); ///*/ Информация об участии финансового управляющего на судебных заседаниях ///*/
             //$table->integer('payments')->nullable(); ///*/ Платежи, сумма оплат, п/п ///*/
-            $table->text('subsidiary_liability'); ///*/ Субсидиарная ответственность ///*/
-            $table->text('assessment_property'); ///*/ Оценка имущества должностных лиц ///*/
-            $table->text('result_case'); ///*/ Результат банкротства ///*/
+            $table->text('subsidiary_liability')->nullable(); ///*/ Субсидиарная ответственность ///*/
+            $table->text('assessment_property')->nullable(); ///*/ Оценка имущества должностных лиц ///*/
+            $table->text('result_case')->nullable(); ///*/ Результат банкротства ///*/
                                     
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 

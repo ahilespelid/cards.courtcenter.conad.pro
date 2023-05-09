@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CourtsResumptionStrategyMany extends Model{
     use HasFactory, SoftDeletes;
     
-    public $timestamps = true;
+    public $timestamps = true, $table = 'courts_resumption_strategy__many';
     
-    protected $dates = ['deleted_at'], $fillable = ['*'], $table = 'courts_resumption_strategy__many';
+    protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
 }

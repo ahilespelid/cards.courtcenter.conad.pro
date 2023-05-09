@@ -14,11 +14,11 @@ class EnforcementProceedingsInformationProgress extends Migration
     public function up(){
         Schema::create('enforcement_proceedings_information_progress', function (Blueprint $table) {
             $table->id();
-            $table->text('information_progress');
+            $table->text('data')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 

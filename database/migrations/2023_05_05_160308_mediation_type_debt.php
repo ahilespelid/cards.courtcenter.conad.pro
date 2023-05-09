@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class MediationTypeDebt extends Migration
 {
@@ -14,12 +15,19 @@ class MediationTypeDebt extends Migration
     public function up(){
         Schema::create('mediation_type_debt', function (Blueprint $table) {
             $table->id();
-            $table->text('type_debt');
+            $table->text('option')->nullable();
             
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
+
+        DB::table('mediation_type_debt')->insert(
+        ['option' => 'Медиативный'],
+        ['option' => 'Коммерческий'],
+        ['option' => 'Принципиальный'],
+        ['option' => 'Бесперспективный']
+        );
     }
     /**
      * Reverse the migrations.

@@ -14,14 +14,16 @@ class CourtsResumption extends Migration
     public function up(){
         Schema::create('courts_resumption', function (Blueprint $table){
             $table->id();
-            $table->text('reasons_resuming'); ///*/ Причины, по которым возобновляется производство ///*/
-            $table->text('initiator'); ///*/ Инициатор ///*/
-            $table->text('stage_resumption'); ///*/ Стадия возобновления ///*/
-            //$table->text('strategy'); ///*/ Стратегия ///*/
+            $table->string('deal_id')->nullable();
+            $table->string('deal_into_id')->nullable();
+            $table->text('reasons_resuming')->nullable(); ///*/ Причины, по которым возобновляется производство ///*/
+            $table->text('initiator')->nullable(); ///*/ Инициатор ///*/
+            $table->text('stage_resumption')->nullable(); ///*/ Стадия возобновления ///*/
+            //$table->text('strategy')->nullable(); ///*/ Стратегия ///*/
 
-            $table->rememberToken();
-            $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
+            $table->string('created_at')->nullable();
+            $table->string('updated_at')->nullable();
+            $table->string('deleted_at')->nullable();
         });
     }
 

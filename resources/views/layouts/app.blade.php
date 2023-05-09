@@ -11,20 +11,7 @@
         <link rel="stylesheet" href="/assets/css/app.css?<?=time();?>"/>
         <!-- Script -->
         <script src="//api.bitrix24.com/api/v1/"></script>
-<script type="text/javascript">
-BX24.init(function(){
-/*    
-    BX24.callMethod(
-        "crm.deal.fields", {},  
-        function(result) {
-            if(result.error()) console.error(result.error());
-            else console.log(result.data()['ID']);
-        }
-    );
-    console.log(BX24.getDomain(), BX24.placement.info());
-    ///* / Сформируем запрос на встраивание ///*/
-});
-</script>
+        <script src="/assets/js/app.js?<?=time();?>"></script>
 </head>
 <body>
 <header id="head"></header>
@@ -33,21 +20,35 @@ BX24.init(function(){
     <div class="bar__body">
         <span class="bar__body_title">Инстанции</span>
         <div class="bar__body__list">
-            <a href="/?tab=first_instance"><div class="bar__body__list_i">Суды-Первая</div></a>
-            <a href="/?tab=courts_appeal"><div class="bar__body__list_i">Суды-Апелляционная</div></a>
-            <a href="/?tab=courts_cassation"><div class="bar__body__list_i">Суды-Кассационная</div></a>
-            <a href="/?tab=enforcement_proceedings"><div class="bar__body__list_i" style="line-height: 20px;">Исполнительное производство</div></a>
-            <a href="/?tab=bankruptcy"><div class="bar__body__list_i">Банкротство</div></a>
-            <a href="/?tab=mediation"><div class="bar__body__list_i">Медиация</div></a>
-            <a href="/?tab=courts_resumption"><div class="bar__body__list_i" style="line-height: 20px;">Суды-Возобновление производства по делу</div></a>
+            <a href="{{ route('front.home', ['deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i i_width50"><=</div></a>
+@if(4 == $deal['CATEGORY_ID'])
+            <a href="{{ route('front.home', ['tab' => 'mediation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('mediation' == $_REQUEST['tab']) __list_i_check @endif">Медиация</div></a>
+@elseif(6 == $deal['CATEGORY_ID'])
+            <a href="{{ route('front.home', ['tab' => 'first_instance', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('first_instance' == $_REQUEST['tab']) __list_i_check @endif">Суды-Первая</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_appeal', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_appeal' == $_REQUEST['tab']) __list_i_check @endif">Суды-Апелляционная</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_cassation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_cassation' == $_REQUEST['tab']) __list_i_check @endif">Суды-Кассационная</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_resumption', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_resumption' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Суды-Возобновление производства по делу</div></a>
+@elseif(8 == $deal['CATEGORY_ID'])
+            <a href="{{ route('front.home', ['tab' => 'bankruptcy', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('bankruptcy' == $_REQUEST['tab']) __list_i_check @endif">Банкротство</div></a>
+@elseif(10 == $deal['CATEGORY_ID'])
+            <a href="{{ route('front.home', ['tab' => 'bankruptcy', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('bankruptcy' == $_REQUEST['tab']) __list_i_check @endif">Банкротство</div></a>
+@elseif(12 == $deal['CATEGORY_ID'])
+            <a href="{{ route('front.home', ['tab' => 'enforcement_proceedings', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('enforcement_proceedings' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Исполнительное производство</div></a>
+@else
+            <a href="{{ route('front.home', ['tab' => 'first_instance', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('first_instance' == $_REQUEST['tab']) __list_i_check @endif">Суды-Первая</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_appeal', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_appeal' == $_REQUEST['tab']) __list_i_check @endif">Суды-Апелляционная</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_cassation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_cassation' == $_REQUEST['tab']) __list_i_check @endif">Суды-Кассационная</div></a>
+            <a href="{{ route('front.home', ['tab' => 'enforcement_proceedings', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('enforcement_proceedings' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Исполнительное производство</div></a>
+            <a href="{{ route('front.home', ['tab' => 'bankruptcy', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('bankruptcy' == $_REQUEST['tab']) __list_i_check @endif">Банкротство</div></a>
+            <a href="{{ route('front.home', ['tab' => 'mediation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('mediation' == $_REQUEST['tab']) __list_i_check @endif">Медиация</div></a>
+            <a href="{{ route('front.home', ['tab' => 'courts_resumption', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_resumption' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Суды-Возобновление производства по делу</div></a>
+@endif
         </div>
     </div>
   </div><div></div><div></div>
-  <div>
-    <div class="form"><?//pa($_REQUEST, 3);pa($_SERVER);?>
+  <div class="content">
         @yield('content')
         <footer>@yield('footer')</footer>
-    </div>
   </div><div></div>
 </section>
 </body>
