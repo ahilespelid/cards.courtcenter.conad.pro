@@ -35,9 +35,10 @@
                             @endforeach
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'])
-                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data']['data'] ?? '' }}">
+                        <input type="text" disabled value="{{ $val['data']['data'] ?? '' }}"><br>
+                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="">
                         </td><td>
-                        <label for="{{ $key }}">{{ $val['data']['created_at'] ?? '' }}</label>                   
+                        <label for="{{ $key }}">{{ $val['data']['updated_at'] ?? '' }}</label>                   
                     @else
                         <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}">
                     @endif

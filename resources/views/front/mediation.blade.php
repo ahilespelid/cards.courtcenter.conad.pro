@@ -31,13 +31,14 @@
                         <select size="1" name="{{ $key }}">
                             <option disabled>Выберите тип</option>
                             @foreach($val['data'] as $k => $v)
-                            <option value="{{ $v['id'] ?? '' }}" @if($v['id'] == $val['selected']) selected @endif>{{ $v['option'] }}</option>
+                            <option value="{{ $v['id'] ?? '' }}">{{ $v['option'] }}</option>
                             @endforeach
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'])
-                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data']['data'] ?? '' }}">
+                        <input type="text" disabled value="{{ $val['data']['data'] ?? '' }}"><br>
+                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="">
                         </td><td>
-                        <label for="{{ $key }}">{{ $val['data']['created_at'] ?? '' }}</label>                   
+                        <label for="{{ $key }}">{{ $val['data']['updated_at'] ?? '' }}</label>                   
                     @else
                         <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}">
                     @endif

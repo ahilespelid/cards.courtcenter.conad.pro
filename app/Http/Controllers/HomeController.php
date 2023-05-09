@@ -114,11 +114,11 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getFirstInstance($_id->id);
         }
-        ///*/ pa($data); exit;           
+        ///*/ pa($data); exit; //pa($_SERVER["REMOTE_ADDR"]);           
     }else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
-        if(empty($_id = CourtsAppeal::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsAppeal::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -133,7 +133,7 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
     }else
 ///*/ Вкладка Суды-касация ///*/
     if($_REQUEST['tab'] == $view = 'courts_cassation'){
-        if(empty($_id = CourtsСassation::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsСassation::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -142,13 +142,13 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
             $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
-            $data[$view] = $this->getCourtsAppeal($_id->id);
+            $data[$view] = $this->getCourtsСassation($_id->id);
         }
         ///*/ pa($data); exit;           
     }else
 ///*/ Исполнительное производство ///*/
     if($_REQUEST['tab'] == $view = 'enforcement_proceedings'){
-        if(empty($_id = EnforcementProceedings::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = EnforcementProceedings::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -157,13 +157,13 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
             $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
-            $data[$view] = $this->getCourtsAppeal($_id->id);
+            $data[$view] = $this->getEnforcementProceedings($_id->id);
         }
         ///*/ pa($data); exit;           
     }else
 ///*/ Банкротство ///*/
     if($_REQUEST['tab'] == $view = 'bankruptcy'){
-        if(empty($_id = Bankruptcy::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = Bankruptcy::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -172,13 +172,13 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
             $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
-            $data[$view] = $this->getCourtsAppeal($_id->id);
+            $data[$view] = $this->getBankruptcy($_id->id);
         }
         ///*/ pa($data); exit;           
     }else
 ///*/ Медиации ///*/
     if($_REQUEST['tab'] == $view = 'mediation'){
-        if(empty($_id = Mediation::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = Mediation::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -187,13 +187,13 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
             $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
-            $data[$view] = $this->getCourtsAppeal($_id->id);
+            $data[$view] = $this->getMediation($_id->id);
         }
         ///*/ pa($data); exit;           
     }else
 ///*/ Суды-возобновление производства ///*/
     if($_REQUEST['tab'] == $view = 'courts_resumption'){
-        if(empty($_id = CourtsResumption::select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsResumption::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -202,7 +202,7 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
             $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
-            $data[$view] = $this->getCourtsAppeal($_id->id);
+            $data[$view] = $this->getCourtsResumption($_id->id);
         }
         ///*/ pa($data); exit;           
     }else{return view('front.undefine', ['deal' => $deal]);}
@@ -232,11 +232,10 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }
         if(isset($val['type']) && 'm' == $val['type']){
             ///*/ Поебёмся с датами во множественных полях, спасибо постгрис ///*/
-            $val['data'] = json_decode($val['data'], true);
-            if(!empty($val['data']['created_at'])){
-                $val['data']['created_at'] = (is_date($val['data']['created_at'])) ? date_format(date_create($val['data']['created_at']), 'Y-m-d H:i:s') : null;
-                $val['data']['updated_at'] = (is_date($val['data']['updated_at'])) ? date_format(date_create($val['data']['updated_at']), 'Y-m-d H:i:s') : null;
-                $val['data']['deleted_at'] = (is_date($val['data']['deleted_at'])) ? date_format(date_create($val['data']['deleted_at']), 'Y-m-d H:i:s') : null;
+            $data[$view][$key]['data'] = json_decode($val['data'], true);
+            if(!empty($data[$view][$key]['data']['updated_at'])){
+                $data[$view][$key]['data']['updated_at'] = (is_date($data[$view][$key]['data']['updated_at'])) ? date_format(date_create($data[$view][$key]['data']['updated_at']), 'Y-m-d H:i:s') : null;
+                //if('10.10.0.24' == $_SERVER["REMOTE_ADDR"]){pa($data[$view][$key]); exit;}
             }
         }
     }
@@ -273,13 +272,11 @@ public function save(Request $request){
     $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$request->tab.'.php');
     foreach($structura as $k => $v){if('m' == $structura[$k]['type']){unset($structura[$k]);}}
     $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
-    
-    $structura = ['id'=>'','deal_id'=>'','deal_into_id'=>'']+$structura;
+    $structura = ['id'=>'','deal_id'=>'','deal_into_id'=>'']+$structura+['updated_at'=>''];
     
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($request->tab == $view = 'first_instance'){
         ///*/ pa($_POST); exit;
-        
         $request->validate([
             'name_and_number'        => 'nullable|string',
             'parties_to_case'        => 'nullable|string',
@@ -308,32 +305,7 @@ public function save(Request $request){
             'date_acceptance_appeal' => 'nullable|string',
             'sum_services'           => 'nullable|string',
             //'exp' => 'nullable|date',
-        ]);
-        $req = [
-            'id'                     => $request->id,
-            'deal_id'                => $request->deal_id,
-            'deal_into_id'           => $request->deal_into_id,
-            'name_and_number'        => $request->name_and_number,
-            'parties_to_case'        => $request->parties_to_case,
-            'who_represent'          => $request->who_represent,
-            'subject_dispute'        => $request->subject_dispute,
-            'deposit'                => $request->deposit,
-            'date_start'             => $request->date_start,
-            'number_case'            => $request->number_case,
-            'court_judge'            => $request->court_judge,
-            'information_case'       => $request->information_case,
-            'result_case'            => $request->result_case,
-            'sum_case'               => $request->sum_case,
-            'date_force_case'        => $request->date_force_case,
-            'time_limit'             => $request->time_limit,
-            'date_production_case'   => $request->date_production_case,
-            'date_receipt_case'      => $request->date_receipt_case,
-            'appeal_case'            => $request->appeal_case,
-            'date_filing_appeal'     => $request->date_filing_appeal,
-            'date_acceptance_appeal' => $request->date_acceptance_appeal,
-            'sum_services'           => $request->sum_services,
-            'updated_at'             => $request->updated_at,
-        ]; ///*/ pa($req); //exit; ///*/      
+        ]);    
        
         ///*/ Создаём или выбираем модель ///*/
         $ob_ = FirstInstance::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
@@ -344,7 +316,7 @@ public function save(Request $request){
         if($ob_->save()){
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStrategy)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->strategy) && $push = FirstInstanceStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->strategy; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -352,7 +324,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaim)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaim)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceClaim::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->claim) && $push = FirstInstanceClaim::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->claim; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaimMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaimMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceClaimMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -360,7 +332,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaimPrice)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaimPrice)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceClaimPrice::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->claim_price) && $push = FirstInstanceClaimPrice::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->claim_price; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaimPriceMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaimPriceMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceClaimPriceMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -368,7 +340,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStateDuty)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStateDuty)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceStateDuty::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->state_duty) && $push = FirstInstanceStateDuty::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->state_duty; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStateDutyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStateDutyMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceStateDutyMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -376,7 +348,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceInformationProgress)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceInformationProgress)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceInformationProgress::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->information_progress) && $push = FirstInstanceInformationProgress::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->information_progress; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceInformationProgressMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceInformationProgressMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceInformationProgressMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -384,7 +356,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceDateUpcomingCase)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceDateUpcomingCase)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceDateUpcomingCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->date_upcoming_case) && $push = FirstInstanceDateUpcomingCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->date_upcoming_case; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceDateUpcomingCaseMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceDateUpcomingCaseMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceDateUpcomingCaseMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -392,7 +364,7 @@ public function save(Request $request){
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceCurrentStateCase)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceCurrentStateCase)->table.";"))) ? $_id[0]->maxid : null;
-            if($push = FirstInstanceCurrentStateCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+            if(!empty($request->current_state_case) && $push = FirstInstanceCurrentStateCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
                 $push->data = $request->current_state_case; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceCurrentStateCaseMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceCurrentStateCaseMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceCurrentStateCaseMany::create(['id' => $subpush_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
@@ -401,15 +373,121 @@ public function save(Request $request){
         }}else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
-        //
-        /*/
-        if(!empty($_id = CourtsAppeal::select('id')->orderBy('id','desc')->first()->toArray())){
-            $data['courts_appeal'] = !empty($courts_appeal = $this->getCourtsAppeal($_id['id'])) ? $courts_appeal : '';
-        }
-        ///*/           
+        ///*/ pa($_POST); exit;
+
+        $request->validate([
+            'applicant_complaint'           => 'nullable|string',
+            'strategy'                      => 'nullable|string', // m
+            'state_duty'                    => 'nullable|string',
+            'brief_complaint'               => 'nullable|string',
+            'complaint'                     => 'nullable|string',
+            'objections'                    => 'nullable|string', 
+            'date_filing_complaint'         => 'nullable|string', 
+            'date_acceptance_complaint'     => 'nullable|string', 
+            'court_judge'                   => 'nullable|string', 
+            'date_upcoming_case'            => 'nullable|string', // m
+            'number_case'                   => 'nullable|string',
+            'link'                          => 'nullable|string',
+            'information_case'              => 'nullable|string', 
+            'result_case'                   => 'nullable|string', 
+            'sum_case'                      => 'nullable|string',
+            'date_production_case'          => 'nullable|string', 
+            'date_receipt_case'             => 'nullable|string',
+            'information_progress'          => 'nullable|string', // m
+            'date_filing_appeal'            => 'nullable|string',
+            'date_acceptance_appeal'        => 'nullable|string',
+            'sum_services'                  => 'nullable|string',
+            //'exp' => 'nullable|date',
+        ]);    
+        
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = CourtsAppeal::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsAppeal::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = CourtsAppealStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsAppealStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_appeal_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealDateUpcomingCase)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealDateUpcomingCase)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->date_upcoming_case) && $push = CourtsAppealDateUpcomingCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->date_upcoming_case; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealDateUpcomingCaseMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealDateUpcomingCaseMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsAppealDateUpcomingCaseMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_appeal_id = $ob_->id; $subpush->date_upcoming_case_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealInformationProgress)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealInformationProgress)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->information_progress) && $push = CourtsAppealInformationProgress::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->information_progress; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsAppealInformationProgressMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsAppealInformationProgressMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsAppealInformationProgressMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_appeal_id = $ob_->id; $subpush->information_progress_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+        }        
     }else
 ///*/ Вкладка Суды-касация ///*/
     if($_REQUEST['tab'] == $view = 'courts_cassation'){
+        ///*/ pa($_POST); exit; ///*/
+
+        $request->validate([
+            'applicant_complaint'           => 'nullable|string',
+            'strategy'                      => 'nullable|string', // m
+            'state_duty'                    => 'nullable|string',
+            'complaint'                     => 'nullable|string',
+            'objections'                    => 'nullable|string',
+            'court_judge'                   => 'nullable|string', 
+            'date_upcoming_case'            => 'nullable|string', // m
+            'number_case'                   => 'nullable|string',
+            'link'                          => 'nullable|string',
+            'information_progress'          => 'nullable|string', // m
+            'result_case'                   => 'nullable|string', 
+            'sum_case'                      => 'nullable|string',
+            'date_production_case'          => 'nullable|string', 
+            'date_receipt_case'             => 'nullable|string',
+            'information_case'              => 'nullable|string', 
+            'sum_services'                  => 'nullable|string',
+            //'exp' => 'nullable|date',
+        ]);    
+        
+        
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = CourtsСassation::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsСassation::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        //pa($ob_->toArray()); exit;
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = CourtsCassationStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsCassationStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_сassation_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationDateUpcomingCase)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationDateUpcomingCase)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->date_upcoming_case) && $push = CourtsCassationDateUpcomingCase::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->date_upcoming_case; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationDateUpcomingCaseMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationDateUpcomingCaseMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsCassationDateUpcomingCaseMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_сassation_id = $ob_->id; $subpush->date_upcoming_case_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationInformationProgress)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationInformationProgress)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->information_progress) && $push = CourtsCassationInformationProgress::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->information_progress; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsCassationInformationProgressMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsCassationInformationProgressMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsCassationInformationProgressMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_сassation_id = $ob_->id; $subpush->information_progress_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+
+        }
         //
         /*/
         if(!empty($_id = CourtsСassation::select('id')->orderBy('id','desc')->first()->toArray())){

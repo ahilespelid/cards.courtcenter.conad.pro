@@ -35,13 +35,6 @@
 @elseif(12 == $deal['CATEGORY_ID'])
             <a href="{{ route('front.home', ['tab' => 'enforcement_proceedings', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('enforcement_proceedings' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Исполнительное производство</div></a>
 @else
-            <a href="{{ route('front.home', ['tab' => 'first_instance', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('first_instance' == $_REQUEST['tab']) __list_i_check @endif">Суды-Первая</div></a>
-            <a href="{{ route('front.home', ['tab' => 'courts_appeal', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_appeal' == $_REQUEST['tab']) __list_i_check @endif">Суды-Апелляционная</div></a>
-            <a href="{{ route('front.home', ['tab' => 'courts_cassation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_cassation' == $_REQUEST['tab']) __list_i_check @endif">Суды-Кассационная</div></a>
-            <a href="{{ route('front.home', ['tab' => 'enforcement_proceedings', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('enforcement_proceedings' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Исполнительное производство</div></a>
-            <a href="{{ route('front.home', ['tab' => 'bankruptcy', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('bankruptcy' == $_REQUEST['tab']) __list_i_check @endif">Банкротство</div></a>
-            <a href="{{ route('front.home', ['tab' => 'mediation', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('mediation' == $_REQUEST['tab']) __list_i_check @endif">Медиация</div></a>
-            <a href="{{ route('front.home', ['tab' => 'courts_resumption', 'deal_id' => $deal['ID']]) }}"><div class="bar__body__list_i @if('courts_resumption' == $_REQUEST['tab']) __list_i_check @endif" style="line-height: 20px;">Суды-Возобновление производства по делу</div></a>
 @endif
         </div>
     </div>
