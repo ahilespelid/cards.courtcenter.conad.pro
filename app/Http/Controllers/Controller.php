@@ -388,7 +388,7 @@ return (!empty($ret = $this->mergeLabel($data, 'mediation'))) ? $ret : null;}
 public function getCourtsResumption(int $id):?array{
     if(empty($id)){return null;}
     
-    if(!empty($data = CourtsResumption::where('id', '=', $id)->first()->toArray())){
+    if(!empty($data = CourtsResumption::where('id', '=', $id)->first())){
         $data = $data->toArray();
         ///*/ Стратегия ///*/    
         if(empty($_id = CourtsResumptionStrategyMany::where('deleted_at', '=', NULL)

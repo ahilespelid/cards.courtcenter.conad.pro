@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FirstInstanceDateUpcomingCase extends Migration
+class BankruptcyInformationCourt extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,9 @@ class FirstInstanceDateUpcomingCase extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_date_upcoming_case', function (Blueprint $table) {
+        Schema::create('bankruptcy_information_court', function (Blueprint $table) {
             $table->id();
-            $table->timpstamp('data')->nullable();
+            $table->text('data')->nullable();
             
             $table->string('created_at')->nullable();
             $table->string('updated_at')->nullable();
@@ -26,5 +26,5 @@ class FirstInstanceDateUpcomingCase extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_date_upcoming_case');}
+    public function down(){Schema::dropIfExists('bankruptcy_information_court');}
 }

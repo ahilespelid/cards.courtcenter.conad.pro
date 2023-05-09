@@ -14,7 +14,7 @@ class CourtsCassationDateUpcomingCase extends Migration
     public function up(){
         Schema::create('courts_сassation_date_upcoming_case', function (Blueprint $table) {
             $table->id();
-            $table->string('data')->nullable();
+            $table->timestamp('data')->nullable();
             
             $table->string('created_at')->nullable();
             $table->string('updated_at')->nullable();

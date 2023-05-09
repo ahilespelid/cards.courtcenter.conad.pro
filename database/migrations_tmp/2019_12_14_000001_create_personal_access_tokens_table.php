@@ -4,27 +4,36 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class FirstInstanceDateUpcomingCase extends Migration
+class CreatePersonalAccessTokensTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up(){
-        Schema::create('first_instance_date_upcoming_case', function (Blueprint $table) {
+    public function up()
+    {
+        Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->timpstamp('data')->nullable();
+            $table->morphs('tokenable');
+            $table->string('name');
+            $table->string('token', 64)->unique();
+            $table->text('abilities')->nullable();
+            $table->string('last_used_at')->nullable();
             
             $table->string('created_at')->nullable();
             $table->string('updated_at')->nullable();
             $table->string('deleted_at')->nullable();
         });
     }
+
     /**
      * Reverse the migrations.
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_date_upcoming_case');}
+    public function down()
+    {
+        Schema::dropIfExists('personal_access_tokens');
+    }
 }

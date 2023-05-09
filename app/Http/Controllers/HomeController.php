@@ -455,7 +455,6 @@ public function save(Request $request){
             //'exp' => 'nullable|date',
         ]);    
         
-        
         ///*/ Создаём или выбираем модель ///*/
         $ob_ = CourtsСassation::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsСassation::create(['id' => $request->id]); 
@@ -486,36 +485,196 @@ public function save(Request $request){
                 $subpush = CourtsCassationInformationProgressMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
                 $subpush->courts_сassation_id = $ob_->id; $subpush->information_progress_id = $push->id; $subpush->save();
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
-
-        }
-        //
-        /*/
-        if(!empty($_id = CourtsСassation::select('id')->orderBy('id','desc')->first()->toArray())){
-            $data['courts_cassation'] = !empty($courts_cassation = $this->getCourtsСassation($_id['id'])) ? $courts_cassation : '';
-        }
-        ///*/            
+        }           
     }else
 ///*/ Исполнительное производство ///*/
     if($_REQUEST['tab'] == $view = 'enforcement_proceedings'){
-        //
-        /*/
-        if(!empty($_id = EnforcementProceedings::select('id')->orderBy('id','desc')->first()->toArray())){
-            $data['enforcement_proceedings'] = !empty($enforcement_proceedings = $this->getEnforcementProceedings($_id['id'])) ? $enforcement_proceedings : '';
+        ///*/ pa($_POST); exit; ///*/
+
+        $request->validate([
+            'recoverer'                             => 'nullable|string',
+            'debtor'                                => 'nullable|string', 
+            'date_force'                            => 'nullable|string',
+            'time_limit'                            => 'nullable|string',
+            'sum_case'                              => 'nullable|string',
+            'information_mortgaged_property'        => 'nullable|string', 
+            'strategy'                              => 'nullable|string', // m
+            'date_submission_fssp'                  => 'nullable|string',
+            'date_initiation_fssp'                  => 'nullable|string',
+            'contact_bailiff'                       => 'nullable|string', 
+            'link'                                  => 'nullable|string', 
+            'information_progress'                  => 'nullable|string', // m
+            'arrests_bans_encumbrances'             => 'nullable|string', 
+            'date_visit_bailiff'                    => 'nullable|string', // m
+            'property_valuation'                    => 'nullable|string', 
+            'information_auction'                   => 'nullable|string', // m
+            'information_auction_result'            => 'nullable|string',
+            'offer_recoverer'                       => 'nullable|string',
+            'date_transfer_founds'                  => 'nullable|string',
+            'information_provision_debt_fssp'       => 'nullable|string',
+            'date_transfer_founds_recoverer'        => 'nullable|string',
+            'date_completion'                       => 'nullable|string',
+            'date_end_execution'                    => 'nullable|string',
+            //'exp' => 'nullable|date',
+        ]);    
+
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = EnforcementProceedings::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : EnforcementProceedings::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        //pa($ob_->toArray()); exit;
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = EnforcementProceedingsStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = EnforcementProceedingsStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->enforcement_proceedings_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsInformationProgress)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsInformationProgress)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->information_progress) && $push = EnforcementProceedingsInformationProgress::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->information_progress; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsInformationProgressMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsInformationProgressMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = EnforcementProceedingsInformationProgressMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->enforcement_proceedings_id = $ob_->id; $subpush->information_progress_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsDateVisitBailiff)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsDateVisitBailiff)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->date_visit_bailiff) && $push = EnforcementProceedingsDateVisitBailiff::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->date_visit_bailiff; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsDateVisitBailiffMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsDateVisitBailiffMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = EnforcementProceedingsDateVisitBailiffMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->enforcement_proceedings_id = $ob_->id; $subpush->date_visit_bailiff_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsInformationAuction)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsInformationAuction)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->information_auction) && $push = EnforcementProceedingsInformationAuction::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->information_auction; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new EnforcementProceedingsInformationAuctionMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new EnforcementProceedingsInformationAuctionMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = EnforcementProceedingsInformationAuctionMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->enforcement_proceedings_id = $ob_->id; $subpush->information_auction_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
         }
-        ///*/            
-        
     }else
 ///*/ Банкротство ///*/
     if($_REQUEST['tab'] == $view = 'bankruptcy'){
-        //
-        /*/
-        if(!empty($_id = Bankruptcy::select('id')->orderBy('id','desc')->first()->toArray())){
-            $data['bankruptcy'] = !empty($bankruptcy = $this->getBankruptcy($_id['id'])) ? $bankruptcy : '';
-        }
-        ///*/            
+        ///*/ pa($_POST); exit; ///*/
+
+        $request->validate([
+            'applicant'                     => 'nullable|string',
+            'debtor'                        => 'nullable|string', 
+            'bankruptcy_trustee'            => 'nullable|string',
+            'strategy'                      => 'nullable|string', // m
+            'state_duty'                    => 'nullable|string',
+            'deposit'                       => 'nullable|string', 
+            'number_case'                   => 'nullable|string', 
+            'link'                          => 'nullable|string',
+            'stage'                         => 'nullable|string', // m
+            'date_current_stage'            => 'nullable|string', 
+            'information_creditors'         => 'nullable|string', 
+            'property_valuation'            => 'nullable|string', 
+            'bank_accounts'                 => 'nullable|string', 
+            'information_invalidation'      => 'nullable|string', 
+            'information_court'             => 'nullable|string', // m
+            'payments'                      => 'nullable|string', // m
+            'subsidiary_liability'          => 'nullable|string',
+            'assessment_property'           => 'nullable|string',
+            'result_case'                   => 'nullable|string',
+            //'exp' => 'nullable|date',
+        ]);    
+
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = Bankruptcy::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : Bankruptcy::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        //pa($ob_->toArray()); exit;
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = BankruptcyStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = BankruptcyStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->bankruptcy_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyStage)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyStage)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->stage) && $push = BankruptcyStage::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->stage; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyStageMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyStageMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = BankruptcyStageMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->bankruptcy_id = $ob_->id; $subpush->stage_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyInformationCourt)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyInformationCourt)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->information_court) && $push = BankruptcyInformationCourt::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->information_court; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyInformationCourtMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyInformationCourtMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = BankruptcyInformationCourtMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->bankruptcy_id = $ob_->id; $subpush->information_court_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyPayments)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyPayments)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->payments) && $push = BankruptcyPayments::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->payments; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new BankruptcyPaymentsMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new BankruptcyPaymentsMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = BankruptcyPaymentsMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->bankruptcy_id = $ob_->id; $subpush->payments_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+        }        
     }else
 ///*/ Медиации ///*/
     if($_REQUEST['tab'] == $view = 'mediation'){
+        ///*/ pa($_POST); exit; ///*/
+
+        $request->validate([
+            'procedural_succession'     => 'nullable|string',
+            'assessment_property'       => 'nullable|string', 
+            'strategy'                  => 'nullable|string', // m
+            'type_debt'                 => 'nullable|string', 
+            'contact_debtor'            => 'nullable|string',
+            'discount_calculation'      => 'nullable|string', // m
+            'first_offer_debtor'        => 'nullable|string', 
+            'second_offer_debtor'       => 'nullable|string', // m
+            'third_offer_debtor'        => 'nullable|string', 
+            'fourth_offer_debtor'       => 'nullable|string', 
+            'fifth_offer_debtor'        => 'nullable|string', 
+            //'exp' => 'nullable|date',
+        ]);    
+
+
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = Mediation::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : Mediation::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        //pa($ob_->toArray()); exit;
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = MediationStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = MediationStrategyMany::create(['id' => $subpush_id, 'mediation_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->mediation_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationDiscountCalculation)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationDiscountCalculation)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->discount_calculation) && $push = MediationDiscountCalculation::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->discount_calculation; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationDiscountCalculationMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationDiscountCalculationMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = MediationDiscountCalculationMany::create(['id' => $subpush_id, 'mediation_id' => $ob_->id, 'discount_calculation_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->mediation_id = $ob_->id; $subpush->stage_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationSecondOfferDebtor)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationSecondOfferDebtor)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->second_offer_debtor) && $push = MediationSecondOfferDebtor::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->second_offer_debtor; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new MediationSecondOfferDebtorMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new MediationSecondOfferDebtorMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = MediationSecondOfferDebtorMany::create(['id' => $subpush_id, 'mediation_id' => $ob_->id, 'second_offer_debtor_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->mediation_id = $ob_->id; $subpush->information_court_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
+        }        
+
         //
         /*/
         if(!empty($_id = Mediation::select('id')->orderBy('id','desc')->first()->toArray())){
@@ -525,17 +684,35 @@ public function save(Request $request){
     }else
 ///*/ Суды-возобновление производства ///*/
     if($_REQUEST['tab'] == $view = 'courts_resumption'){
-        //
-        /*/
-        if(!empty($_id = CourtsResumption::select('id')->orderBy('id','desc')->first()->toArray())){
-            $data['courts_resumption'] = !empty($courts_resumption = $this->getCourtsResumption($_id['id'])) ? $courts_resumption : '';
+        ///*/ pa($_POST); exit; ///*/
+
+        $request->validate([
+            'reasons_resuming'      => 'nullable|string',
+            'initiator'             => 'nullable|string', 
+            'stage_resumption'      => 'nullable|string',
+            'strategy'              => 'nullable|string', // m
+            //'exp' => 'nullable|date',
+        ]);    
+        
+        
+        ///*/ Создаём или выбираем модель ///*/
+        $ob_ = CourtsResumption::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsResumption::create(['id' => $request->id]); 
+        ///*/ Обновляем модель ///*/
+        foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
+        ///*/ Сохраняем модель в базе ///*/ pa($ob_->toArray()); exit; ///*/
+        //pa($ob_->toArray()); exit;
+        if($ob_->save()){
+            ///*/ --- ///*/
+            $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsResumptionStrategy)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsResumptionStrategy)->table.";"))) ? $_id[0]->maxid : null;
+            if(!empty($request->strategy) && $push = CourtsResumptionStrategy::create(['id' => $push_id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at])){
+                $push->data = $request->strategy; $push->save();               
+                $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new CourtsResumptionStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new CourtsResumptionStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
+                $subpush = CourtsResumptionStrategyMany::create(['id' => $subpush_id, 'courts_resumption_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
+                $subpush->courts_resumption_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+            }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
         }
-        ///*/            
     }else{return view('front.undefine', ['deal' => $deal]);}
 
-    return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);
-
-}
-
-
+return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);}
 }

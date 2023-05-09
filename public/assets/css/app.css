@@ -20,15 +20,25 @@ section {
 
   display: grid;
   grid-template-rows: 2fr 6fr;
-  grid-template-columns: 2fr 10fr 2fr;
+  grid-template-columns: 2fr 7fr 2fr;
   gap: 5px;
 }
 section * {}
 .content{
     margin: auto;
 }
-.bar{margin:auto;}
-.bar__body{border: 1px solid #aaa; min-height: 80px; width: 1344px; margin-top: 10px;}
+
+.bar{
+  margin:auto;
+  width: 100%;
+}
+
+.bar__body{
+    border: 1px solid #aaa; 
+    min-height: 80px; 
+    margin-top: 10px;
+}
+
 .bar__body_title{
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
@@ -40,6 +50,7 @@ section * {}
 }
 .bar__body__list{
     display: flex;
+    justify-content: center;
     flex-wrap: nowrap;
     width: 90%;
     margin: 0 auto; 
@@ -85,10 +96,11 @@ section * {}
 }
 footer, header {text-align: center;} footer {color:#00f;} header {color:#f00;} a{text-decoration: none; color: var(--color_font, #000);}
 .footer {
-    text-align: start;
+    text-align: center;
     position: sticky;
     left: 0;
     bottom: 0;
     width: 100%;
     height: 120px;
+    background-color: #FFFFFF;
 }
