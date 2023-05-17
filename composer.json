@@ -11,11 +11,11 @@
   "license": "GNU",
   "autoload": {
     "files": [
+      "public/crest.php",
       "functions.php"
     ],
     "psr-4": {
-      "App\\": "app/",
-      "Btx\\": "bitrix/"
+      "App\\": "app/"
     }
   },
   "authors": [

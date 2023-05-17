@@ -121,7 +121,7 @@ footer, header {text-align: center;} footer {color:#00f;} header {color:#f00;} a
                 </tr>
                 <tr>
                     <td><label for="undefine"></label></td>
-                    <td><input type="text" id="undefine" name="undefine"></td>
+                    <td><input type="text" id="undefine" name="undefine" value="<?=($name = ($profile['NAME'] ?? false)) ? $name : '';?>"></td>
                     <td><span></span></td>
                 </tr>
         

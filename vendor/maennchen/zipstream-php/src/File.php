@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ZipStream;
 
+use DeflateContext;
 use HashContext;
 use Psr\Http\Message\StreamInterface;
 use ZipStream\Exception\FileNotFoundException;
@@ -76,7 +77,7 @@ class File
     public $zip;
 
     /**
-     * @var resource
+     * @var resource|DeflateContext|null
      */
     private $deflate;
 
@@ -120,7 +121,7 @@ class File
         } else {
             $this->method = $this->zip->opt->getLargeFileMethod();
 
-            $stream = new DeflateStream(fopen($path, 'rb'));
+            $stream = new Stream(fopen($path, 'rb'));
             $this->processStream($stream);
             $stream->close();
         }
@@ -438,6 +439,7 @@ class File
             hash_update($this->hash, $data);
         }
         if ($this->deflate) {
+            /** @psalm-suppress PossiblyInvalidArgument */
             $data = deflate_add(
                 $this->deflate,
                 $data,
@@ -462,19 +464,6 @@ class File
     {
         $this->readStream($stream, self::COMPUTE);
         $stream->rewind();
-
-        // incremental compression with deflate_add
-        // makes this second read unnecessary
-        // but it is only available from PHP 7.0
-        if (!$this->deflate && $stream instanceof DeflateStream && $this->method->equals(Method::DEFLATE())) {
-            $stream->addDeflateFilter($this->opt);
-            $this->zlen = new Bigint();
-            while (!$stream->eof()) {
-                $data = $stream->read(self::CHUNKED_READ_BLOCK_SIZE);
-                $this->zlen = $this->zlen->add(Bigint::init(strlen($data)));
-            }
-            $stream->rewind();
-        }
 
         $this->addFileHeader();
         $this->readStream($stream, self::SEND);

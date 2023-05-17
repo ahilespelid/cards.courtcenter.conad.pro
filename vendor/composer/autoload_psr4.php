@@ -7,7 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
-    'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-factory/src', $vendorDir . '/psr/http-message/src'),
     'Psr\\Http\\Client\\' => array($vendorDir . '/psr/http-client/src'),
@@ -17,6 +16,5 @@ return array(
     'Detection\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/src'),
     'DetectionTests\\' => array($vendorDir . '/mobiledetect/mobiledetectlib/tests'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
-    'Btx\\' => array($baseDir . '/bitrix'),
     'App\\' => array($baseDir . '/app'),
 );
