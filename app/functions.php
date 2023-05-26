@@ -11,4 +11,8 @@ function is_date($value){ // */  проверка строки на дату  //
     if(!$value){return null;}
     try{return $d = (new \DateTime($value));}catch(\Exception $e){return null;}}
 }
+if(!function_exists('str_contains')){
+function str_contains(string $haystack, string $needle){
+    return strpos($haystack, $needle) !== false;
+}}
 ?>

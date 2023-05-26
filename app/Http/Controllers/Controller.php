@@ -80,13 +80,15 @@ public function getFirstInstance(int $id):?array{
         ///*/ Стратегия ///*/    
         if(empty($_id = FirstInstanceStrategyMany::where('deleted_at', '=', NULL)
                                                  ->where('first_instance_id', '=', $id)
-                                                 ->orderBy('strategy_id', 'desc')
+                                                 ->orderBy('first_instance_strategy_id', 'desc')
                                                  ->first())){
         $data['strategy'] = '';
         }elseif(!empty($_ob = FirstInstanceStrategy::where('deleted_at', '=', NULL)
-                                                 ->where('id', '=', $_id->strategy_id)
-                                                 ->first()->toArray())){
-        $data['strategy'] = json_encode($_ob);
+                                                 ->where('id', '=', $_id->first_instance_strategy_id)
+                                                 ->first())){
+        //$pull                                             
+        $data['strategy'] = json_encode($_ob->toArray());
+        //pa($_ob->many->toArray()); exit;
         }
         ///*/ Претензия ///*/
         if(empty($_id = FirstInstanceClaimMany::where('deleted_at', '=', NULL)
@@ -96,8 +98,9 @@ public function getFirstInstance(int $id):?array{
         $data['claim'] = '';
         }elseif(!empty($_ob = FirstInstanceClaim::where('deleted_at', '=', NULL)
                                                  ->where('id', '=', $_id->claim_id)
-                                                 ->first()->toArray())){
-        $data['claim'] = json_encode($_ob);
+                                                 ->first())){
+        //pa($_ob->many->toArray()); exit;
+        $data['claim'] = json_encode($_ob->toArray());
         }
         ///*/ Цена иска ///*/
         if(empty($_id = FirstInstanceClaimPriceMany::where('deleted_at', '=', NULL)

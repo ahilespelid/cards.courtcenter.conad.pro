@@ -11,4 +11,9 @@ class FirstInstanceClaim extends Model{
     public $timestamps = true, $table = 'first_instance_claim';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
+    
+    public function many(){
+        return $this->hasMany(FirstInstanceClaimMany::class);
+    }
+
 }

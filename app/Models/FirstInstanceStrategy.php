@@ -11,4 +11,9 @@ class FirstInstanceStrategy extends Model{
     public $timestamps = true, $table = 'first_instance_strategy';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
+    
+    public function many(){
+        return $this->hasMany(FirstInstanceStrategyMany::class);
+    }
+    
 }

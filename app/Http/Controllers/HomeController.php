@@ -5,68 +5,43 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use \Crest;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use 
-    App\Models\FirstInstance,
-    App\Models\FirstInstanceClaim,
-    App\Models\FirstInstanceCurrentStateCase,
-    App\Models\BankruptcyPaymentsMany,
-    App\Models\FirstInstanceInformationProgress,
-    App\Models\FirstInstanceStateDuty,
-    App\Models\FirstInstanceStrategy,
-    App\Models\FirstInstanceClaimPrice,
-    App\Models\FirstInstanceClaimPriceMany,
-    App\Models\FirstInstanceClaimMany,
-    App\Models\FirstInstanceCurrentStateCaseMany,
-    App\Models\BankruptcyPayments,
-    App\Models\FirstInstanceInformationProgressMany,
-    App\Models\FirstInstanceStateDutyMany,
-    App\Models\FirstInstanceStrategyMany,
-    App\Models\CourtsAppeal,
-    App\Models\CourtsAppealStrategy,
-    App\Models\MediationStrategy,
-    App\Models\FirstInstanceDateUpcomingCase,
-    App\Models\FirstInstanceDateUpcomingCaseMany,
-    App\Models\CourtsAppealDateUpcomingCase,
-    App\Models\CourtsAppealInformationProgress,
-    App\Models\CourtsAppealStrategyMany,
-    App\Models\CourtsAppealDateUpcomingCaseMany,
-    App\Models\CourtsAppealInformationProgressMany,
-    App\Models\CourtsResumption,
-    App\Models\CourtsСassation,
-    App\Models\EnforcementProceedingsStrategyMany,
-    App\Models\EnforcementProceedingsInformationProgressMany,
-    App\Models\EnforcementProceedingsInformationAuctionMany,
-    App\Models\EnforcementProceedingsDateVisitBailiffMany,
-    App\Models\BankruptcyStrategy,
-    App\Models\BankruptcyStage,
-    App\Models\BankruptcyStageMany,
-    App\Models\BankruptcyInformationCourtMany,
-    App\Models\CourtsCassationStrategy,
-    App\Models\CourtsCassationStrategyMany,
-    App\Models\CourtsCassationDateUpcomingCase,
-    App\Models\CourtsCassationDateUpcomingCaseMany,
-    App\Models\CourtsCassationInformationProgress,
-    App\Models\CourtsCassationInformationProgressMany,
-    App\Models\EnforcementProceedings,
-    App\Models\EnforcementProceedingsStrategy,
-    App\Models\EnforcementProceedingsInformationProgress,
-    App\Models\EnforcementProceedingsInformationAuction,
-    App\Models\EnforcementProceedingsDateVisitBailiff,
-    App\Models\Bankruptcy,
-    App\Models\BankruptcyStrategyMany,
-    App\Models\BankruptcyInformationCourt,
-    App\Models\Mediation,
-    App\Models\MediationStrategyMany,
-    App\Models\MediationTypeDebt,
-    App\Models\MediationDiscountCalculation,
-    App\Models\MediationDiscountCalculationMany,
-    App\Models\MediationSecondOfferDebtor,
-    App\Models\MediationSecondOfferDebtorMany,
-    App\Models\CourtsResumptionStrategy,
-    App\Models\CourtsResumptionStrategyMany;
-
-
+    App\Models\FirstInstance,               App\Models\FirstInstanceClaim,                              App\Models\FirstInstanceClaimMany, 
+                                            App\Models\FirstInstanceClaimPrice,                         App\Models\FirstInstanceClaimPriceMany,
+                                            App\Models\FirstInstanceStrategy,                           App\Models\FirstInstanceStrategyMany,
+                                            App\Models\FirstInstanceCurrentStateCase,                   App\Models\FirstInstanceCurrentStateCaseMany,
+                                            App\Models\FirstInstanceInformationProgress,                App\Models\FirstInstanceInformationProgressMany,
+                                            App\Models\FirstInstanceStateDuty,                          App\Models\FirstInstanceStateDutyMany,
+                                            App\Models\FirstInstanceDateUpcomingCase,                   App\Models\FirstInstanceDateUpcomingCaseMany,
+                                    
+    App\Models\CourtsAppeal,                App\Models\CourtsAppealStrategy,                            App\Models\CourtsAppealStrategyMany,
+                                            App\Models\CourtsAppealDateUpcomingCase,                    App\Models\CourtsAppealDateUpcomingCaseMany,
+                                    
+                                            App\Models\CourtsAppealInformationProgress,                 App\Models\CourtsAppealInformationProgressMany,
+    App\Models\CourtsСassation,             App\Models\CourtsCassationStrategy,                         App\Models\CourtsCassationStrategyMany,
+                                            App\Models\CourtsCassationDateUpcomingCase,                 App\Models\CourtsCassationDateUpcomingCaseMany,
+                                            App\Models\CourtsCassationInformationProgress,              App\Models\CourtsCassationInformationProgressMany,
+                                    
+    App\Models\Bankruptcy,                  App\Models\BankruptcyStrategy,                              App\Models\BankruptcyStrategyMany,
+                                            App\Models\BankruptcyPayments,                              App\Models\BankruptcyPaymentsMany,
+                                            App\Models\BankruptcyStage,                                 App\Models\BankruptcyStageMany,                      
+                                            App\Models\BankruptcyInformationCourt,                      App\Models\BankruptcyInformationCourtMany,
+                                    
+    App\Models\Mediation,                   App\Models\MediationStrategy,                               App\Models\MediationStrategyMany,
+                                            App\Models\MediationDiscountCalculation,                    App\Models\MediationDiscountCalculationMany,
+                                            App\Models\MediationSecondOfferDebtor,                      App\Models\MediationSecondOfferDebtorMany,
+                                            App\Models\MediationTypeDebt,
+                                            
+    App\Models\CourtsResumption,            App\Models\CourtsResumptionStrategy,                        App\Models\CourtsResumptionStrategyMany,
+    
+    App\Models\EnforcementProceedings,      App\Models\EnforcementProceedingsStrategy,                  App\Models\EnforcementProceedingsStrategyMany,
+                                            App\Models\EnforcementProceedingsInformationProgress,       App\Models\EnforcementProceedingsInformationProgressMany,
+                                            App\Models\EnforcementProceedingsInformationAuction,        App\Models\EnforcementProceedingsInformationAuctionMany,
+                                            App\Models\EnforcementProceedingsDateVisitBailiff,          App\Models\EnforcementProceedingsDateVisitBailiffMany;
 class HomeController extends Controller{    
+///*/-----------------------------------Метод вывода в битрикс///*/
 public function index(){
     $_REQUEST['deal_id'] = empty($_REQUEST['deal_id']) ? '' : $_REQUEST['deal_id'];
     $_REQUEST['tab'] = empty($_REQUEST['tab']) ? 'Not found' : $_REQUEST['tab'];
@@ -79,27 +54,6 @@ public function index(){
     $deal['ID'] = (empty($deal['ID'])) ? 'Not found' : $deal['ID'];        
     $deal['CATEGORY_ID'] = (empty($deal['CATEGORY_ID'])) ? null : $deal['CATEGORY_ID'];        
     $deal_into_id = (empty($deal['UF_CRM_1683462809'])) ? null : $deal['UF_CRM_1683462809'];        
-    //pa($deal['CATEGORY_ID']); // exit;pa($tab);  exit;
-
-    //$deal = CRest::call('crm.deal.categoria', ['ID' => '6']);
-
-//pa($_REQUEST, 5, '');
-//
-/*/
-pa((!empty($data) ? $data : []), 5, '');
-pa($_REQUEST, 5, '');
-pa($_POST);
-pa(CRest::call('profile'));
-pa(FirstInstance::all()->first());
-pa(CRest::call('crm.deal.list')); 
-
-$id = $data['first_instance']['id'];                         unset($data['first_instance']['id']);
-$created_at = $data['first_instance']['created_at'];         unset($data['first_instance']['created_at']);
-$updated_at = $data['first_instance']['updated_at'];         unset($data['first_instance']['updated_at']);
-$deleted_at = $data['first_instance']['deleted_at'];         unset($data['first_instance']['deleted_at']);
-$remember_token = $data['first_instance']['remember_token']; unset($data['first_instance']['remember_token']);
-///*/
-   
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($_REQUEST['tab'] == $view = 'first_instance'){
         ///*/
@@ -114,7 +68,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getFirstInstance($_id->id);
         }
-        ///*/ pa($data); exit; //pa($_SERVER["REMOTE_ADDR"]);           
     }else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
@@ -129,7 +82,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getCourtsAppeal($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else
 ///*/ Вкладка Суды-касация ///*/
     if($_REQUEST['tab'] == $view = 'courts_cassation'){
@@ -144,7 +96,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getCourtsСassation($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else
 ///*/ Исполнительное производство ///*/
     if($_REQUEST['tab'] == $view = 'enforcement_proceedings'){
@@ -159,7 +110,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getEnforcementProceedings($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else
 ///*/ Банкротство ///*/
     if($_REQUEST['tab'] == $view = 'bankruptcy'){
@@ -174,7 +124,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getBankruptcy($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else
 ///*/ Медиации ///*/
     if($_REQUEST['tab'] == $view = 'mediation'){
@@ -189,7 +138,6 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getMediation($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else
 ///*/ Суды-возобновление производства ///*/
     if($_REQUEST['tab'] == $view = 'courts_resumption'){
@@ -204,22 +152,15 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
         }else{
             $data[$view] = $this->getCourtsResumption($_id->id);
         }
-        ///*/ pa($data); exit;           
     }else{return view('front.undefine', ['deal' => $deal]);}
-    
+///*/>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Вывод ///*/    
     $id             = (!empty($data[$view]['id'])) ? $data[$view]['id'] : null ; 
     $created_at     = (!empty($data[$view]['created_at'])) ? $data[$view]['created_at'] : null; 
     $updated_at     = (!empty($data[$view]['updated_at'])) ? $data[$view]['updated_at'] : null;
     $deleted_at     = (!empty($data[$view]['deleted_at'])) ? $data[$view]['deleted_at'] : null;
     $remember_token = (!empty($data[$view]['remember_token'])) ? $data[$view]['remember_token'] : null;
-    
-    if(isset($data)){unset($data[$view]['id'],
-        $data[$view]['deal_id'], 
-        $data[$view]['deal_into_id'], 
-        $data[$view]['created_at'], 
-        $data[$view]['updated_at'], 
-        $data[$view]['deleted_at'], 
-        $data[$view]['remember_token']);
+    if(isset($data[$view]['id']) || isset($data[$view]['created_at']) || isset($data[$view]['updated_at']) || isset($data[$view]['deleted_at']) || isset($data[$view]['remember_token'])){
+        unset($data[$view]['id'], $data[$view]['deal_id'], $data[$view]['deal_into_id'], $data[$view]['created_at'], $data[$view]['updated_at'], $data[$view]['deleted_at'], $data[$view]['remember_token']);
     }else{$data[$view='undefine'] = 'undefine';}
 ///*/ Проходимся по итоговому массиву данных перед выводом ///*/
     foreach($data[$view] as $key => $val){
@@ -234,34 +175,22 @@ $remember_token = $data['first_instance']['remember_token']; unset($data['first_
                 $data[$view][$key]['selected'] = $selected;
             }
             $data[$view][$key]['data'] = (!empty($data[$view][$key]['data'] = json_decode($data[$view][$key]['data'], true))) ? $data[$view][$key]['data'] : (('mediation' == $view) ? $MediationTypeDebt : ['option' => 'Not found']);
-            //pa($data[$view][$key]); exit;
         }
-        if(isset($val['type']) && 'm' == $val['type']){
-            ///*/ Поебёмся с датами во множественных полях, спасибо постгрис ///*/
+        if(!empty($val['type']) && str_contains($val['type'], 'm')){
+            ///*/ Работа с датами во множественных полях, спасибо постгрис ///*/
             $data[$view][$key]['data'] = json_decode($val['data'], true);
             if(!empty($data[$view][$key]['data']['updated_at'])){
                 $data[$view][$key]['data']['updated_at'] = (is_date($data[$view][$key]['data']['updated_at'])) ? date_format(date_create($data[$view][$key]['data']['updated_at']), 'Y-m-d H:i:s') : null;
-                //if('10.10.0.24' == $_SERVER["REMOTE_ADDR"]){pa($data[$view][$key]); exit;}
             }
         }
-    }
-///*/ Вывод ///*/ pa($data[$view]);
-    return view('front.'.$view, [
-         ///*/
-        'id' => $id,
-        'created_at' => $created_at,
-        'updated_at' => $updated_at,
+    }///*/ pa($data[$view]); if('10.10.0.24' == $_SERVER["REMOTE_ADDR"]){pa($data[$view][$key]); exit;}
+return view('front.'.$view, [
+        'id' => $id, 'created_at' => $created_at, 'updated_at' => $updated_at,
         'data' => $data[$view],
-        'deal' => $deal,
-        'deal_into_id' => $deal_into_id,
-         ///*/
-    ]);
-}
-
-
-
-
-
+        'deal' => $deal,'deal_into_id' => $deal_into_id,
+        ///*/ ///*/ 
+]);}
+///*/-----------------------------------Метод сохранения в базу///*/
 public function save(Request $request){
     //pa($_POST); //exit;
 
@@ -326,7 +255,7 @@ public function save(Request $request){
                 $push->data = $request->strategy; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
-                $subpush->first_instance_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+                $subpush->first_instance_id = $ob_->id; $subpush->first_instance_strategy_id = $push->id; $subpush->save();
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaim)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaim)->table.";"))) ? $_id[0]->maxid : null;
@@ -721,4 +650,34 @@ public function save(Request $request){
     }else{return view('front.undefine', ['deal' => $deal]);}
 
 return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);}
+///*/-----------------------------------Метод сохранения EXEL///*/
+public function up(Request $request){
+    $request->validate([
+        'deal_into_id' => 'required',
+    ]);
+    $temp_file = tempnam(sys_get_temp_dir(), 'EXEL');
+    $ob_ = FirstInstance::where('deal_into_id', $request->deal_into_id); 
+    if($ob_->exists()){
+        
+        $spreadsheet = new Spreadsheet();
+        //$sheet = $spreadsheet->createSheet(1);
+        $sheet = $spreadsheet->getSheet(0);
+        
+        $sheet->fromArray($ob_->get()->toArray(), NULL, 'A1');
+        //$spreadsheet->removeSheetByIndex(0); $spreadsheet->setActiveSheetIndex(1);
+        
+        (new Xlsx($spreadsheet))->save($temp_file);
+    }
+    ///*/
+header('Content-Disposition: attachment; filename=' . $request->deal_into_id.'.xlsx' );
+header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+header('Content-Length: ' . filesize($temp_file));
+header('Content-Transfer-Encoding: binary');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: public');
+    ///*/
+    readfile($temp_file);
+    
+}
+
 }
