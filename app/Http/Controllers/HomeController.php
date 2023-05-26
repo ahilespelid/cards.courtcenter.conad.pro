@@ -57,7 +57,7 @@ public function index(){
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($_REQUEST['tab'] == $view = 'first_instance'){
         ///*/
-        if(empty($_id = FirstInstance::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = FirstInstance::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -71,7 +71,7 @@ public function index(){
     }else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
-        if(empty($_id = CourtsAppeal::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsAppeal::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -85,7 +85,7 @@ public function index(){
     }else
 ///*/ Вкладка Суды-касация ///*/
     if($_REQUEST['tab'] == $view = 'courts_cassation'){
-        if(empty($_id = CourtsСassation::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsСassation::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -99,7 +99,7 @@ public function index(){
     }else
 ///*/ Исполнительное производство ///*/
     if($_REQUEST['tab'] == $view = 'enforcement_proceedings'){
-        if(empty($_id = EnforcementProceedings::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = EnforcementProceedings::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -113,7 +113,7 @@ public function index(){
     }else
 ///*/ Банкротство ///*/
     if($_REQUEST['tab'] == $view = 'bankruptcy'){
-        if(empty($_id = Bankruptcy::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = Bankruptcy::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -127,7 +127,7 @@ public function index(){
     }else
 ///*/ Медиации ///*/
     if($_REQUEST['tab'] == $view = 'mediation'){
-        if(empty($_id = Mediation::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = Mediation::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -141,7 +141,7 @@ public function index(){
     }else
 ///*/ Суды-возобновление производства ///*/
     if($_REQUEST['tab'] == $view = 'courts_resumption'){
-        if(empty($_id = CourtsResumption::where('deal_into_id', $deal_into_id)->select('id')->orderBy('id','desc')->first())){
+        if(empty($_id = CourtsResumption::where('deal_id', $deal_id)->select('id')->orderBy('id','desc')->first())){
             $structura = include resource_path('arrays'.DIRECTORY_SEPARATOR .$view.'.php');
             $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
             
@@ -243,7 +243,7 @@ public function save(Request $request){
         ]);    
        
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = FirstInstance::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = FirstInstance::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : FirstInstance::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -255,7 +255,8 @@ public function save(Request $request){
                 $push->data = $request->strategy; $push->save();               
                 $subpush_id = (!empty($__id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceStrategyMany)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceStrategyMany)->table.";"))) ? $__id[0]->maxid : null;
                 $subpush = FirstInstanceStrategyMany::create(['id' => $subpush_id, 'first_instance_id' => $ob_->id, 'strategy_id' => $push->id, 'created_at' => $request->updated_at, 'updated_at' => $request->updated_at]);
-                $subpush->first_instance_id = $ob_->id; $subpush->first_instance_strategy_id = $push->id; $subpush->save();
+                $subpush->first_instance_id = $ob_->id; $subpush->strategy_id = $push->id; $subpush->save();
+                //pa($subpush->toArray());exit;
             }unset($push_id,$push,$subpush,$subpush_id,$_id,$__id);
             ///*/ --- ///*/
             $push_id = (!empty($_id = DB::select("SELECT setval(pg_get_serial_sequence('".(new FirstInstanceClaim)->table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".(new FirstInstanceClaim)->table.";"))) ? $_id[0]->maxid : null;
@@ -336,7 +337,7 @@ public function save(Request $request){
         ]);    
         
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = CourtsAppeal::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = CourtsAppeal::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsAppeal::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -391,7 +392,7 @@ public function save(Request $request){
         ]);    
         
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = CourtsСassation::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = CourtsСassation::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsСassation::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -454,7 +455,7 @@ public function save(Request $request){
         ]);    
 
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = EnforcementProceedings::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = EnforcementProceedings::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : EnforcementProceedings::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -520,7 +521,7 @@ public function save(Request $request){
         ]);    
 
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = Bankruptcy::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = Bankruptcy::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : Bankruptcy::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -579,7 +580,7 @@ public function save(Request $request){
 
 
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = Mediation::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = Mediation::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : Mediation::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}
@@ -631,7 +632,7 @@ public function save(Request $request){
         
         
         ///*/ Создаём или выбираем модель ///*/
-        $ob_ = CourtsResumption::where('id', $request->id)->orWhere('deal_into_id', $request->deal_into_id); 
+        $ob_ = CourtsResumption::where('id', $request->id)->orWhere('deal_id', $request->deal_id); 
         $ob_ = ($ob_->exists()) ? $ob_->first() : CourtsResumption::create(['id' => $request->id]); 
         ///*/ Обновляем модель ///*/
         foreach($structura as $k => $v){if(empty($request->{$k})){continue;} $ob_->{$k} = ($put = $request->{$k}) ?: '';}

@@ -80,11 +80,11 @@ public function getFirstInstance(int $id):?array{
         ///*/ Стратегия ///*/    
         if(empty($_id = FirstInstanceStrategyMany::where('deleted_at', '=', NULL)
                                                  ->where('first_instance_id', '=', $id)
-                                                 ->orderBy('first_instance_strategy_id', 'desc')
+                                                 ->orderBy('strategy_id', 'desc')
                                                  ->first())){
         $data['strategy'] = '';
         }elseif(!empty($_ob = FirstInstanceStrategy::where('deleted_at', '=', NULL)
-                                                 ->where('id', '=', $_id->first_instance_strategy_id)
+                                                 ->where('id', '=', $_id->strategy_id)
                                                  ->first())){
         //$pull                                             
         $data['strategy'] = json_encode($_ob->toArray());
@@ -156,6 +156,7 @@ public function getFirstInstance(int $id):?array{
                                                  ->where('id', '=', $_id->current_state_case_id)
                                                  ->first()->toArray())){
         $data['current_state_case'] = json_encode($_ob);
+        //pa($data); exit;
     }}
 return (!empty($ret = $this->mergeLabel($data, 'first_instance'))) ? $ret : '111';}
 ///*/ Взять дело суда апеляции по ид ///*/
@@ -416,7 +417,7 @@ public function mergeLabel(array $data, string $nameResoursArrayLable):?array{
     
     if(!empty($lable = $this->getLabels($nameResoursArrayLable))){
         foreach($lable as $key => $val){
-            $ret[$key] = $val + ['data' => $data[$key]]; unset($data[$key]);
+            $ret[$key] = $val + ['data' => $data[$key] ?? '']; unset($data[$key]);
         }$ret += $data;
     }
 return (!empty($ret) && is_array($ret)) ? $ret : null;}
