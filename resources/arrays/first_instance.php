@@ -14,7 +14,7 @@ return [
 'court_judge'                   => ['type' => 's', 'title' => 'Суд, Судья'],
 'link'                          => ['type' => 's', 'title' => 'Ссылка на дело на сайте суда'],
 'information_progress'          => ['type' => 'm', 'title' => 'Информация о ходе дела'],
-'date_upcoming_case'            => ['type' => 'm', 'title' => 'Дата предстоящего судебного заседания'],
+'date_upcoming_case'            => ['type' => 'md', 'title' => 'Дата предстоящего судебного заседания'],
 'information_case'              => ['type' => 's', 'title' => 'Информация о наложении обеспечительных мер'],
 'current_state_case'            => ['type' => 'm', 'title' => 'Текущее состояние дела'],
 'result_case'                   => ['type' => 's', 'title' => 'Результат рассмотрения дела'],

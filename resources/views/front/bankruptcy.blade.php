@@ -34,9 +34,9 @@
                             <option value="{{ $v['id'] ?? '' }}" @if($v['id'] == $val['selected']) selected @endif>{{ $v['option'] }}</option>
                             @endforeach
                         </select>                    
-                    @elseif(isset($val['type']) && 'm' == $val['type'])
+                    @elseif(isset($val['type']) && 'm' == $val['type'][0])
                         <input type="text" disabled value="{{ $val['data']['data'] ?? '' }}"><br>
-                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="">
+                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="" @if(isset($val['type'][1]) && 'd' == $val['type'][1]) class="date" @endif>
                         </td><td>
                         <label for="{{ $key }}">{{ $val['data']['updated_at'] ?? '' }}</label>                   
                     @else

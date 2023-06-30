@@ -6,7 +6,7 @@ return [
 'complaint'                 => ['type' => 's', 'title' => 'Кассационная жалоба'], 
 'objections'                => ['type' => 's', 'title' => 'Возражения на кассационную жалобу'],
 'court_judge'               => ['type' => 's', 'title' => 'Суд, Судья'],
-'date_upcoming_case'        => ['type' => 'm', 'title' => 'Дата назначения к слушанию'],
+'date_upcoming_case'        => ['type' => 'md', 'title' => 'Дата назначения к слушанию'],
 'number_case'               => ['type' => 's', 'title' => 'Номер дела в суде кассационной инстанции'],
 'link'                      => ['type' => 's', 'title' => 'Ссылка на дела в суде кассационной инстанции'],
 'information_progress'      => ['type' => 'm', 'title' => 'Информация о ходе рассмотрения кассационной жалобы'],

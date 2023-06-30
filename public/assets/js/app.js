@@ -18,6 +18,7 @@ function curDateTime(){
 return curDateTime;}
 
 document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.date').forEach((i, k) => {
+    autosize(document.querySelectorAll('textarea'));
     document.getElementById(i.id).addEventListener('click', function(e){this.value = curDateTime();});
 });});
 

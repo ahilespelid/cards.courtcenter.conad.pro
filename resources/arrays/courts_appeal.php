@@ -9,7 +9,7 @@ return [
 'date_filing_complaint'     => ['type' => 'd', 'title' => 'Дата подачи жалобы'],
 'date_acceptance_complaint' => ['type' => 'd', 'title' => 'Дата принятия жалобы судом'],
 'court_judge'               => ['type' => 's', 'title' => 'Суд, Судья'],
-'date_upcoming_case'        => ['type' => 'm', 'title' => 'Дата назначения к слушанию'],
+'date_upcoming_case'        => ['type' => 'md', 'title' => 'Дата назначения к слушанию'],
 'number_case'               => ['type' => 's', 'title' => 'Номер дела в суде апелляционной инстанции'],
 'link'                      => ['type' => 's', 'title' => 'Ссылка на дело в суде апелляционной инстанции'],
 'information_case'          => ['type' => 's', 'title' => 'Информация о ходе рассмотрения апелляционной жалобы'],

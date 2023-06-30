@@ -12,6 +12,7 @@
         <!-- Script -->
         <script src="//api.bitrix24.com/api/v1/"></script>
         <script src="/assets/js/app.js?<?=time();?>"></script>
+        <script src="/assets/js/autosize.min.js?<?=time();?>"></script>
 </head>
 <body>
 <header id="head"></header>
