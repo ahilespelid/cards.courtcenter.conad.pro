@@ -21,7 +21,7 @@
                     <td><label for="{{ $key }}">{{ $val['title'] ?? '' }} : </label></td>
                     <td>
                     @if(isset($val['type']) && 's' == $val['type'])
-                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}">
+                        <textarea rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data'] ?? '' }}</textarea>
                     @elseif(isset($val['type']) && 'i' == $val['type'])
                         <input type="number" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}">
                     @elseif(isset($val['type']) && 'd' == $val['type'])
@@ -35,8 +35,13 @@
                             @endforeach
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'][0])
-                        <input type="text" disabled value="{{ $val['data']['data'] ?? '' }}"><br>
-                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="" @if(isset($val['type'][1]) && 'd' == $val['type'][1]) class="date" @endif>
+                        <textarea readonly disabled rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data']['data'] ?? '' }}</textarea>
+                        <br>
+                        @if(isset($val['type'][1]) && 'd' == $val['type'][1])
+                        <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}" class="date">
+                        @else
+                        <textarea rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data']['data'] ?? '' }}</textarea> 
+                        @endif 
                         </td><td>
                         <label for="{{ $key }}">{{ $val['data']['updated_at'] ?? '' }}</label>                   
                     @else

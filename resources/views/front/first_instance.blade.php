@@ -37,11 +37,13 @@
                             @endforeach
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'][0])
-                        <input type="text" disabled value="{{ $val['data']['data'] ?? '' }}"><br>
+                        {{--<input type="text" disabled value="{{ $val['data']['data'] ?? '' }}">--}}
+                        <textarea readonly disabled rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data']['data'] ?? '' }}</textarea>
+                        <br>
                         @if(isset($val['type'][1]) && 'd' == $val['type'][1])
                         <input type="text" id="{{ $key }}" name="{{ $key }}" value="{{ $val['data'] ?? '' }}" class="date">
                         @else
-                        <textarea rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data'] ?? '' }}</textarea> 
+                        <textarea rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data']['data'] ?? '' }}</textarea> 
                         @endif 
                         </td><td>
                         <label for="{{ $key }}">{{ $val['data']['updated_at'] ?? '' }}</label>                   

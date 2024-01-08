@@ -680,5 +680,41 @@ header('Pragma: public');
     readfile($temp_file);
     
 }
+///*/-----------------------------------Метод добавления новых пользовательских полей в битрикс///*/
+public function addfields(){
+    $fields = include(resource_path('arrays/fields.php'));
+    for($i=0,$c=count($fields); $i<$c; $i++){
+        $FIELD_NAME         = str_replace(['UF_CRM_', ' '], '', $fields[$i][1]);
+        $EDIT_FORM_LABEL    = trim($fields[$i][0]);
+        $USER_TYPE_ID       = trim($fields[$i][2]);
+        $SHOW_FILTER        = 'Y';
+        $SHOW_IN_LIST       = 'Y';
+        $EDIT_IN_LIST       = 'Y';
+        $IS_SEARCHABLE      = 'Y';
+        $MULTIPLE           = trim($fields[$i]['MULTIPLE']);
+        $LIST_COLUMN_LABEL  = $fields[$i]['LIST_COLUMN_LABEL'] ?? $EDIT_FORM_LABEL;
+        
+        //echo strlen($FIELD_NAME).' = '.nl2br($FIELD_NAME.PHP_EOL);
+        //echo strlen($EDIT_FORM_LABEL).' = '.nl2br($EDIT_FORM_LABEL.PHP_EOL);
+        //echo strlen($USER_TYPE_ID).' = '.nl2br($USER_TYPE_ID.PHP_EOL);
+    
+    
+    $arParametr = ['fields' => [
+        'FIELD_NAME'                => $FIELD_NAME,
+        'EDIT_FORM_LABEL'           => $EDIT_FORM_LABEL,
+        'USER_TYPE_ID'              => $USER_TYPE_ID,
+        'SHOW_FILTER'               => $SHOW_FILTER,
+        'SHOW_IN_LIST'              => $SHOW_IN_LIST,
+        'EDIT_IN_LIST'              => $EDIT_IN_LIST,
+        'IS_SEARCHABLE'             => $IS_SEARCHABLE,
+        'MULTIPLE'                  => $MULTIPLE,
+        'LIST_COLUMN_LABEL'         => $LIST_COLUMN_LABEL,
+        'SORT'                      => 9999,
+    ]];
+    if(isset($fields[$i]['LIST'])){$arParametr['fields']['LIST'] = $fields[$i]['LIST'];}
+    
+    pa($arParametr);
+    //pa(CRest::call('crm.deal.userfield.add', $arParametr));
+}}
 
 }

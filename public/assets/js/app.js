@@ -17,10 +17,12 @@ function curDateTime(){
 
 return curDateTime;}
 
-document.addEventListener('DOMContentLoaded', () => {document.querySelectorAll('.date').forEach((i, k) => {
+document.addEventListener('DOMContentLoaded', () => {
     autosize(document.querySelectorAll('textarea'));
-    document.getElementById(i.id).addEventListener('click', function(e){this.value = curDateTime();});
-});});
+    document.querySelectorAll('.date').forEach((i, k) => {
+        document.getElementById(i.id).addEventListener('click', function(e){this.value = curDateTime();});});
+
+});
 
 /* BX24.init(function(){
    
