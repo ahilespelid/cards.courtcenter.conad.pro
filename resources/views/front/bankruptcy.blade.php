@@ -15,7 +15,7 @@
                     <input type="hidden" name="tab" value="{{ $_REQUEST['tab'] }}">
                     <input type="hidden" name="deal_id" value="{{ $deal['ID'] ?? '' }}">
                     <input type="hidden" name="deal_into_id" value="{{ $deal_into_id ?? '' }}">
-                </td></tr>      
+                </td></tr>       
 @foreach($data as $key => $val)
                 <tr>
                     <td><label for="{{ $key }}">{{ $val['title'] ?? '' }} : </label></td>
@@ -52,7 +52,7 @@
 @endforeach
             </table>
         </div>
-        <div class="footer"><a href="{{ route('front.up', ['deal_into_id' => $deal_into_id]) }}" class="button">Выгрузить</a><button type="submit" type="button" class="button">Сохранить</button></div>
+        <div class="footer"><a href="{{ route('front.up', ['deal_into_id' => $deal_into_id, 'tab' => 'index']) }}" class="button" target="_blank">Выгрузить</a><button type="submit" type="button" class="button">Сохранить</button></div>
     </form>
 </div>    
 @endsection

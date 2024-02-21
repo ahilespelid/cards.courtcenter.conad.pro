@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+use Cookie;
 use \Crest;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -42,7 +45,7 @@ use
                                             App\Models\EnforcementProceedingsDateVisitBailiff,          App\Models\EnforcementProceedingsDateVisitBailiffMany;
 class HomeController extends Controller{    
 ///*/-----------------------------------Метод вывода в битрикс///*/
-public function index(){
+public function index(Request $request){
     $_REQUEST['deal_id'] = empty($_REQUEST['deal_id']) ? '' : $_REQUEST['deal_id'];
     $_REQUEST['tab'] = empty($_REQUEST['tab']) ? 'Not found' : $_REQUEST['tab'];
     $_REQUEST['PLACEMENT_OPTIONS'] = empty($_REQUEST['PLACEMENT_OPTIONS']) ? '' : $_REQUEST['PLACEMENT_OPTIONS'];
@@ -53,7 +56,8 @@ public function index(){
         (isset($deal['result']) ? $deal['result'] : ['ID' => $deal['error_description']]) : $deal;
     $deal['ID'] = (empty($deal['ID'])) ? 'Not found' : $deal['ID'];        
     $deal['CATEGORY_ID'] = (empty($deal['CATEGORY_ID'])) ? null : $deal['CATEGORY_ID'];        
-    $deal_into_id = (empty($deal['UF_CRM_1683462809'])) ? null : $deal['UF_CRM_1683462809'];        
+    $deal_into_id = (empty($deal['UF_CRM_1683462809'])) ? null : $deal['UF_CRM_1683462809'];
+    $fields = @include(resource_path('arrays/fields.php'));
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($_REQUEST['tab'] == $view = 'first_instance'){
         ///*/
@@ -68,6 +72,10 @@ public function index(){
         }else{
             $data[$view] = $this->getFirstInstance($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(1==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
     }else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
@@ -82,6 +90,11 @@ public function index(){
         }else{
             $data[$view] = $this->getCourtsAppeal($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(2==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+        
     }else
 ///*/ Вкладка Суды-касация ///*/
     if($_REQUEST['tab'] == $view = 'courts_cassation'){
@@ -96,6 +109,11 @@ public function index(){
         }else{
             $data[$view] = $this->getCourtsСassation($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(3==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+        
     }else
 ///*/ Исполнительное производство ///*/
     if($_REQUEST['tab'] == $view = 'enforcement_proceedings'){
@@ -110,6 +128,11 @@ public function index(){
         }else{
             $data[$view] = $this->getEnforcementProceedings($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(4==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+       
     }else
 ///*/ Банкротство ///*/
     if($_REQUEST['tab'] == $view = 'bankruptcy'){
@@ -124,6 +147,11 @@ public function index(){
         }else{
             $data[$view] = $this->getBankruptcy($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(5==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+        
     }else
 ///*/ Медиации ///*/
     if($_REQUEST['tab'] == $view = 'mediation'){
@@ -138,6 +166,11 @@ public function index(){
         }else{
             $data[$view] = $this->getMediation($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(6==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+        
     }else
 ///*/ Суды-возобновление производства ///*/
     if($_REQUEST['tab'] == $view = 'courts_resumption'){
@@ -152,6 +185,11 @@ public function index(){
         }else{
             $data[$view] = $this->getCourtsResumption($_id->id);
         }
+        ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
+        array_walk($fields, function($i,$k) use(&$data, $deal, $view){
+            if(7==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
+        //pa($deal);pa($data);
+        
     }else{return view('front.undefine', ['deal' => $deal]);}
 ///*/>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Вывод ///*/    
     $id             = (!empty($data[$view]['id'])) ? $data[$view]['id'] : null ; 
@@ -178,21 +216,45 @@ public function index(){
         }
         if(!empty($val['type']) && str_contains($val['type'], 'm')){
             ///*/ Работа с датами во множественных полях, спасибо постгрис ///*/
-            $data[$view][$key]['data'] = json_decode($val['data'], true);
+            $data[$view][$key]['data'] = (json_validate($val['data'])) ? json_decode($val['data'], true) : $val['data'];
             if(!empty($data[$view][$key]['data']['updated_at'])){
                 $data[$view][$key]['data']['updated_at'] = (is_date($data[$view][$key]['data']['updated_at'])) ? date_format(date_create($data[$view][$key]['data']['updated_at']), 'Y-m-d H:i:s') : null;
             }
         }
     }///*/ pa($data[$view]); if('10.10.0.24' == $_SERVER["REMOTE_ADDR"]){pa($data[$view][$key]); exit;}
-return view('front.'.$view, [
+    
+    //session_save_path("/tmp"); session_start();
+    //$_SESSION['link_token'] = now()->addMinutes(5);
+    //pa($_SESSION);     
+    /*
+    if(isset($_SESSION['link_token']) && $expires = is_date($_SESSION['link_token'])){
+        
+        pa($expires);
+    }else{
+        $_SESSION['link_token'] = now()->addMinutes(5);
+        
+        $token = hash('sha256', Str::random(32));
+        $cookie = cookie('link_token', $token, now()->addMinutes(1)->timestamp);
+        echo $token;
+        //echo $cookie;
+        //$val = Cookie::get('link_token');
+        //var_dump($val);
+    
+       
+        
+    }
+    */
+    $veiw = view('front.'.$view, [
         'id' => $id, 'created_at' => $created_at, 'updated_at' => $updated_at,
         'data' => $data[$view],
+        'request' => $request,
         'deal' => $deal,'deal_into_id' => $deal_into_id,
-        ///*/ ///*/ 
-]);}
+    ]);
+    
+return response($veiw);}
 ///*/-----------------------------------Метод сохранения в базу///*/
 public function save(Request $request){
-    //pa($_POST); //exit;
+    //pa($_POST); exit;
 
     $request->validate([
         'id' => 'required|regex:/^\d+$/u',
@@ -208,6 +270,19 @@ public function save(Request $request){
     foreach($structura as $k => $v){if('m' == $structura[$k]['type']){unset($structura[$k]);}}
     $structura = (is_array($structura)) ? array_fill_keys(array_keys($structura), '') : null;
     $structura = ['id'=>'','deal_id'=>'','deal_into_id'=>'']+$structura+['updated_at'=>''];
+    
+    $fields = @include(resource_path('arrays/fields.php'));
+    
+    //pa($request->all());
+    if(!empty($request->deal_id) && !empty($UF_CRM_CONAD_LIST = array_column($fields, 1)) && is_array($UF_CRM_CONAD_LIST)){
+        foreach($UF_CRM_CONAD_LIST as $UF_CRM_CONAD_NUM){if(!empty($request->$UF_CRM_CONAD_NUM)){
+            $UF_CRM_CONAD_UPDATE [$UF_CRM_CONAD_NUM]= $request->$UF_CRM_CONAD_NUM;
+        }}
+        @CRest::call('crm.deal.update', ['id' => $request->deal_id, 'fields' => $UF_CRM_CONAD_UPDATE, 'params'  => ['REGISTER_SONET_EVENT' => 'Y']]);
+    }
+    //pa($UF_CRM_CONAD_UPDATE);
+    //exit;
+    
     
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($request->tab == $view = 'first_instance'){
@@ -651,8 +726,41 @@ public function save(Request $request){
     }else{return view('front.undefine', ['deal' => $deal]);}
 
 return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);}
-///*/-----------------------------------Метод сохранения EXEL///*/
+///*/-----------------------------------Метод добавления открытия сделки по кнонке Выгрузить в окне вне битрикса///*/
 public function up(Request $request){
+    
+    $request->validate([
+        'tab' => 'required',
+        'deal_into_id' => 'required',
+    ]);
+    
+    $deal = (!empty($request->deal_into_id) && $deal = CRest::call('crm.deal.get', ['ID' => $request->deal_into_id])) ? ($deal['result'] ?? ['ID' => $deal['error_description']]) : $deal; //
+    $send = [
+        'deal' => $deal, 
+        'nd' => 'н\д', 
+        'ex' => ',', 
+        'tab' => $request->tab
+    ];
+    //pa($deal);
+
+    //pa($deal['UF_CRM_CONAD_CRD016'] );
+    //pa($deal['UF_CRM_CONAD_CRD018'] );
+    
+    //pa($date1 = is_date($deal['UF_CRM_CONAD_CRD016']));  
+    //pa($date2 = is_date($deal['UF_CRM_CONAD_CRD018']));
+    //pa($date1->diff($date2));    
+    //pa($deal['UF_CRM_CONAD_CRD042']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD115']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD118']);
+    //pa($deal['UF_CRM_CONAD_CRD117']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD116']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD108']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD061']); exit;  
+    
+    
+return (is_numeric($deal['ID'])) ? view('intro.'.$request->tab, $send) : '<script>alert("[Сообщение отладки] номер сделки - '.$deal['ID'].'");window.close();</script>';}
+///*/-----------------------------------Метод сохранения EXEL///*/
+public function download(Request $request){
     $request->validate([
         'deal_into_id' => 'required',
     ]);
@@ -678,11 +786,10 @@ header('Cache-Control: no-cache, no-store, must-revalidate');
 header('Pragma: public');
     ///*/
     readfile($temp_file);
-    
 }
 ///*/-----------------------------------Метод добавления новых пользовательских полей в битрикс///*/
 public function addfields(){
-    $fields = include(resource_path('arrays/fields.php'));
+    $fields = @include(resource_path('arrays/fields.php'));
     for($i=0,$c=count($fields); $i<$c; $i++){
         $FIELD_NAME         = str_replace(['UF_CRM_', ' '], '', $fields[$i][1]);
         $EDIT_FORM_LABEL    = trim($fields[$i][0]);

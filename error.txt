@@ -1,2 +1,1 @@
-[Fri Jan 05 06:53:57.376522 2024] [cgi:error] [pid 3746] [client 10.10.0.24:51774] script not found or unable to stat: /var/www/cgi-bin/.env
-[Fri Jan 05 16:29:27.783393 2024] [cgi:error] [pid 1230] [client 10.10.0.24:52744] script not found or unable to stat: /var/www/cgi-bin/.env
+[Thu Feb 22 00:15:16.456456 2024] [php7:error] [pid 1966] [client 10.10.0.24:45338] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65015808 bytes) in /var/www/bitrix24LocAPP/app/functions.php on line 6, referer: https://cards.courtcenter.conad.pro/?DOMAIN=courtcenter.bitrix24.ru&PROTOCOL=1&LANG=ru&APP_SID=cb367369e162f69292de78e1571b298c

@@ -55,7 +55,7 @@
 @endforeach
             </table>
         </div>
-        <div class="footer"><a href="{{ route('front.up', ['deal_into_id' => $deal_into_id]) }}" class="button">Выгрузить</a><button type="submit" type="button" class="button">Сохранить</button></div>
+        <div class="footer"><a href="{{ route('front.up', ['deal_into_id' => $deal_into_id, 'tab' => 'index']) }}" class="button" target="_blank">Выгрузить</a><button type="submit" type="button" class="button">Сохранить</button></div>
     </form>
 </div>    
 @endsection

@@ -15,4 +15,10 @@ if(!function_exists('str_contains')){
 function str_contains(string $haystack, string $needle){
     return strpos($haystack, $needle) !== false;
 }}
+if(!function_exists('json_validate')){
+function json_validate($haystack){
+    if(!is_string($haystack)){return false;}
+    json_decode($haystack);
+    return json_last_error() === JSON_ERROR_NONE;
+}}
 ?>
