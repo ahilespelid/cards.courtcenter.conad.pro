@@ -108,11 +108,11 @@
                                     </p>
 {{-- Различия в фигме --}}                                    
                                     <div class="flex">
-                                        <p class="gray__text">Дата создания карточки</p>
+                                        <p class="gray__text">Залог</p>
                                         <p class="black__text price">@if(strlen($deal[''] ?? '') && $date = is_date($deal[''])) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif</p>
                                     </div>
                                     <div class="flex">
-                                        <p class="gray__text">Истец</p>
+                                        <p class="gray__text">Госпошлина</p>
                                         <p class="black__text price">@if(strlen($deal[''] ?? '')) {{ $deal[''] }} @else {{ $nd }} @endif</p>
                                     </div>
 {{-- Различия в фигме --}}                                    
@@ -321,15 +321,15 @@
                                 </div>
                                 <div class="gray__block courts__information progress">
                                     <p class="progress__header gray__text">Информация о ходе рассмотрения кассационной жалобы</p>
-                                    @if(count($deal['UF_CRM_CONAD_CRD042'] ?? []))
+                                    @if(!empty($deal['UF_CRM_CONAD_CRD042']) && count($deal['UF_CRM_CONAD_CRD042'] ?? []))
                                     <div class="progress__bar">
                                         <div class="progress__bar__line">
                                             @foreach($deal['UF_CRM_CONAD_CRD042'] as $k => $d)
 {{-- Переделать верстальщику class на числовой порядок --}}                                    
-                                            <div class="progress__bar__line__first">
+                                            <div class="progress__bar__line__1">
 {{-- Переделать верстальщику class на числовой порядок --}}                                    
 {{-- Переделать верстальщику id на числовой порядок --}}
-                                                <div id="first_dot" class="progress__bar__dot {{ ((empty($k)) ? 'active' : '') }}"></div>
+                                                <div id="1_dot" class="progress__bar__dot {{ ((empty($k)) ? 'active' : '') }}"></div>
 {{-- Переделать верстальщику id --}}                                       
                                                 <p class="black__text">
                                                     Информация о ходе
@@ -337,24 +337,24 @@
                                                     Дата: @if(strlen($d ?? '') && $date = is_date($d)) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif
                                                 </p>
                                             </div>
-                                            <!--div class="progress__bar__line__second">
-                                                <div id="second_dot" class="progress__bar__dot"></div>
+                                            <!--div class="progress__bar__line__2">
+                                                <div id="2_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Информация о ходе
                                                     <br>
                                                     Дата: 
                                                 </p>
                                             </div>
-                                            <div class="progress__bar__line__third">
-                                                <div id="third_dot" class="progress__bar__dot"></div>
+                                            <div class="progress__bar__line__3">
+                                                <div id="3_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Информация о ходе
                                                     <br>
                                                     Дата: 
                                                 </p>
                                             </div>
-                                            <div class="progress__bar__line__fourth">
-                                                <div id="fourth_dot" class="progress__bar__dot"></div>
+                                            <div class="progress__bar__line__4">
+                                                <div id="4_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Информация о ходе
                                                     <br>
@@ -723,7 +723,7 @@
                         </div>
                         <div class="gray__block courts__information progress">
                             <p class="progress__header gray__text">Информация о ходе рассмотрения кассационной жалобы</p>
-                            @if(count($deal['UF_CRM_CONAD_CRD042'] ?? []))
+                            @if(!empty($deal['UF_CRM_CONAD_CRD042']) && count($deal['UF_CRM_CONAD_CRD042'] ?? []))
                             <div class="progress__bar">
                                 <div class="progress__bar__line">
                                     @foreach($deal['UF_CRM_CONAD_CRD042'] as $k => $d)

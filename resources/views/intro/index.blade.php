@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?time=<?=time();?>">
     <title>Суд</title>
 </head>
 <body>
@@ -52,7 +52,7 @@
 
             <div class="content__wrapper">
                 <div class="main__links">
-                    <div class="first__links">
+                    <div class="first__links" id="list_block_left">
                         <div class="content__wrapper__block report__block gray__block">
                             <p class="gray__text">Отчет по делу: </p>
                             <p class="blue__text">{{ $deal['ID'] }}</p>
@@ -70,7 +70,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="second__links">
+                    <div class="second__links" id="list_block_right">
                         <div class="content__wrapper__block gray__block">
                             <a href="{{ route('front.up', ['deal_into_id' => $deal['ID'], 'tab' => 'bankrupt']) }}">
                                 <h2>БАНКРОТСТВО</h2>

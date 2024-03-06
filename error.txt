@@ -1,1 +1,0 @@
-[Thu Feb 22 00:15:16.456456 2024] [php7:error] [pid 1966] [client 10.10.0.24:45338] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 65015808 bytes) in /var/www/bitrix24LocAPP/app/functions.php on line 6, referer: https://cards.courtcenter.conad.pro/?DOMAIN=courtcenter.bitrix24.ru&PROTOCOL=1&LANG=ru&APP_SID=cb367369e162f69292de78e1571b298c

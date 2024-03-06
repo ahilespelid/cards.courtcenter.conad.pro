@@ -200,7 +200,8 @@ main {
 }
 
 .content__wrapper__block {
-    width: 593px;
+    /* width: 593px; */
+    width: 100%;
     min-height: 103px;
 }
 
@@ -493,15 +494,15 @@ main {
     background-color: #C1C1C1;
 }
 
-.progress__bar__line__second {
+.progress__bar__line__2 {
     top: 33%;
 }
 
-.progress__bar__line__third {
+.progress__bar__line__3 {
     top: 66%;
 }
 
-.progress__bar__line__fourth {
+.progress__bar__line__4 {
     top: 100%;
 }
 
@@ -567,6 +568,11 @@ main {
     transform: rotate(-90deg);
 }
 
+#list_block_left, #list_block_right  {
+    min-width: 48%!important;
+}
+
+
 @media screen and (max-width: 1700px) {
     .content {
         padding: 0 100px;
@@ -619,7 +625,6 @@ main {
     .courts__left, .appeal, .courts__right, .first__links, .second__links {
         width: 100%;
     }
-
     .appeal {
         margin-top: 28px;
     }

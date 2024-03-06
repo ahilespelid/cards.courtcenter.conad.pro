@@ -107,10 +107,10 @@
                                         <div class="progress__bar__line">
                                             @foreach($deal['UF_CRM_CONAD_CRD042'] as $k => $d)
 {{-- Переделать верстальщику class на числовой порядок --}}                                    
-                                            <div class="progress__bar__line__first">
+                                            <div class="progress__bar__line__1">
 {{-- Переделать верстальщику class на числовой порядок --}}                                    
 {{-- Переделать верстальщику id на числовой порядок --}}
-                                                <div id="first_dot" class="progress__bar__dot {{ ((empty($k)) ? 'active' : '') }}"></div>
+                                                <div id="1_dot" class="progress__bar__dot {{ ((empty($k)) ? 'active' : '') }}"></div>
 {{-- Переделать верстальщику id --}}                                       
                                                 <p class="black__text">
                                                     Отчет о работе
@@ -118,24 +118,24 @@
                                                     Дата: @if(strlen($d ?? '') && $date = is_date($d)) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif
                                                 </p>
                                             </div>
-                                            <!--div class="progress__bar__line__second">
-                                                <div id="second_dot" class="progress__bar__dot"></div>
+                                            <!--div class="progress__bar__line__2">
+                                                <div id="2_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Отчет о работе
                                                     <br>
                                                     Дата: 01.01.23
                                                 </p>
                                             </div>
-                                            <div class="progress__bar__line__third">
-                                                <div id="third_dot" class="progress__bar__dot"></div>
+                                            <div class="progress__bar__line__3">
+                                                <div id="3_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Отчет о работе Отчет о работе
                                                     <br>
                                                     Дата: 01.01.23
                                                 </p>
                                             </div>
-                                            <div class="progress__bar__line__fourth">
-                                                <div id="fourth_dot" class="progress__bar__dot"></div>
+                                            <div class="progress__bar__line__4">
+                                                <div id="4_dot" class="progress__bar__dot"></div>
                                                 <p class="gray__text">
                                                     Отчет о работе
                                                     <br>

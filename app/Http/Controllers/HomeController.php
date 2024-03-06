@@ -755,7 +755,8 @@ public function up(Request $request){
     //pa($deal['UF_CRM_CONAD_CRD117']); exit;  
     //pa($deal['UF_CRM_CONAD_CRD116']); exit;  
     //pa($deal['UF_CRM_CONAD_CRD108']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD061']); exit;  
+    //pa($deal['UF_CRM_CONAD_CRD061']); exit;
+    //pa($deal['UF_CRM_CONAD_CRD042']); exit;  
     
     
 return (is_numeric($deal['ID'])) ? view('intro.'.$request->tab, $send) : '<script>alert("[Сообщение отладки] номер сделки - '.$deal['ID'].'");window.close();</script>';}
