@@ -121,4 +121,6 @@ return $array = [
     ['Номер дела (М)',                                                	                                                            'UF_CRM_CONAD_CRD119', 'string', 6, 'MULTIPLE' => 'N', 'type' => 's'],
     ['Рентабельность',                                                                                                              'UF_CRM_CONAD_CRD120', 'double', 6, 'MULTIPLE' => 'N', 'type' => 'i'],
     ['Номер дела (В)',                                                                                                              'UF_CRM_CONAD_CRD121', 'string', 7, 'MULTIPLE' => 'N', 'type' => 's'],
+    ['Ссылка на дело в суде',                                                                                                       'UF_CRM_CONAD_CRD122', 'string', 5, 'MULTIPLE' => 'N', 'type' => 's'],
+    ['Дата определения АС',                                                                                                         'UF_CRM_CONAD_CRD123', 'datetime', 6, 'MULTIPLE' => 'N', 'type' => 'd'],
 ];

@@ -8,8 +8,9 @@ if(!function_exists('pa')){
 }}
 if(!function_exists('is_date')){
 function is_date($value){ // */  проверка строки на дату  // */
-    if(!$value){return null;}
-    try{return $d = (new \DateTime($value));}catch(\Exception $e){return null;}}
+    if(is_a($value, 'DateTime')){return $value;}
+    if(is_string($value)){try{return $d = (new \DateTime($value));}catch(\Exception $e){return false;}}
+return false;}
 }
 if(!function_exists('str_contains')){
 function str_contains(string $haystack, string $needle){

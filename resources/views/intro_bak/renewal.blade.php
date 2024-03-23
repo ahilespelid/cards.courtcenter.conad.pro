@@ -23,12 +23,12 @@
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Номер дела</p>
-                                <p class="blue__text">{{ $deal['UF_CRM_CONAD_CRD119'] ?? $nd }}</p>
+                                <p class="blue__text">@if(strlen($deal['UF_CRM_CONAD_CRD121'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD121'] }} @else {{ $nd }} @endif</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Инициатор</p>
                                 <p class="black__text">
-                                   {{ $deal['UF_CRM_CONAD_CRD090'] ?? $nd }}
+                                    @if(strlen($deal['UF_CRM_CONAD_CRD090'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD090'] }} @else {{ $nd }} @endif
                                 </p>
                             </div>
                         </div>
@@ -36,12 +36,12 @@
                             <div class="flex">
                                 <p class="gray__text">Стадия возобновления дела</p>
 {{-- Где взять Стадия возобновления дела --}}                                
-                                <p class="black__text">{{-- $deal[''] ?? $nd }}</p>
+                                <p class="black__text">@if(strlen($deal[''] ?? '')) {{ $deal[''] }} @else {{ $nd }} @endif</p>
 {{-- Где взять Стадия возобновления дела --}}                                
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Причина возобновления дела</p>
-                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD089'] ?? $nd }}</p>
+                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD089'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD089'] }} @else {{ $nd }} @endif</p>
                             </div>
                         </div>
 
@@ -51,7 +51,7 @@
                                     <p class="gray__text">Стратегия</p>
                                 </div>
                                 <div class="flex files__second">
-                                @if(isset($deal['UF_CRM_1686046817804'])) @foreach(explode($ex, $deal['UF_CRM_1686046817804']) as $url)        
+                                @if(strlen($deal['UF_CRM_1686046817804'] ?? '')) @foreach(explode($ex, $deal['UF_CRM_1686046817804']) as $url)        
                                     <a href="{{ $url }}" target="_blank">
                                         <img class="file" src="/assets/img/svg/{{ ('pdf' == strtolower(pathinfo($url, PATHINFO_EXTENSION))) ? 'pdf' : 'doc' }}.svg" alt="">
                                     </a>

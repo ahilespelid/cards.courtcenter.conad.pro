@@ -24,38 +24,40 @@
                             <div class="flex">
 
                                 <p class="gray__text">Номер дела</p>
-                                <p class="blue__text">{{ $deal['UF_CRM_CONAD_CRD111'] ?? $nd }}</p>
+                                <p class="blue__text">@if(strlen($deal['UF_CRM_CONAD_CRD111'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD111'] }} @else {{ $nd }} @endif</p>
                                 
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Ссылка на дело в суде</p>
                                 <p class="black__text">
-                                @if(isset($deal['UF_CRM_CONAD_CRD122'])) <a class="link" href="{{ $deal['UF_CRM_CONAD_CRD122'] }}" target="_blank">Перейти на сайт</a> @else {{ $nd }} @endif
+                                    <a class="link" href="#">
+                                        Перейти на сайт
+                                    </a>
                                 </p>
                             </div>
                         </div>
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Заявитель</p>
-                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD112'] ?? $nd }}</p>
+                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD112'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD112'] }} @else {{ $nd }} @endif</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Должник</p>
-                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD113'] ?? $nd }}</p>
+                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD113'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD113'] }} @else {{ $nd }} @endif</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Конкурсный управляющий</p>
-                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD114'] ?? $nd }}</p>
+                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD114'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD114'] }} @else {{ $nd }} @endif</p>
                             </div>
                         </div>
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Госпошлина</p>
-                                <p class="black__text price">{{ $deal['UF_CRM_CONAD_CRD073'] ?? $nd }}</p>
+                                <p class="black__text price">@if(strlen($deal['UF_CRM_CONAD_CRD073'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD073'] }} @else {{ $nd }} @endif</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Депозит</p>
-                                <p class="black__text price">{{ $deal['UF_CRM_1679485736362'] ?? $nd }}</p>
+                                <p class="black__text price">@if(strlen($deal['UF_CRM_1679485736362'] ?? '')) {{ $deal['UF_CRM_1679485736362'] }} @else {{ $nd }} @endif</p>
                             </div>
                         </div>
 
@@ -63,12 +65,12 @@
                             <div class="gray__block courts__information">
                                 <p class="gray__text">Стадии бакротства</p>
 {{-- Где взять Недавние стадии --}}                                
-                                <p class="black__text">{{-- $deal[''] ?? $nd --}}</p>
+                                <p class="black__text">@if(strlen($deal[''] ?? '')) {{ $deal[''] }} @else {{ $nd }} @endif</p>
 {{-- Где взять Недавние стадии --}}                                
                             </div>
                             <div class="gray__block courts__information">
                                 <p class="gray__text">Дата окончания текущей стадии</p>
-                                <p class="black__text">@if(isset($deal['UF_CRM_CONAD_CRD075']) && $deal['UF_CRM_CONAD_CRD075'] = is_date($deal['UF_CRM_CONAD_CRD075'])) {{ $deal['UF_CRM_CONAD_CRD075']->format('d.m.Y') }} @else {{ $nd }} @endif</p>
+                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD075'] ?? '') && $date = is_date($deal['UF_CRM_CONAD_CRD075'])) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif</p>
                             </div>
                         </div>
 
@@ -84,7 +86,7 @@
                                     </div>
 
                                     <div class="none">
-                                        <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD115'] ?? $nd }}</p>
+                                        <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD115'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD115'] }} @else {{ $nd }} @endif</p>
                                     </div> 
 
                                     <div class="prohibitions">
@@ -100,8 +102,8 @@
 
                                         <div class="gray__block courts__information">
                                             <div class="flex">
-                                                <p class="gray__text">{{ $deal['UF_CRM_1686038365473'] ?? $nd }}</p>
-                                                <p class="black__text price">{{ $deal['UF_CRM_1636705135040'] ?? $nd }}</p>
+                                                <p class="gray__text">@if(strlen($deal['UF_CRM_1686038365473'] ?? '')) {{ $deal['UF_CRM_1686038365473'] }} @else {{ $nd }} @endif</p>
+                                                <p class="black__text price">@if(strlen($deal['UF_CRM_1636705135040'] ?? '')) {{ $deal['UF_CRM_1636705135040'] }} @else {{ $nd }} @endif</p>
                                             </div>
                                         </div>
 
@@ -118,7 +120,7 @@
 
                                     <div class="property check none">
                                         <div class="gray__block courts__information">
-                                        @if(isset($deal['UF_CRM_CONAD_CRD118'])) @foreach($deal['UF_CRM_CONAD_CRD118'] as $info)        
+                                        @if(count($deal['UF_CRM_CONAD_CRD118'] ?? [])) @foreach($deal['UF_CRM_CONAD_CRD118'] as $info)        
                                             <div class="flex">
                                                 <p class="gray__text">{{ $info }}</p>
                                             </div>
@@ -137,13 +139,13 @@
 
                                     <div class="property invalid none">
                                         <div class="gray__block courts__information">
-                                            @if(isset($deal['UF_CRM_CONAD_CRD117'])) @foreach($deal['UF_CRM_CONAD_CRD117'] as $info)
+                                            @if(count($deal['UF_CRM_CONAD_CRD118'] ?? [])) @foreach($deal['UF_CRM_CONAD_CRD118'] as $info)
                                             @php list($n, $d) = array_pad(explode($ex, $info), 2, ''); @endphp
                                             <div class="flex">
                                                 <p class="gray__text">@if(strlen($n ?? '')) {{ $n }} @else {{ $nd }} @endif</p>
                                                 <div class="text-end">
                                                     <p class="black__text">недейств.</p>
-                                                    <p class="gray__text">@if(isset($d) && $date = is_date($d)) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif</p>
+                                                    <p class="gray__text">@if(strlen($d ?? '') && $date = is_date($d)) {{ $date->format('d.m.Y') }} @else {{ $nd }} @endif</p>
                                                 </div>
                                             </div>
                                             @endforeach @else {{ $nd }} @endif
@@ -153,7 +155,7 @@
                                             <p class="gray__text">
                                                 Платежи
                                             </p>
-                                            @if(isset($deal['UF_CRM_CONAD_CRD116'])) 
+                                            @if(strlen($deal['UF_CRM_CONAD_CRD116'] ?? '')) 
                                             @php list($n, $s) = array_pad(explode($ex, $deal['UF_CRM_CONAD_CRD116']), 2, ''); @endphp
                                             <div class="flex mt-10">
                                                 <p class="gray__text">@if(strlen($n ?? '')) {{ $n }} @else {{ $nd }} @endif</p>
@@ -165,11 +167,11 @@
                                         <div class="flex collector">
                                             <div class="gray__block courts__information">
                                                 <p class="gray__text">Субсидированная ответственность</p>
-                                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD081'] ?? $nd }}</p>
+                                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD081'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD081'] }} @else {{ $nd }} @endif</p>
                                             </div>
                                             <div class="gray__block courts__information">
                                                 <p class="gray__text">Оценка имущества должностных лиц</p>
-                                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD082'] ?? $nd }}</p>
+                                                <p class="black__text">@if(strlen($deal['UF_CRM_CONAD_CRD082'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD082'] }} @else {{ $nd }} @endif</p>
                                             </div>
                                         </div>
 
@@ -178,7 +180,7 @@
                                                 <p class="gray__text">Результат банкротства</p>
                                                                                             
                                                 <div class="flex files__second">
-                                                @if(isset($deal['UF_CRM_CONAD_CRD083'])) @foreach(explode($ex, $deal['UF_CRM_CONAD_CRD083']) as $url)        
+                                                @if(strlen($deal['UF_CRM_CONAD_CRD083'] ?? '')) @foreach(explode($ex, $deal['UF_CRM_CONAD_CRD083']) as $url)        
                                                     <a href="{{ $url }}" target="_blank">
                                                         <img class="file" src="/assets/img/svg/{{ ('pdf' == strtolower(pathinfo($url, PATHINFO_EXTENSION))) ? 'pdf' : 'doc' }}.svg" alt="">
                                                     </a>
@@ -193,7 +195,7 @@
                                             <p class="gray__text">
                                                 Сумма оказанных юридических услуг
                                             </p>
-                                            <p class="black__text price">{{ $deal['UF_CRM_CONAD_CRD084'] ?? $nd }}</p>
+                                            <p class="black__text price">@if(strlen($deal['UF_CRM_CONAD_CRD084'] ?? '')) {{ $deal['UF_CRM_CONAD_CRD084'] }} @else {{ $nd }} @endif</p>
                                         </div>
                                     </div>
 

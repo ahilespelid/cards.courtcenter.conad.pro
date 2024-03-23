@@ -217,6 +217,7 @@ public function index(Request $request){
         if(!empty($val['type']) && str_contains($val['type'], 'm')){
             ///*/ Работа с датами во множественных полях, спасибо постгрис ///*/
             $data[$view][$key]['data'] = (json_validate($val['data'])) ? json_decode($val['data'], true) : $val['data'];
+            
             if(!empty($data[$view][$key]['data']['updated_at'])){
                 $data[$view][$key]['data']['updated_at'] = (is_date($data[$view][$key]['data']['updated_at'])) ? date_format(date_create($data[$view][$key]['data']['updated_at']), 'Y-m-d H:i:s') : null;
             }
@@ -244,13 +245,17 @@ public function index(Request $request){
         
     }
     */
+    // Временное решение убираем множественные поля из битрикса, на 0 поле заменяем
+    foreach($data[$view] as $key => $d){
+        if(is_array($d['data'])){$data[$view][$key]['data'] = $d['data'][0] ?? '';}
+    }
     $veiw = view('front.'.$view, [
         'id' => $id, 'created_at' => $created_at, 'updated_at' => $updated_at,
         'data' => $data[$view],
         'request' => $request,
         'deal' => $deal,'deal_into_id' => $deal_into_id,
     ]);
-    
+    //pa($data[$view]);exit;
 return response($veiw);}
 ///*/-----------------------------------Метод сохранения в базу///*/
 public function save(Request $request){
@@ -728,38 +733,519 @@ public function save(Request $request){
 return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);}
 ///*/-----------------------------------Метод добавления открытия сделки по кнонке Выгрузить в окне вне битрикса///*/
 public function up(Request $request){
-    
     $request->validate([
         'tab' => 'required',
         'deal_into_id' => 'required',
     ]);
-    
     $deal = (!empty($request->deal_into_id) && $deal = CRest::call('crm.deal.get', ['ID' => $request->deal_into_id])) ? ($deal['result'] ?? ['ID' => $deal['error_description']]) : $deal; //
+    
+    ///*/ ahilespelid Первая инстанция ///*/
+    $keyFI = [
+        'DATE_CREATE',                 //- Дата создания карточки
+        'UF_CRM_YR24_PLAINTIFFS',      //- Истец
+        'UF_CRM_YR24_DEFENDANTS',      //- Ответчик
+        'UF_CRM_YR24_OTHERS',          //- Третье лицо
+        'UF_CRM_CONAD_CRD091',         //- Номер дела
+        'UF_CRM_CONAD_CRD092',         //- Судья
+        'UF_CRM_1702719450',           //- Ближайшее заседание
+        'UF_CRM_YR24_NEAREST_SESSION', //- Ближайшее заседание ||
+        'UF_CRM_CONAD_CRD003',         //+ Претензия
+        'UF_CRM_CONAD_CRD015',         //- Дата фактического изготовления судом решения
+        'UF_CRM_CONAD_CRD010',         //+ Результат рассмотрения дела
+        'UF_CRM_CONAD_CRD011',         //- Сумма заявленных требований
+        'UF_CRM_CONAD_CRD012',         //- Сумма удовлетворенных судом
+        'UF_CRM_CONAD_CRD008',         //- Обеспечительные меры
+        'UF_CRM_1666170845189',        //- Залог
+        'UF_CRM_CONAD_CRD004',         //- Госпошлина
+        'UF_CRM_CONAD_CRD016',         //- Дата получения решения
+        'UF_CRM_CONAD_CRD013',         //- Дата вступления судебного акта в силу
+        'UF_CRM_CONAD_CRD093',         //- Дата обжалования
+        'UF_CRM_CONAD_CRD018',         //- Дата подачи жалобы
+        'UF_CRM_CONAD_CRD019',         //- Дата принятия жалобы
+        'UF_CRM_CONAD_CRD020'          //- Сумма оказанных юридических услуг
+    ];
+    
+    ///*/ ahilespelid Апелляционная инстанция ///*/
+    $keyAI = [
+        'DATE_CREATE',                  //- Дата создания карточки
+        'UF_CRM_YR24_PLAINTIFFS',       //- Истец
+        'UF_CRM_YR24_DEFENDANTS',       //- Ответчик
+        'UF_CRM_YR24_OTHERS',           //- Третье лицо
+        'UF_CRM_CONAD_CRD101',          //- Номер дела
+        'UF_CRM_CONAD_CRD092',          //- Судья
+        'UF_CRM_1702719450',            //- Ближайшее заседание
+        'UF_CRM_YR24_NEAREST_SESSION',  //- Ближайшее заседание ||
+        'UF_CRM_CONAD_CRD037',          //- Заявитель
+        'UF_CRM_CONAD_CRD024',          //-? Краткая апелляционная жалоба
+        'UF_CRM_CONAD_CRD025',          //- Апелляционная жалоба
+        'UF_CRM_CONAD_CRD027',          //- Дата подачи жалобы 
+        'UF_CRM_CONAD_CRD028',          //-? Дата подачи жалобы 
+        'UF_CRM_CONAD_CRD026',          //- Возражения на апелляционную жалобу
+        'UF_CRM_CONAD_CRD096',          //- Дата возражения на апелляционную жалобу
+        'UF_CRM_CONAD_CRD003',          //- Претензия
+        'UF_CRM_CONAD_CRD034',          //- Дата получения апелляционного определения
+        'UF_CRM_CONAD_CRD030',          //- Результат рассмотрения апелляционной жалобы (определение)
+        'UF_CRM_CONAD_CRD031',          //- Сумма заявленных требований
+        'UF_CRM_CONAD_CRD032',          //- Сумма удовлетворенных судом требований
+        'UF_CRM_CONAD_CRD022',          //- Госпошлина
+        'UF_CRM_CONAD_CRD036'           //- Сумма оказанных юридических услуг
+    ];
+    
+    ///*/ ahilespelid Кассационная инстанция ///*/
+    $keyCI = [
+        'DATE_CREATE',                   //- Дата создания карточки
+        'UF_CRM_YR24_PLAINTIFFS',        //- Истец
+        'UF_CRM_YR24_DEFENDANTS',        //- Ответчик
+        'UF_CRM_YR24_OTHERS',            //- Третье лицо
+        'UF_CRM_CONAD_CRD102',           //- Номер дела
+        'UF_CRM_CONAD_CRD092',           //- Судья
+        'UF_CRM_1702719450',             //- Ближайшее заседание
+        'UF_CRM_YR24_NEAREST_SESSION',   //- Ближайшее заседание ||
+        'UF_CRM_CONAD_CRD095',           //- Заявитель
+        'UF_CRM_CONAD_CRD042',           //- Информация о ходе рассмотрения кассационной жалобы
+        'UF_CRM_CONAD_CRD040',           //- Кассационная жалоба
+        'UF_CRM_CONAD_CRD097',           //- Дата кассационной жалобы
+        'UF_CRM_CONAD_CRD098',           //- Дата принятия судом кассационной жалобы
+        'UF_CRM_CONAD_CRD041',           //- Возражения на кассационную жалобу
+        'UF_CRM_CONAD_CRD099',           //- Дата получения возражения на кассационную жалобу
+        'UF_CRM_CONAD_CRD003',           //- Претензия
+        'UF_CRM_CONAD_CRD043',           //- Результат рассмотрения
+        'UF_CRM_CONAD_CRD046',           //- Дата фактического изготовления судебного акта
+        'UF_CRM_CONAD_CRD044',           //- Сумма заявленных требований
+        'UF_CRM_CONAD_CRD045',           //- Сумма удовлетворенных судом требований
+        'UF_CRM_CONAD_CRD038',           //- Госпошлина
+        'UF_CRM_CONAD_CRD049'            //- Сумма оказанных юридических услуг
+    ];
+    
+    ///*/ ahilespelid Исполнительное производство ///*/
+    $keyIP = [
+        'UF_CRM_CONAD_CRD103',           //- Номер дела
+        'UF_CRM_CONAD_CRD059',           //- Ссылка на исполнительное производство на сайте ФССП
+        'UF_CRM_CONAD_CRD050',           //- Взыскатель
+        'UF_CRM_CONAD_CRD051',           //- Должник
+        'UF_CRM_CONAD_CRD052',           //- Дата вступления решения ИП в законную силу
+        'UF_CRM_CONAD_CRD053',           //- Срок для предъявления исполнительного листа к исполнению
+        'UF_CRM_CONAD_CRD069',           //- Дата завершения исполнительного производства
+        'UF_CRM_CONAD_CRD104',           //- Причина окончания
+        'UF_CRM_CONAD_CRD105',           //- Сумма требования на момент постановления
+        'UF_CRM_CONAD_CRD106',           //- Дата окончания судебной процедуры
+        'UF_CRM_CONAD_CRD107',           //- Задолженность с учетом процентов на день взыскания
+        'UF_CRM_CONAD_CRD108',           //- Запросы судебных приставов
+        'UF_CRM_CONAD_CRD109',           //- Ответ на запросы
+        'UF_CRM_1686046817804',          //- Стратегия
+        'UF_CRM_CONAD_CRD060',           //- Информация о ходе исполнительного производства
+        'UF_CRM_CONAD_CRD062',           //- Даты посещения судебного пристава-исполнителя для контроля его действий и уточнения информации
+        'UF_CRM_CONAD_CRD061',           //- Аресты, запреты, обременения
+        'UF_CRM_CONAD_CRD055',           //- Сведения о заложенном имуществе
+        'UF_CRM_1636705135040',          //- Стоимость имущества
+        'UF_CRM_CONAD_CRD065',           //- Предложение взыскателю оставить имущество за собой
+        'UF_CRM_CONAD_CRD072',           //- Сумма оказанных юридических услуг
+        'UF_CRM_CONAD_CRD100',           //- Сведения о торгах
+        'UF_CRM_CONAD_CRD110',           //- Результат проведения торгов
+        'UF_CRM_CONAD_CRD066',           //- Планируемая дата перечисления денежных средств 
+        'UF_CRM_CONAD_CRD068',           //- Дата поступления денежных средств ИП взыскателю
+        'UF_CRM_CONAD_CRD069',           //- Дата завершения исполнительного производства
+        'UF_CRM_CONAD_CRD070',           //- Дата окончания следующей подачи исполнительного листа
+        'UF_CRM_CONAD_CRD071'            //- Основание окончания исполнительного производства
+    ];
+    
+    ///*/ ahilespelid Банкротство ///*/
+    $keyBI = [
+        'UF_CRM_CONAD_CRD111',           //- Номер дела
+        'UF_CRM_CONAD_CRD122',           //- Ссылка на дело в суде
+        'UF_CRM_CONAD_CRD112',           //- Заявитель
+        'UF_CRM_CONAD_CRD113',           //- Должник
+        'UF_CRM_CONAD_CRD114',           //- Конкурсный управляющий
+        'UF_CRM_CONAD_CRD073',           //- Госпошлина
+        'UF_CRM_1679485736362',          //- Депозит
+        'UF_CRM_CONAD_CRD075',           //- Дата окончания текущей стадии
+        'UF_CRM_CONAD_CRD115',           //- Информация о кредиторах
+        'UF_CRM_1686038365473',          //- Комментарий по имуществу
+        'UF_CRM_1636705135040',          //- Стоимость имущества
+        'UF_CRM_CONAD_CRD118',           //- Информация о банковских счетах должника
+        'UF_CRM_CONAD_CRD117',           //- Информация о признании сделок/платежей недействительными
+        'UF_CRM_CONAD_CRD116',           //- Дата поступления ДС Банкротство
+        'UF_CRM_CONAD_CRD081',           //- Субсидиарная ответственность
+        'UF_CRM_CONAD_CRD082',           //- Оценка имущества должностных лиц 
+        'UF_CRM_CONAD_CRD083',           //- Результат банкротства
+        'UF_CRM_CONAD_CRD084'            //- Сумма оказанных юридических услуг
+    ];
+    
+    ///*/ ahilespelid Медиация ///*/
+    $keyMD = [                            
+        'UF_CRM_CONAD_CRD119',           //- Номер дела
+        'UF_CRM_CONAD_CRD086',           //- Контакт должника
+        'UF_CRM_CONAD_CRD085',           //- Процессуальное правопреемство
+        'UF_CRM_CONAD_CRD123',           //- Дата определения АС
+        'UF_CRM_1686038365473',          //- Комментарий по имуществу
+        'UF_CRM_1636705135040',          //- Стоимость имущества
+        'UF_CRM_1686046817804',          //- Стратегия
+        'UF_CRM_CONAD_CRD088'            //- Отчет о работе
+    ];
+    
+    ///*/ ahilespelid Возобновление производства ///*/
+    $keyRE = [
+        'UF_CRM_CONAD_CRD119',           //- Номер дела
+        'UF_CRM_CONAD_CRD090',           //- Инициатор
+        'UF_CRM_CONAD_CRD089',           //- Причины, по которым возобновляется производство
+        'UF_CRM_1686046817804'           //- Стратегия
+    ];
+    
+    foreach($data = array_flip(array_merge($keyFI, $keyAI, $keyCI, $keyIP, $keyBI, $keyMD, $keyRE)) as $k => $v){
+        if(isset($deal[$k]) && is_string($deal[$k])){$deal[$k] = trim($deal[$k]);}
+        if(empty($deal[$k])){unset($data[$k]); continue;}
+        
+        $data[$k] = $deal[$k]; 
+        
+    }
+    $data['ID'] = $deal['ID']; unset($deal);
+    //var_dump($data['UF_CRM_YR24_OTHERS']);
+    //pa($date1 = is_date($deal['UF_CRM_CONAD_CRD016']));  
+    //pa($date1->diff($date2));    
+
     $send = [
-        'deal' => $deal, 
+        'deal' => $data, 
         'nd' => 'н\д', 
         'ex' => ',', 
         'tab' => $request->tab
-    ];
-    //pa($deal);
+    ]; 
+    if('Not found' == $data['ID']){unset($data);} //pa($send);
+     
+return (empty($data)) ? abort(404) : view('intro.'.$request->tab, $send); //'<script>alert("[Сообщение отладки] номер сделки - '.$deal['ID'].'");window.close();</script>'
 
-    //pa($deal['UF_CRM_CONAD_CRD016'] );
-    //pa($deal['UF_CRM_CONAD_CRD018'] );
-    
-    //pa($date1 = is_date($deal['UF_CRM_CONAD_CRD016']));  
-    //pa($date2 = is_date($deal['UF_CRM_CONAD_CRD018']));
-    //pa($date1->diff($date2));    
-    //pa($deal['UF_CRM_CONAD_CRD042']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD115']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD118']);
-    //pa($deal['UF_CRM_CONAD_CRD117']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD116']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD108']); exit;  
-    //pa($deal['UF_CRM_CONAD_CRD061']); exit;
-    //pa($deal['UF_CRM_CONAD_CRD042']); exit;  
-    
-    
-return (is_numeric($deal['ID'])) ? view('intro.'.$request->tab, $send) : '<script>alert("[Сообщение отладки] номер сделки - '.$deal['ID'].'");window.close();</script>';}
+    $data['DATE_CREATE']                                = '';
+    $data['UF_CRM_YR24_DIRECT_API_CASE_NUMBER']         = ''; 
+    $data['UF_CRM_YR24_OTHERS']                         = ''; 
+    $data['UF_CRM_YR24_NEAREST_SESSION']                = ''; 
+    $data['UF_CRM_YR24_LAST_RESULT']                    = ''; 
+    $data['UF_CRM_YR24_CASE_INSTANCE']                  = ''; 
+    $data['UF_CRM_CFM_YR24_CASE_SUM']                   = ''; 
+    $data['UF_CRM_YR24_INSTANCE_CODE']                  = ''; 
+    $data['UF_CRM_1628845465']                          = ''; 
+    $data['UF_CRM_TIMESHEET_CONTRACT']                  = ''; 
+    $data['UF_CRM_1629712538']                          = ''; 
+    $data['UF_CRM_1629713088']                          = ''; 
+    $data['UF_CRM_1629714005']                          = ''; 
+    $data['UF_CRM_1633008196']                          = ''; 
+    $data['UF_CRM_1633818042']                          = ''; 
+    $data['UF_CRM_1634158022']                          = []; 
+    $data['UF_CRM_1634589360']                          = ''; 
+    $data['UF_CRM_1634589392']                          = ''; 
+    $data['UF_CRM_1636705135040']                       = ''; 
+    $data['UF_CRM_1637688370986']                       = ''; 
+    $data['UF_CRM_1637688937345']                       = ''; 
+    $data['UF_CRM_1637688970721']                       = ''; 
+    $data['UF_CRM_1637688990962']                       = ''; 
+    $data['UF_CRM_1637689015673']                       = ''; 
+    $data['UF_CRM_1637689156282']                       = ''; 
+    $data['UF_CRM_1637689168593']                       = ''; 
+    $data['UF_CRM_1637689195784']                       = ''; 
+    $data['UF_CRM_1637689340050']                       = ''; 
+    $data['UF_CRM_1637689394786']                       = ''; 
+    $data['UF_CRM_1640249453073']                       = ''; 
+    $data['UF_CRM_PAYMENT_FRAME']                       = ''; 
+    $data['UF_CRM_PAYMENT_AMOUNT']                      = ''; 
+    $data['UF_CRM_PAYMENT_REMAIN_PART']                 = ''; 
+    $data['UF_CRM_KASSA_FIRST_INSTALLMENT']             = ''; 
+    $data['UF_CRM_EXPECTED_AMOUNT_FIRST_PAYMENT']       = ''; 
+    $data['UF_CRM_1644826472126']                       = ''; 
+    $data['UF_CRM_1644826487749']                       = ''; 
+    $data['UF_CRM_1648462561310']                       = ''; 
+    $data['UF_CRM_1648462838079']                       = []; 
+    $data['UF_CRM_1649412197222']                       = ''; 
+    $data['UF_CRM_GONETS_BRAND']                        = ''; 
+    $data['UF_CRM_YR24_PLAINTIFFS']                     = ''; 
+    $data['UF_CRM_YR24_DEFENDANTS']                     = ''; 
+    $data['UF_CRM_YR24_INSTANCE_URL']                   = ''; 
+    $data['UF_CRM_YR24_INSTANCE_START_DATE']            = ''; 
+    $data['UF_CRM_YR24_CASE_SUM']                       = ''; 
+    $data['UF_CRM_YR24_DIRECT_API_CASE_DATA']           = ''; 
+    $data['UF_CRM_INSTALLMENT_PLAN']                    = ''; 
+    $data['UF_CRM_YR24_NEAREST_SESSION_STR']            = ''; 
+    $data['UF_CRM_1657058316668']                       = false; 
+    $data['UF_CRM_1657262153123']                       = ''; 
+    $data['UF_CRM_1657262169339']                       = ''; 
+    $data['UF_CRM_1657262189835']                       = ''; 
+    $data['UF_CRM_1657262208442']                       = ''; 
+    $data['UF_CRM_KASSA_SPENDING_AMOUNT']               = ''; 
+    $data['UF_CRM_KASSA_LAST_PAYMENT_DATETIME']         = ''; 
+    $data['UF_CRM_KASSA_LAST_PAYMENT_AMOUNT']           = ''; 
+    $data['UF_CRM_1661424962']                          = ''; 
+    $data['UF_CRM_1661424980']                          = ''; 
+    $data['UF_CRM_1661425005']                          = ''; 
+    $data['UF_CRM_1661425051']                          = ''; 
+    $data['UF_CRM_1661425150']                          = ''; 
+    $data['UF_CRM_1661428770']                          = ''; 
+    $data['UF_CRM_1661428791']                          = ''; 
+    $data['UF_CRM_1661428810']                          = ''; 
+    $data['UF_CRM_1661432580']                          = ''; 
+    $data['UF_CRM_1661432595']                          = ''; 
+    $data['UF_CRM_1661445517']                          = ''; 
+    $data['UF_CRM_1661446245']                          = ''; 
+    $data['UF_CRM_1661544431509']                       = ''; 
+    $data['UF_CRM_1665741141635']                       = ''; 
+    $data['UF_CRM_1665741411696']                       = ''; 
+    $data['UF_CRM_1665741461415']                       = ''; 
+    $data['UF_CRM_1665741517039']                       = ''; 
+    $data['UF_CRM_1665741568603']                       = ''; 
+    $data['UF_CRM_1665741600403']                       = ''; 
+    $data['UF_CRM_1665741696223']                       = ''; 
+    $data['UF_CRM_1666171002316']                       = ''; 
+    $data['UF_CRM_1673350343429']                       = ''; 
+    $data['UF_CRM_1673350409097']                       = ''; 
+    $data['UF_CRM_1673350440340']                       = ''; 
+    $data['UF_CRM_1673350478458']                       = ''; 
+    $data['UF_CRM_1673350504611']                       = ''; 
+    $data['UF_CRM_1673350717490']                       = ''; 
+    $data['UF_CRM_1674423386190']                       = ''; 
+    $data['UF_CRM_KASSA_FIN_DATA_JSON']                 = ''; 
+    $data['UF_CRM_1675173831524']                       = ''; 
+    $data['UF_CRM_1678360275322']                       = ''; 
+    $data['UF_CRM_1678361011084']                       = ''; 
+    $data['UF_CRM_1678361366098']                       = ''; 
+    $data['UF_CRM_1678361396516']                       = ''; 
+    $data['UF_CRM_1678361470504']                       = ''; 
+    $data['UF_CRM_1678361625817']                       = ''; 
+    $data['UF_CRM_1678361658080']                       = ''; 
+    $data['UF_CRM_1678433659521']                       = ''; 
+    $data['UF_CRM_1678433821278']                       = []; 
+    $data['UF_CRM_1678434048065']                       = ''; 
+    $data['UF_CRM_1678434345887']                       = ''; 
+    $data['UF_CRM_1678717755867']                       = ''; 
+    $data['UF_CRM_1678717773013']                       = ''; 
+    $data['UF_CRM_1678717832614']                       = ''; 
+    $data['UF_CRM_1678718091414']                       = ''; 
+    $data['UF_CRM_1678718150748']                       = ''; 
+    $data['UF_CRM_1678718189059']                       = ''; 
+    $data['UF_CRM_1678718300182']                       = ''; 
+    $data['UF_CRM_1678719168010']                       = ''; 
+    $data['UF_CRM_1678719458140']                       = ''; 
+    $data['UF_CRM_1678719490379']                       = ''; 
+    $data['UF_CRM_1678719517212']                       = ''; 
+    $data['UF_CRM_DEAL_KAD_SEARCH']                     = ''; 
+    $data['UF_CRM_1678962017348']                       = ''; 
+    $data['UF_CRM_1678962331262']                       = ''; 
+    $data['UF_CRM_1678962419965']                       = ''; 
+    $data['UF_CRM_1678962921868']                       = ''; 
+    $data['UF_CRM_1678963230713']                       = ''; 
+    $data['UF_CRM_1679480157017']                       = ''; 
+    $data['UF_CRM_1679480230525']                       = ''; 
+    $data['UF_CRM_1679480311216']                       = ''; 
+    $data['UF_CRM_1679480476102']                       = ''; 
+    $data['UF_CRM_1679480515963']                       = ''; 
+    $data['UF_CRM_1679480547887']                       = ''; 
+    $data['UF_CRM_1679485692511']                       = ''; 
+    $data['UF_CRM_1679485736362']                       = ''; 
+    $data['UF_CRM_1679485782744']                       = ''; 
+    $data['UF_CRM_1679485816286']                       = ''; 
+    $data['UF_CRM_1679497969364']                       = ''; 
+    $data['UF_CRM_1679497988097']                       = ''; 
+    $data['UF_CRM_1680101086188']                       = ''; 
+    $data['UF_CRM_1680255946761']                       = ''; 
+    $data['UF_CRM_1681901482']                          = false; 
+    $data['UF_CRM_1681901709332']                       = ''; 
+    $data['UF_CRM_MGO_CC_ENTRY_ID']                     = ''; 
+    $data['UF_CRM_MGO_CC_CHANNEL_TYPE']                 = ''; 
+    $data['UF_CRM_MGO_CC_RESULT']                       = ''; 
+    $data['UF_CRM_MGO_CC_ENTRY_POINT']                  = ''; 
+    $data['UF_CRM_MGO_CC_CREATE']                       = ''; 
+    $data['UF_CRM_MGO_CC_END']                          = ''; 
+    $data['UF_CRM_MGO_CC_TAG_ID']                       = ''; 
+    $data['UF_CRM_1681995354']                          = false; 
+    $data['UF_CRM_1683462809']                          = ''; 
+    $data['UF_CRM_1685707741043']                       = ''; 
+    $data['UF_CRM_1686038343091']                       = ''; 
+    $data['UF_CRM_1686038365473']                       = ''; 
+    $data['UF_CRM_1686042158556']                       = ''; 
+    $data['UF_CRM_1686042355264']                       = ''; 
+    $data['UF_CRM_1686043096361']                       = ''; 
+    $data['UF_CRM_1686046817804']                       = ''; 
+    $data['UF_CRM_1686055165772']                       = []; 
+    $data['UF_CRM_1686055269061']                       = []; 
+    $data['UF_CRM_1686055437037']                       = []; 
+    $data['UF_CRM_1687245071265']                       = ''; 
+    $data['UF_CRM_1687245173805']                       = ''; 
+    $data['UF_CRM_1687256241421']                       = ''; 
+    $data['UF_CRM_1687256499']                          = ''; 
+    $data['UF_CRM_1687257304766']                       = ''; 
+    $data['UF_CRM_1687271410910']                       = ''; 
+    $data['UF_CRM_1687452644']                          = ''; 
+    $data['UF_CRM_1687455757']                          = ''; 
+    $data['UF_CRM_1687455848']                          = ''; 
+    $data['UF_CRM_1687516336609']                       = ''; 
+    $data['UF_CRM_1687517512983']                       = ''; 
+    $data['UF_CRM_1687528830415']                       = ''; 
+    $data['UF_CRM_1688111914509']                       = ''; 
+    $data['UF_CRM_1688111944606']                       = ''; 
+    $data['UF_CRM_KASSA_ACT_AMOUNT']                    = ''; 
+    $data['UF_CRM_KASSA_UNSIGNED_ACT_AMOUNT']           = ''; 
+    $data['UF_CRM_1696419041352']                       = ''; 
+    $data['UF_CRM_1696419290280']                       = ''; 
+    $data['UF_CRM_TASKS_FIELD_FRAME']                   = ''; 
+    $data['UF_CRM_TASKS_RESTART_BIZPROC']               = ''; 
+    $data['UF_CRM_KASSA_TRANSIT_PAYMENT_AMOUNT']        = ''; 
+    $data['UF_CRM_1702719450']                          = ''; 
+    $data['UF_CRM_65C4CE7078D5E']                       = ''; 
+    $data['UF_CRM_65C4CE70A4F50']                       = ''; 
+    $data['UF_CRM_65C4CE70F01E0']                       = ''; 
+    $data['UF_CRM_65C4CE71113ED']                       = ''; 
+    $data['UF_CRM_65C4CE7126023']                       = ''; 
+    $data['UF_CRM_KASSA_NEXT_INSTALLMENT']              = ''; 
+    $data['UF_CRM_KASSA_NEXT_INSTALLMENT_AMOUNT']       = ''; 
+    $data['UF_CRM_KASSA_EACH_INSTALLMENT_AMOUNT']       = ''; 
+    $data['UF_CRM_KASSA_INSTALLMENT_OVERDUE']           = ''; 
+    $data['UF_CRM_KASSA_INSTALLMENT_OVERDUE_TOTAL']     = ''; 
+    $data['UF_CRM_PAYMENT_DELAY']                       = ''; 
+    $data['UF_CRM_KASSA_ORDER_CRC']                     = ''; 
+    $data['UF_CRM_KASSA_COMPANY']                       = ''; 
+    $data['UF_CRM_1658321309037']                       = ''; 
+    $data['UF_CRM_1661544301']                          = ''; 
+    $data['UF_CRM_1666022745816']                       = ''; 
+    $data['UF_CRM_1666170845189']                       = ''; 
+    $data['UF_CRM_1666170866940']                       = '';
+    $data['UF_CRM_1666170941724']                       = '';
+    $data['UF_CRM_1666170986980']                       = '';
+    $data['UF_CRM_1667127624']                          = ''; 
+    $data['UF_CRM_DCT_UID']                             = ''; 
+    $data['UF_CRM_DCT_CID']                             = '';
+    $data['UF_CRM_DCT_YA_CID']                          = '';
+    $data['UF_CRM_DCT_CITY']                            = ''; 
+    $data['UF_CRM_DCT_SOURCE']                          = ''; 
+    $data['UF_CRM_DCT_MEDIUM']                          = '';
+    $data['UF_CRM_DCT_CAMPAIGN']                        = ''; 
+    $data['UF_CRM_DCT_CONTENT']                         = ''; 
+    $data['UF_CRM_DCT_TERM']                            = '';
+    $data['UF_CRM_DCT_DURATION']                        = ''; 
+    $data['UF_CRM_DCT_PAGE']                            = '';
+    $data['UF_CRM_DCT_CONTEXT']                         = '';
+    $data['UF_CRM_DCT_CUSTOM']                          = '';
+    $data['UF_CRM_DCT_WID_NAME']                        = '';
+    $data['UF_CRM_DCT_TYPE']                            = '';
+    $data['UF_CRM_ROISTAT']                             = '';
+    $data['UF_CRM_1667815684675']                       = false;
+    $data['UF_CRM_CONAD_CRD001']                        = '';
+    $data['UF_CRM_CONAD_CRD002']                        = ''; 
+    $data['UF_CRM_CONAD_CRD003']                        = '';
+    $data['UF_CRM_CONAD_CRD004']                        = ''; 
+    $data['UF_CRM_CONAD_CRD005']                        = '';
+    $data['UF_CRM_CONAD_CRD006']                        = ''; 
+    $data['UF_CRM_CONAD_CRD007']                        = false;
+    $data['UF_CRM_CONAD_CRD008']                        = ''; 
+    $data['UF_CRM_CONAD_CRD009']                        = '';
+    $data['UF_CRM_CONAD_CRD010']                        = '';
+    $data['UF_CRM_CONAD_CRD011']                        = '';
+    $data['UF_CRM_CONAD_CRD012']                        = '';
+    $data['UF_CRM_CONAD_CRD013']                        = '';
+    $data['UF_CRM_CONAD_CRD014']                        = '';
+    $data['UF_CRM_CONAD_CRD015']                        = '';
+    $data['UF_CRM_CONAD_CRD016']                        = ''; 
+    $data['UF_CRM_CONAD_CRD017']                        = '';
+    $data['UF_CRM_CONAD_CRD018']                        = ''; 
+    $data['UF_CRM_CONAD_CRD019']                        = '';
+    $data['UF_CRM_CONAD_CRD020']                        = '';
+    $data['UF_CRM_CONAD_CRD021']                        = '';
+    $data['UF_CRM_CONAD_CRD022']                        = '';
+    $data['UF_CRM_CONAD_CRD023']                        = '';
+    $data['UF_CRM_CONAD_CRD024']                        = ''; 
+    $data['UF_CRM_CONAD_CRD025']                        = ''; 
+    $data['UF_CRM_CONAD_CRD026']                        = ''; 
+    $data['UF_CRM_CONAD_CRD027']                        = '';
+    $data['UF_CRM_CONAD_CRD028']                        = ''; 
+    $data['UF_CRM_CONAD_CRD029']                        = false; 
+    $data['UF_CRM_CONAD_CRD030']                        = ''; 
+    $data['UF_CRM_CONAD_CRD031']                        = '';
+    $data['UF_CRM_CONAD_CRD032']                        = '';
+    $data['UF_CRM_CONAD_CRD033']                        = '';
+    $data['UF_CRM_CONAD_CRD034']                        = '';
+    $data['UF_CRM_CONAD_CRD035']                        = '';
+    $data['UF_CRM_CONAD_CRD036']                        = '';
+    $data['UF_CRM_CONAD_CRD037']                        = ''; 
+    $data['UF_CRM_CONAD_CRD038']                        = '';
+    $data['UF_CRM_CONAD_CRD039']                        = '';
+    $data['UF_CRM_CONAD_CRD040']                        = '';
+    $data['UF_CRM_CONAD_CRD041']                        = '';
+    $data['UF_CRM_CONAD_CRD042']                        = false;
+    $data['UF_CRM_CONAD_CRD043']                        = '';
+    $data['UF_CRM_CONAD_CRD044']                        = ''; 
+    $data['UF_CRM_CONAD_CRD045']                        = ''; 
+    $data['UF_CRM_CONAD_CRD046']                        = '';
+    $data['UF_CRM_CONAD_CRD047']                        = '';
+    $data['UF_CRM_CONAD_CRD048']                        = '';
+    $data['UF_CRM_CONAD_CRD049']                        = ''; 
+    $data['UF_CRM_CONAD_CRD050']                        = '';
+    $data['UF_CRM_CONAD_CRD051']                        = '';
+    $data['UF_CRM_CONAD_CRD052']                        = '';
+    $data['UF_CRM_CONAD_CRD053']                        = '';
+    $data['UF_CRM_CONAD_CRD054']                        = '';
+    $data['UF_CRM_CONAD_CRD055']                        = '';
+    $data['UF_CRM_CONAD_CRD056']                        = '';
+    $data['UF_CRM_CONAD_CRD057']                        = '';
+    $data['UF_CRM_CONAD_CRD058']                        = '';
+    $data['UF_CRM_CONAD_CRD059']                        = '';
+    $data['UF_CRM_CONAD_CRD060']                        = false;
+    $data['UF_CRM_CONAD_CRD061']                        = '';
+    $data['UF_CRM_CONAD_CRD062']                        = '';
+    $data['UF_CRM_CONAD_CRD063']                        = '';
+    $data['UF_CRM_CONAD_CRD064']                        = ''; 
+    $data['UF_CRM_CONAD_CRD065']                        = '';
+    $data['UF_CRM_CONAD_CRD066']                        = '';
+    $data['UF_CRM_CONAD_CRD067']                        = '';
+    $data['UF_CRM_CONAD_CRD068']                        = '';
+    $data['UF_CRM_CONAD_CRD069']                        = '';
+    $data['UF_CRM_CONAD_CRD070']                        = ''; 
+    $data['UF_CRM_CONAD_CRD071']                        = ''; 
+    $data['UF_CRM_CONAD_CRD072']                        = '';
+    $data['UF_CRM_CONAD_CRD073']                        = '';
+    $data['UF_CRM_CONAD_CRD074']                        = ''; 
+    $data['UF_CRM_CONAD_CRD075']                        = '';
+    $data['UF_CRM_CONAD_CRD076']                        = '';
+    $data['UF_CRM_CONAD_CRD077']                        = '';
+    $data['UF_CRM_CONAD_CRD078']                        = '';
+    $data['UF_CRM_CONAD_CRD079']                        = '';
+    $data['UF_CRM_CONAD_CRD080']                        = '';
+    $data['UF_CRM_CONAD_CRD081']                        = '';
+    $data['UF_CRM_CONAD_CRD082']                        = '';
+    $data['UF_CRM_CONAD_CRD083']                        = '';
+    $data['UF_CRM_CONAD_CRD084']                        = ''; 
+    $data['UF_CRM_CONAD_CRD085']                        = ''; 
+    $data['UF_CRM_CONAD_CRD086']                        = ''; 
+    $data['UF_CRM_CONAD_CRD087']                        = ''; 
+    $data['UF_CRM_CONAD_CRD088']                        = false;
+    $data['UF_CRM_CONAD_CRD089']                        = ''; 
+    $data['UF_CRM_CONAD_CRD090']                        = '';
+    $data['UF_CRM_CONAD_CRD091']                        = '';
+    $data['UF_CRM_CONAD_CRD092']                        = '';
+    $data['UF_CRM_CONAD_CRD093']                        = ''; 
+    $data['UF_CRM_CONAD_CRD094']                        = false; 
+    $data['UF_CRM_CONAD_CRD095']                        = ''; 
+    $data['UF_CRM_CONAD_CRD096']                        = '';
+    $data['UF_CRM_CONAD_CRD097']                        = ''; 
+    $data['UF_CRM_CONAD_CRD098']                        = ''; 
+    $data['UF_CRM_CONAD_CRD099']                        = ''; 
+    $data['UF_CRM_CONAD_CRD100']                        = ''; 
+    $data['UF_CRM_CONAD_CRD101']                        = '';
+    $data['UF_CRM_CONAD_CRD102']                        = ''; 
+    $data['UF_CRM_CONAD_CRD103']                        = ''; 
+    $data['UF_CRM_CONAD_CRD104']                        = ''; 
+    $data['UF_CRM_CONAD_CRD105']                        = ''; 
+    $data['UF_CRM_CONAD_CRD106']                        = ''; 
+    $data['UF_CRM_CONAD_CRD107']                        = ''; 
+    $data['UF_CRM_CONAD_CRD108']                        = false; 
+    $data['UF_CRM_CONAD_CRD109']                        = false;
+    $data['UF_CRM_CONAD_CRD110']                        = ''; 
+    $data['UF_CRM_CONAD_CRD111']                        = ''; 
+    $data['UF_CRM_CONAD_CRD112']                        = ''; 
+    $data['UF_CRM_CONAD_CRD113']                        = ''; 
+    $data['UF_CRM_CONAD_CRD114']                        = '';
+    $data['UF_CRM_CONAD_CRD115']                        = ''; 
+    $data['UF_CRM_CONAD_CRD116']                        = ''; 
+    $data['UF_CRM_CONAD_CRD117']                        = false; 
+    $data['UF_CRM_CONAD_CRD118']                        = false;
+    $data['UF_CRM_CONAD_CRD119']                        = ''; 
+    $data['UF_CRM_CONAD_CRD120']                        = ''; 
+    $data['UF_CRM_CONAD_CRD121']                        = ''; 
+    $data['UF_CRM_1676824599']                          = '';
+}
 ///*/-----------------------------------Метод сохранения EXEL///*/
 public function download(Request $request){
     $request->validate([
