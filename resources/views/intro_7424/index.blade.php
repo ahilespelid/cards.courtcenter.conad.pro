@@ -55,11 +55,11 @@
                     <div class="first__links" id="list_block_left">
                         <div class="content__wrapper__block report__block gray__block">
                             <p class="gray__text">Отчет по делу: </p>
-                            <p class="blue__text">тест</p>
+                            <p class="blue__text">{{ $deal['ID'] }}</p>
                         </div>
                         <div class="content__wrapper__block gray__block">
                             <a href="{{ route('front.up', ['deal_into_id' => $deal['ID'], 'tab' => 'courts']) }}">
-                                <h2>СУДЫ</h2>
+                                <h2>Суды</h2>
                                 <img class="big_arrow" src="/assets/img/svg/big_arrow.svg" alt=">">
                             </a>
                         </div>

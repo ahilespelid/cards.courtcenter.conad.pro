@@ -38,6 +38,9 @@
                         </select>                    
                     @elseif(isset($val['type']) && 'm' == $val['type'][0])
                         {{--<input type="text" disabled value="{{ $val['data']['data'] ?? '' }}">--}}
+                        @if($key == 'UF_CRM_CONAD_CRD094')
+                        {{ 'это поле' }}
+                        @endif
                         <textarea readonly disabled rows="1" cols="66" id="{{ $key }}" name="{{ $key }}">{{ $val['data']['data'] ?? '' }}</textarea>
                         <br>
                         @if(isset($val['type'][1]) && 'd' == $val['type'][1])

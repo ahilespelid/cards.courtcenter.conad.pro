@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css?time=<?=time();?>">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <title>Суд</title>
 </head>
 <body>
@@ -22,22 +22,26 @@
                     <div class="courts__left__body">
                         <div class="gray__block courts__information">
                             <div class="flex">
+                                <p class="gray__text">Номер дела</p>
+                                <p class="blue__text">{{ $deal['UF_CRM_CONAD_CRD119'] ?? $nd }}</p>
+                            </div>
+                            <div class="flex">
                                 <p class="gray__text">Инициатор</p>
                                 <p class="black__text">
-                                   тест
+                                   {{ $deal['UF_CRM_CONAD_CRD090'] ?? $nd }}
                                 </p>
                             </div>
                         </div>
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Стадия возобновления дела</p>
-                                <p class="black__text">тест</p>
+{{-- Где взять Стадия возобновления дела --}}                                
+                                <p class="black__text">{{-- $deal[''] ?? $nd }}</p>
+{{-- Где взять Стадия возобновления дела --}}                                
                             </div>
-                        </div>
-                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Причина возобновления дела</p>
-                                <p class="black__text">тест</p>
+                                <p class="black__text">{{ $deal['UF_CRM_CONAD_CRD089'] ?? $nd }}</p>
                             </div>
                         </div>
 
@@ -47,11 +51,11 @@
                                     <p class="gray__text">Стратегия</p>
                                 </div>
                                 <div class="flex files__second">
-                                <!-- @if(isset($deal['UF_CRM_1686046817804'])) @foreach(explode($ex, $deal['UF_CRM_1686046817804']) as $url)         -->
-                                    <a class="ikon" href="{{ $url }}" target="_blank">
+                                @if(isset($deal['UF_CRM_1686046817804'])) @foreach(explode($ex, $deal['UF_CRM_1686046817804']) as $url)        
+                                    <a href="{{ $url }}" target="_blank">
                                         <img class="file" src="/assets/img/svg/{{ ('pdf' == strtolower(pathinfo($url, PATHINFO_EXTENSION))) ? 'pdf' : 'doc' }}.svg" alt="">
                                     </a>
-                                <!-- @endforeach @else {{ $nd }} @endif -->
+                                @endforeach @else {{ $nd }} @endif
                                 </div>
                             </div>
                         </div>
