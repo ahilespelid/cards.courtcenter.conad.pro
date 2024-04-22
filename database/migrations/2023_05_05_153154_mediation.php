@@ -12,7 +12,7 @@ class Mediation extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation', function (Blueprint $table){
+        Schema::connection('two')->create('mediation', function (Blueprint $table){
             $table->id();
             $table->string('deal_id')->nullable();
             $table->string('deal_into_id')->nullable();
@@ -39,5 +39,5 @@ class Mediation extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation');}
 }

@@ -11,4 +11,4 @@ class BankruptcyStage extends Model{
     public $timestamps = true, $table = 'bankruptcy_stage';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

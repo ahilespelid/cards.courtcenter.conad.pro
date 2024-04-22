@@ -11,4 +11,4 @@ class MediationSecondOfferDebtor extends Model{
     public $timestamps = true, $table = 'mediation_second_offer_debtor';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

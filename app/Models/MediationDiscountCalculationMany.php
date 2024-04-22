@@ -11,4 +11,4 @@ class MediationDiscountCalculationMany extends Model{
     public $timestamps = true, $table = 'mediation_discount_calculation__many';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

@@ -12,7 +12,7 @@ class BankruptcyPaymentsMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('bankruptcy_payments__many', function (Blueprint $table) {
+        Schema::connection('two')->create('bankruptcy_payments__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('bankruptcy_id')->unsigned()->nullable();
             $table->unsignedBigInteger('payments_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class BankruptcyPaymentsMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('bankruptcy_payments__many');}
+    public function down(){Schema::connection('two')->dropIfExists('bankruptcy_payments__many');}
 }

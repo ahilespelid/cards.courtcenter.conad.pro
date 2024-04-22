@@ -12,7 +12,7 @@ class MediationSecondOfferDebtorMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation_second_offer_debtor__many', function (Blueprint $table) {
+        Schema::connection('two')->create('mediation_second_offer_debtor__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('mediation_id')->unsigned()->nullable();
             $table->unsignedBigInteger('second_offer_debtor_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class MediationSecondOfferDebtorMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation_second_offer_debtor__many');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation_second_offer_debtor__many');}
 }

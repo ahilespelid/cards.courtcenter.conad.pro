@@ -11,4 +11,4 @@ class CourtsCassationStrategy extends Model{
     public $timestamps = true, $table = 'courts_сassation_strategy';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

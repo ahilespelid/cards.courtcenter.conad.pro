@@ -12,7 +12,7 @@ class BankruptcyInformationCourt extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('bankruptcy_information_court', function (Blueprint $table) {
+        Schema::connection('two')->create('bankruptcy_information_court', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -26,5 +26,5 @@ class BankruptcyInformationCourt extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('bankruptcy_information_court');}
+    public function down(){Schema::connection('two')->dropIfExists('bankruptcy_information_court');}
 }

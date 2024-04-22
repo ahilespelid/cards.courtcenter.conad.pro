@@ -12,7 +12,7 @@ class EnforcementProceedingsInformationProgress extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('enforcement_proceedings_information_progress', function (Blueprint $table) {
+        Schema::connection('two')->create('enforcement_proceedings_information_progress', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -27,5 +27,5 @@ class EnforcementProceedingsInformationProgress extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('enforcement_proceedings_information_progress');}
+    public function down(){Schema::connection('two')->dropIfExists('enforcement_proceedings_information_progress');}
 }

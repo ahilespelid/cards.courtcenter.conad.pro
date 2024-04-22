@@ -12,7 +12,7 @@ class CourtsAppeal extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_appeal', function (Blueprint $table) {
+        Schema::connection('two')->create('courts_appeal', function (Blueprint $table) {
             $table->id();
             $table->string('deal_id')->nullable();
             $table->string('deal_into_id')->nullable();
@@ -48,5 +48,5 @@ class CourtsAppeal extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_appeal');}
+    public function down(){Schema::connection('two')->dropIfExists('courts_appeal');}
 }

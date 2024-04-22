@@ -11,4 +11,4 @@ class CourtsResumption extends Model{
     public $timestamps = true, $table = 'courts_resumption';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

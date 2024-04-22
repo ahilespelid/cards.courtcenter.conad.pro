@@ -11,4 +11,4 @@ class EnforcementProceedingsInformationAuction extends Model{
     public $timestamps = true, $table = 'enforcement_proceedings_information_auction';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

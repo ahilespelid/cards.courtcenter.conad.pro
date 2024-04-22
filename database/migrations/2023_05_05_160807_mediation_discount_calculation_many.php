@@ -12,7 +12,7 @@ class MediationDiscountCalculationMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation_discount_calculation__many', function (Blueprint $table) {
+        Schema::connection('two')->create('mediation_discount_calculation__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('mediation_id')->unsigned()->nullable();
             $table->unsignedBigInteger('discount_calculation_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class MediationDiscountCalculationMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation_discount_calculation__many');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation_discount_calculation__many');}
 }

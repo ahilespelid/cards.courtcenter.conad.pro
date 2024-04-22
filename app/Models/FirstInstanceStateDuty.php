@@ -11,4 +11,4 @@ class FirstInstanceStateDuty extends Model{
     public $timestamps = true, $table = 'first_instance_state_duty';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

@@ -123,4 +123,16 @@ return $array = [
     ['Номер дела (В)',                                                                                                              'UF_CRM_CONAD_CRD121', 'string', 7, 'MULTIPLE' => 'N', 'type' => 's'],
     ['Ссылка на дело в суде',                                                                                                       'UF_CRM_CONAD_CRD122', 'string', 5, 'MULTIPLE' => 'N', 'type' => 's'],
     ['Дата определения АС',                                                                                                         'UF_CRM_CONAD_CRD123', 'datetime', 6, 'MULTIPLE' => 'N', 'type' => 'd'],
-];
+    ['Суд (ПИ)',                                                                                                                    'UF_CRM_CONAD_CRD124', 'string', 1, 'MULTIPLE' => 'N', 'type' => 's'],
+    ['Судья (ПИ)',                                                                                                                  'UF_CRM_CONAD_CRD125', 'string', 1, 'MULTIPLE' => 'N', 'type' => 's'],       
+    ['Суд (АИ)',                                                                                                                    'UF_CRM_CONAD_CRD126', 'string', 2, 'MULTIPLE' => 'N', 'type' => 's'],      
+    ['Судья (АИ)',                                                                                                                  'UF_CRM_CONAD_CRD127', 'string', 2, 'MULTIPLE' => 'N', 'type' => 's'],        
+    ['Суд (КИ)',                                                                                                                    'UF_CRM_CONAD_CRD128', 'string', 3, 'MULTIPLE' => 'N', 'type' => 's'],      
+    ['Судья (КИ)',                                                                                                                  'UF_CRM_CONAD_CRD129', 'string', 3, 'MULTIPLE' => 'N', 'type' => 's'],        
+    ['Истец',                                                                                                                       'UF_CRM_CONAD_CRD130', 'string', 1, 'MULTIPLE' => 'N', 'type' => 's'],   
+    ['Ответчик',                                                                                                                    'UF_CRM_CONAD_CRD131', 'string', 1, 'MULTIPLE' => 'N', 'type' => 's'],      
+    ['Третье лицо',                                                                                                                 'UF_CRM_CONAD_CRD132', 'string', 1, 'MULTIPLE' => 'N', 'type' => 's'],         
+    ['Заявитель (Б)',                                                                                                               'UF_CRM_CONAD_CRD140', 'string', 5, 'MULTIPLE' => 'N', 'type' => 's'],           
+    ['Должник (Б)',                                                                                                                 'UF_CRM_CONAD_CRD141', 'string', 5, 'MULTIPLE' => 'N', 'type' => 's'],         
+    ['Рентабельность',                                                                                                              'UF_CRM_CONAD_CRD144', 'string', 6, 'MULTIPLE' => 'N', 'type' => 's'],            
+    ];

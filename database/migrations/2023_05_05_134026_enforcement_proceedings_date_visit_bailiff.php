@@ -12,7 +12,7 @@ class EnforcementProceedingsDateVisitBailiff extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('enforcement_proceedings_date_visit_bailiff', function (Blueprint $table) {
+        Schema::connection('two')->create('enforcement_proceedings_date_visit_bailiff', function (Blueprint $table) {
             $table->id();
             $table->timestamp('data')->nullable();
             
@@ -27,5 +27,5 @@ class EnforcementProceedingsDateVisitBailiff extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('enforcement_proceedings_date_visit_bailiff');}
+    public function down(){Schema::connection('two')->dropIfExists('enforcement_proceedings_date_visit_bailiff');}
 }

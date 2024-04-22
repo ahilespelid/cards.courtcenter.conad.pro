@@ -14,6 +14,6 @@ class FirstInstanceStrategy extends Model{
     
     public function many(){
         return $this->hasMany(FirstInstanceStrategyMany::class);
-    }
+    protected $connection = 'two';}
     
-}
+protected $connection = 'two';}

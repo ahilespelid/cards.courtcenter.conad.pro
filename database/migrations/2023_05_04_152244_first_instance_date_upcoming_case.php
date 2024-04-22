@@ -12,7 +12,7 @@ class FirstInstanceDateUpcomingCase extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_date_upcoming_case', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance_date_upcoming_case', function (Blueprint $table) {
             $table->id();
             $table->timestamp('data')->nullable();
             
@@ -26,5 +26,5 @@ class FirstInstanceDateUpcomingCase extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_date_upcoming_case');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance_date_upcoming_case');}
 }

@@ -12,7 +12,7 @@ class CourtsAppealInformationProgressMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_appeal_information_progress__many', function (Blueprint $table) {
+        Schema::connection('two')->create('courts_appeal_information_progress__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('courts_appeal_id')->unsigned()->nullable();
             $table->unsignedBigInteger('information_progress_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class CourtsAppealInformationProgressMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_appeal_information_progress__many');}
+    public function down(){Schema::connection('two')->dropIfExists('courts_appeal_information_progress__many');}
 }

@@ -11,4 +11,4 @@ class FirstInstanceDateUpcomingCaseMany extends Model{
     public $timestamps = true, $table = 'first_instance_date_upcoming_case__many';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

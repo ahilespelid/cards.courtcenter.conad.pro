@@ -12,7 +12,7 @@ class CourtsAppealDateUpcomingCase extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_appeal_date_upcoming_case', function (Blueprint $table) {
+        Schema::connection('two')->create('courts_appeal_date_upcoming_case', function (Blueprint $table) {
             $table->id();
             $table->timestamp('data')->nullable();
             
@@ -27,5 +27,5 @@ class CourtsAppealDateUpcomingCase extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_appeal_date_upcoming_case');}
+    public function down(){Schema::connection('two')->dropIfExists('courts_appeal_date_upcoming_case');}
 }

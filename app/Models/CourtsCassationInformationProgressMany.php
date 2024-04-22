@@ -11,4 +11,4 @@ class CourtsCassationInformationProgressMany extends Model{
     public $timestamps = true, $table = 'courts_сassation_information_progress__many';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

@@ -12,7 +12,7 @@ class BankruptcyStrategy extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('bankruptcy_strategy', function (Blueprint $table) {
+        Schema::connection('two')->create('bankruptcy_strategy', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -26,5 +26,5 @@ class BankruptcyStrategy extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('bankruptcy_strategy');}
+    public function down(){Schema::connection('two')->dropIfExists('bankruptcy_strategy');}
 }

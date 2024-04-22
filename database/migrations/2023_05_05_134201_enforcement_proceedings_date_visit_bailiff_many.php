@@ -12,7 +12,7 @@ class EnforcementProceedingsDateVisitBailiffMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('enforcement_proceedings_date_visit_bailiff__many', function (Blueprint $table) {
+        Schema::connection('two')->create('enforcement_proceedings_date_visit_bailiff__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned()->nullable();
             $table->unsignedBigInteger('date_visit_bailiff_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class EnforcementProceedingsDateVisitBailiffMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('enforcement_proceedings_date_visit_bailiff__many');}
+    public function down(){Schema::connection('two')->dropIfExists('enforcement_proceedings_date_visit_bailiff__many');}
 }

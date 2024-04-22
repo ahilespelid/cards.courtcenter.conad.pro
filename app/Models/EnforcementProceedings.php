@@ -11,4 +11,4 @@ class EnforcementProceedings extends Model{
     public $timestamps = true, $table = 'enforcement_proceedings';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

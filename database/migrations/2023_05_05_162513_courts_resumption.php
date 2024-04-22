@@ -12,7 +12,7 @@ class CourtsResumption extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_resumption', function (Blueprint $table){
+        Schema::connection('two')->create('courts_resumption', function (Blueprint $table){
             $table->id();
             $table->string('deal_id')->nullable();
             $table->string('deal_into_id')->nullable();
@@ -32,5 +32,5 @@ class CourtsResumption extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_resumption');}
+    public function down(){Schema::connection('two')->dropIfExists('courts_resumption');}
 }

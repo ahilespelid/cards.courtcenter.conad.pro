@@ -11,4 +11,4 @@ class FirstInstanceClaimPrice extends Model{
     public $timestamps = true, $table = 'first_instance_claim_price';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

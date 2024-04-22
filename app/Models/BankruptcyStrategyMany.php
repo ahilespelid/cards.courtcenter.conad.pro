@@ -11,4 +11,4 @@ class BankruptcyStrategyMany extends Model{
     public $timestamps = true, $table = 'bankruptcy_strategy__many';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

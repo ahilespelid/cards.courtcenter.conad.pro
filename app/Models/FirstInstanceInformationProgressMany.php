@@ -11,4 +11,4 @@ class FirstInstanceInformationProgressMany extends Model{
     public $timestamps = true, $table = 'first_instance_information_progress__many';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

@@ -13,7 +13,7 @@ class MediationTypeDebt extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation_type_debt', function (Blueprint $table) {
+        Schema::connection('two')->create('mediation_type_debt', function (Blueprint $table) {
             $table->id();
             $table->text('option')->nullable();
             
@@ -34,5 +34,5 @@ class MediationTypeDebt extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation_type_debt');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation_type_debt');}
 }

@@ -12,7 +12,7 @@ class FirstInstanceCurrentStateCaseMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_current_state_case__many', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance_current_state_case__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('first_instance_id')->unsigned()->nullable();
             $table->unsignedBigInteger('current_state_case_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class FirstInstanceCurrentStateCaseMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_current_state_case__many');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance_current_state_case__many');}
 }

@@ -14,6 +14,6 @@ class FirstInstanceClaim extends Model{
     
     public function many(){
         return $this->hasMany(FirstInstanceClaimMany::class);
-    }
+    protected $connection = 'two';}
 
-}
+protected $connection = 'two';}

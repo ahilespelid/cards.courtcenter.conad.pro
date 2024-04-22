@@ -25,14 +25,14 @@ if($result['rest_only'] === false):?>
                     ///*/ 
                     BX24.callBatch(requests, function(data){console.log('Инициализация завершена!', BX24.placement.info(), data);}); ///*/
                                           
-                    sleep(10000).then(() => {BX24.installFinish();});
+                    sleep(1000).then(() => {BX24.installFinish();});
                 });
             </script>
         <?php endif;?>
     </head>
     <body>
 <?php //
-/*/ 
+///*/ 
 if($result['install'] == true):
 pa(CRest::call('placement.bind',[
 'PLACEMENT' => 'CRM_DEAL_DETAIL_TAB',

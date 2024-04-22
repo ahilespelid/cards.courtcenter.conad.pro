@@ -11,4 +11,4 @@ class CourtsAppeal extends Model{
     public $timestamps = true, $table = 'courts_appeal';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

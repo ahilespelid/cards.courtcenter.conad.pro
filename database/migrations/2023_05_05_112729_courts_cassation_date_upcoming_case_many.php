@@ -12,7 +12,7 @@ class CourtsCassationDateUpcomingCaseMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('courts_сassation_date_upcoming_case__many', function (Blueprint $table) {
+        Schema::connection('two')->create('courts_сassation_date_upcoming_case__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('courts_сassation_id')->unsigned()->nullable();
             $table->unsignedBigInteger('date_upcoming_case_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class CourtsCassationDateUpcomingCaseMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('courts_сassation_date_upcoming_case__many');}
+    public function down(){Schema::connection('two')->dropIfExists('courts_сassation_date_upcoming_case__many');}
 }

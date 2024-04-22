@@ -71,7 +71,7 @@ section * {}
 .__list_i_check{background: #ffffff00!important;}
 .i_width50{width: 50px!important;}
 .content td{padding: 10px;}
-.content input{width: 500px;}
+.content input, .content select{width: 500px;}
 .content textarea{width: 500px; resize: none;}
 .button{
     cursor: pointer;

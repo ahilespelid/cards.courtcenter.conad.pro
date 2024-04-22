@@ -12,7 +12,7 @@ class MediationSecondOfferDebtor extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation_second_offer_debtor', function (Blueprint $table) {
+        Schema::connection('two')->create('mediation_second_offer_debtor', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -26,5 +26,5 @@ class MediationSecondOfferDebtor extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation_second_offer_debtor');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation_second_offer_debtor');}
 }

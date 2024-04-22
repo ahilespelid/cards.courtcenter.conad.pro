@@ -12,7 +12,7 @@ class FirstInstanceClaimPrice extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_claim_price', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance_claim_price', function (Blueprint $table) {
             $table->id();
             $table->integer('data')->nullable();
             
@@ -26,5 +26,5 @@ class FirstInstanceClaimPrice extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_claim_price');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance_claim_price');}
 }

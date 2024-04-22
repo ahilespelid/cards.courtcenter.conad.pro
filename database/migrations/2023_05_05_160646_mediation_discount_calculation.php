@@ -12,7 +12,7 @@ class MediationDiscountCalculation extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('mediation_discount_calculation', function (Blueprint $table) {
+        Schema::connection('two')->create('mediation_discount_calculation', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -26,5 +26,5 @@ class MediationDiscountCalculation extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('mediation_discount_calculation');}
+    public function down(){Schema::connection('two')->dropIfExists('mediation_discount_calculation');}
 }

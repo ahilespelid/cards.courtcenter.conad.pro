@@ -12,7 +12,7 @@ class EnforcementProceedings extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('enforcement_proceedings', function (Blueprint $table){
+        Schema::connection('two')->create('enforcement_proceedings', function (Blueprint $table){
             $table->id();
             $table->string('deal_id')->nullable();
             $table->string('deal_into_id')->nullable();
@@ -51,5 +51,5 @@ class EnforcementProceedings extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('enforcement_proceedings');}
+    public function down(){Schema::connection('two')->dropIfExists('enforcement_proceedings');}
 }

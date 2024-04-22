@@ -11,4 +11,4 @@ class EnforcementProceedingsDateVisitBailiff extends Model{
     public $timestamps = true, $table = 'enforcement_proceedings_date_visit_bailiff';
     
     protected $dates = ['deleted_at'], $fillable = ['*'], $dateFormat = 'Y-m-d H:i:s', $guarded = [];
-}
+protected $connection = 'two';}

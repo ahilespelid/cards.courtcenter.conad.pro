@@ -11,4 +11,4 @@ class BankruptcyInformationCourt extends Model{
     public $timestamps = true, $table = 'bankruptcy_information_court';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

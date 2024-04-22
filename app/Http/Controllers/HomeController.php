@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use App\Http\Controllers\BtxController;
 use Cookie;
 use \Crest;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -58,6 +59,7 @@ public function index(Request $request){
     $deal['CATEGORY_ID'] = (empty($deal['CATEGORY_ID'])) ? null : $deal['CATEGORY_ID'];        
     $deal_into_id = (empty($deal['UF_CRM_1683462809'])) ? null : $deal['UF_CRM_1683462809'];
     $fields = @include(resource_path('arrays/fields.php'));
+    pa($fields);
 ///*/ Вкладка Суды-первой инстанции ///*/        
     if($_REQUEST['tab'] == $view = 'first_instance'){
         ///*/
@@ -67,7 +69,7 @@ public function index(Request $request){
             
             $data[$view] = $this->mergeLabel($structura, $view);
             $I_table = (new FirstInstance)->table;
-            $I_id = (!empty($maxid = DB::select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
+            $I_id = (!empty($maxid = DB::connection('two')->select("SELECT setval(pg_get_serial_sequence('".$I_table."', 'id'), coalesce(max(id)+1, 1), false) as maxid FROM ".$I_table.";"))) ? $maxid[0]->maxid : null;
             $data[$view]['id'] = $I_id; 
         }else{
             $data[$view] = $this->getFirstInstance($_id->id);
@@ -75,7 +77,8 @@ public function index(Request $request){
         ///*/ Добавление пользовательских полей битрикса в приложение из файла resource/arrays/fields.php ///*/
         array_walk($fields, function($i,$k) use(&$data, $deal, $view){
             if(1==$i[3]){$data[$view][$i[1]] = ['type' => $i['type'], 'title' => $i[0], 'data' => $deal[$i[1]] ?? ''];}});
-        //pa($deal);pa($data);
+        //pa($deal);
+        pa($data);
     }else
 ///*/ Вкладка Суды-апеляция ///*/
     if($_REQUEST['tab'] == $view = 'courts_appeal'){
@@ -733,12 +736,14 @@ public function save(Request $request){
 return redirect()->action([HomeController::class, 'index'], ['tab' => $request->tab, 'deal_id' => $request->deal_id]);}
 ///*/-----------------------------------Метод добавления открытия сделки по кнонке Выгрузить в окне вне битрикса///*/
 public function up(Request $request){
+    $bx = new BtxController;
     $request->validate([
         'tab' => 'required',
         'deal_into_id' => 'required',
     ]);
     $deal = (!empty($request->deal_into_id) && $deal = CRest::call('crm.deal.get', ['ID' => $request->deal_into_id])) ? ($deal['result'] ?? ['ID' => $deal['error_description']]) : $deal; //
-    
+    pa($deal);
+    pa($bx->bx24->getDeal($request->deal_into_id));
     ///*/ ahilespelid Первая инстанция ///*/
     $keyFI = [
         'DATE_CREATE',                 //- Дата создания карточки
@@ -1246,6 +1251,63 @@ return (empty($data)) ? abort(404) : view('intro.'.$request->tab, $send); //'<sc
     $data['UF_CRM_CONAD_CRD121']                        = ''; 
     $data['UF_CRM_1676824599']                          = '';
 }
+///*/-----------------------------------Метод добавления открытия сделки по кнонке Выгрузить в окне вне битрикса///*/
+public function up2(Request $request){//pa($_REQUEST); exit;
+    $this->file_view[$request->route()->getAction()['as']];
+    $ar_sepo = $this->array_seporator;
+
+    ///*/ выбираем структуру данных и ключи - они же ИД пользовательских полей, из массива от марселя ///*/
+    $STRUCTURE = $keys = @include(resource_path($this->array_fields));
+    ///*/ формируем массив ключей инстанций для валидации пришедшей ищ запроса инстанции на присутствие в массиве ///*/
+    $INSTANCES = array_keys($STRUCTURE);
+    ///*/ валидация данных из запроса ///*/
+    $request->validate(['deal_id' => 'required|regex:/^\d+$/u', 'instance' => ['required', 'regex:#^('.(is_array($INSTANCES) ? implode('|', $INSTANCES) : $request->instance).')$#u']]); 
+    ///*/ получаем ID сделки && берём инстанцию из запроса ///*/
+    if(($DEAL_ID = $request->deal_id ?? false) && ($INSTANCE = $request->instance ?? false)){
+        ///*/ выбираем поля сделки из битрикс ///*/
+        $BX = $this->bx; $BX->crest = $this->cr;
+        $DEAL = $BX->bx24->getDeal($DEAL_ID);
+        ///*/ формируем массив с ключами битрикс полей для заполнения данными ///*/
+        $DATA = array_merge(...array_values($STRUCTURE));
+        ///*/ наполняем массив с ключами битрикс полей данными ///*/
+        foreach((empty($DATA) ? null : $DATA) as $k => $v){
+            ///*/ пропускаем и удаляем из результируещего массива поле, если данных для поля в битрикс нет ///*/
+            // if(empty($DEAL[$k])){unset($DATA[$k]); continue;}
+            
+            ///*/ если данные поля строка, убираем вокруг данных ///*/
+            if(is_string($DEAL[$k])){$DEAL[$k] = trim($DEAL[$k]);} //pa($k); pa($DATA); pa($DEAL[$k]); exit;
+            if(in_array($DATA[$k]['type'], ['date','mdate'])){$d = is_date($DEAL[$k]); $DEAL[$k] = is_a($d, '\DateTime') ? $d->format('Y-m-d H:i:s') : $DEAL[$k];} 
+            
+            ///*/ выбираем из базы историй все модификации поля, по ключу и инстанции ///*/
+            $h = History::where('key', $k)->where('instance', $INSTANCE);
+            ///*/ если история изменений есть запоминаем в переменной, если нет то формируем из вновь прибывших данных ///*/
+            $history = $h->exists() ? $h->orderByDesc('id')->offset(0)->limit(10)->get()->toArray() : 
+                [History::create([
+                    'instance' => $INSTANCE, 
+                    'name' => $v['title'], 
+                    'key' => $k,
+                    ///*/ если множественное поле из битрикса пришло пишем в базу строкой по разделителю $ar_sepo ///*/ 
+                    'value' => (is_array($DEAL[$k]) ? implode($ar_sepo, $DEAL[$k]) : (empty($DEAL[$k]) ? NULL : $DEAL[$k]))]
+                )->toArray()];
+            ///*/ для множественных полей изменяем данные изменений из строки с разделителем $ar_sepo обратно в массив ///*/
+            foreach($history as $kk => $hh){$history[$kk]['value'] = (is_array($DEAL[$k])) ? explode($ar_sepo, $hh['value']) : [$hh['value']];}
+            ///*/ дополняем результирующий массив данными ///*/
+            $DATA[$k]['instance'] = $INSTANCE; $DATA[$k]['bitrix'] = (is_array($DEAL[$k])) ? $DEAL[$k] : [$DEAL[$k]]; $DATA[$k]['history'] = $history;
+        }
+
+    }    
+        pa($DATA); 
+        exit;    
+
+    $send = [
+        'deal' => $data, 
+        'nd' => 'н\д', 
+        'ex' => ',', 
+        'tab' => $request->tab
+    ]; 
+    if('Not found' == $data['ID']){unset($data);} //pa($send);
+     
+return (empty($data)) ? abort(404) : view('intro.'.$request->tab, $send);} //'<script>alert("[Сообщение отладки] номер сделки - '.$deal['ID'].'");window.close();</script>'
 ///*/-----------------------------------Метод сохранения EXEL///*/
 public function download(Request $request){
     $request->validate([

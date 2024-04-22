@@ -12,7 +12,7 @@ class FirstInstanceClaimMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_claim__many', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance_claim__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('first_instance_id')->unsigned()->nullable();
             $table->unsignedBigInteger('claim_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class FirstInstanceClaimMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_claim__many');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance_claim__many');}
 }

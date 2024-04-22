@@ -11,4 +11,4 @@ class Mediation extends Model{
     public $timestamps = true, $table = 'mediation';
     
     protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['*'], $guarded = [];
-}
+protected $connection = 'two';}

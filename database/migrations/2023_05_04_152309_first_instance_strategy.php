@@ -12,7 +12,7 @@ class FirstInstanceStrategy extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('first_instance_strategy', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance_strategy', function (Blueprint $table) {
             $table->id();
             $table->text('data')->nullable();
             
@@ -26,5 +26,5 @@ class FirstInstanceStrategy extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance_strategy');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance_strategy');}
 }

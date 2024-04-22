@@ -11,7 +11,7 @@ class FirstInstance extends Migration{
      * @return void
      */
     public function up(){
-        Schema::create('first_instance', function (Blueprint $table) {
+        Schema::connection('two')->create('first_instance', function (Blueprint $table) {
             $table->id();
             $table->string('deal_id')->nullable();
             $table->string('deal_into_id')->nullable();
@@ -53,5 +53,5 @@ class FirstInstance extends Migration{
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('first_instance');}
+    public function down(){Schema::connection('two')->dropIfExists('first_instance');}
 }

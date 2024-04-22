@@ -12,7 +12,7 @@ class EnforcementProceedingsStrategyMany extends Migration
      * @return void
      */
     public function up(){
-        Schema::create('enforcement_proceedings_strategy__many', function (Blueprint $table) {
+        Schema::connection('two')->create('enforcement_proceedings_strategy__many', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('enforcement_proceedings_id')->unsigned()->nullable();
             $table->unsignedBigInteger('strategy_id')->unsigned()->nullable();
@@ -31,5 +31,5 @@ class EnforcementProceedingsStrategyMany extends Migration
      *
      * @return void
      */
-    public function down(){Schema::dropIfExists('enforcement_proceedings_strategy__many');}
+    public function down(){Schema::connection('two')->dropIfExists('enforcement_proceedings_strategy__many');}
 }
