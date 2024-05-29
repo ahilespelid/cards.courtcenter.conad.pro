@@ -34,37 +34,44 @@ function rr($ar){
     
     if('money' == $ar['type']){
         $html = $data.' руб.';}
-elseif('link' == $ar['type']){//pa($ar['bitrix']);
+elseif('link' == $ar['type']){
     foreach($ar['bitrix'] as $url){
         $pathinfo = pathinfo($url);
         $html .= '<a href="'.$url.'" target="_blank" style="background-repeat: no-repeat; padding-top: 50px;
         background-image: url(\'/assets/img/svg/'.(('doc' == strtolower($pathinfo['extension'] ?? 'pdf')) ? 'doc' : 'pdf').'.svg\');
-        width: 65px; height: 85px;"> </a>';/*$pathinfo['filename']*/
+        width: 65px; height: 85px;"> </a>';
     }}
-elseif('mdate' == $ar['type']){//pa($ar['bitrix']);
+elseif('select' == $ar['type']){ //pa($ar['bitrix']); pa($key = array_search('1', array_column($ar['bitrix'], 'selected')));
+    $html .= (false === ($k = array_search('1', array_column($ar['bitrix'], 'selected')))) ? '' : ($ar['bitrix'][$k]['title'] ?? '');
+/*    $html .= '<select style="position: relative; left: -29px;" size="1"><option disabled>Выберите вариант</option>';
+    foreach($ar['bitrix'] as $v){
+        $html .= '<option value="'.$v['value'].'" '.((1 == $v['selected']) ? 'selected' : 'disabled').'>'.$v['title'].'</option>';}
+    $html .= '</select>'; */    
+}
+elseif('mdate' == $ar['type']){
     $html .= '<div class="progress__bar"><div class="progress__bar__line">';
-    foreach($ar['bitrix'] as $k => $date){
+    foreach($ar['history'] as $k => $date){
         $html .= '
             <div class="progress__bar__line__'.($k+1).'">
                 <div id="'.($k+1).'_dot" class="progress__bar__dot '.(0 == $k ? 'active' : '').'"></div>
                 <p class="black__text">
                      Информация 
                     <br>
-                    Дата: '.$date.'
+                    Дата: '.$date['value'][0].'
                 </p>
             </div>
         ';
     }$html.='</div></div>';}
-elseif('mstring' == $ar['type']){//pa($ar['bitrix']);
+elseif('mstring' == $ar['type']){
     $html .= '<div class="progress__bar"><div class="progress__bar__line">';
-    foreach($ar['bitrix'] as $k => $string){
+    foreach($ar['history'] as $k => $string){
         $html .= '
             <div class="progress__bar__line__'.($k+1).'">
                 <div id="'.($k+1).'_dot" class="progress__bar__dot '.(0 == $k ? 'active' : '').'"></div>
                 <p class="black__text">
                      Информация 
                     <br>
-                    '.$string.'
+                    '.$string['value'][0].'
                 </p>
             </div>
         ';

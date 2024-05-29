@@ -69,7 +69,7 @@
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Сумма денежных требований</p>
-                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD054'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD054'])) ? $nd : $html !!}</p>
                             </div>
                         </div>
                         </div>
@@ -125,7 +125,7 @@
                                         <div class="gray__block courts__information total__price">
                                              <div class="flex">
                                                 <p class="gray__text">Стоимость имущества</p>
-                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1636705135040'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1636705135040'])) ? $nd : $html !!}</p>
                                              </div>
                                      </div>
                                      <div class="gray__block courts__information">
@@ -171,7 +171,7 @@
                                     <div class="gray__block courts__information total__price">
                                          <div class="flex">
                                             <p class="gray__text">Сумма оказанных юридических услуг</p>
-                                            <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD072'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                            <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD072'])) ? $nd : $html !!}</p>
                                          </div>
                                    </div>
                                 </div>

@@ -45,12 +45,12 @@
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Госпошлина</p>
-                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD073'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD073'])) ? $nd : $html !!}</p>
                             </div>
                             <div class="flex">{!! empty($html = rr($data['UF_CRM_CONAD_CRD074'])) ? $nd : $html !!}</div>
                             <div class="flex">
                                 <p class="gray__text">Депозит</p>
-                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1679485736362'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1679485736362'])) ? $nd : $html !!}</p>
                             </div>
                         </div>
 
@@ -97,7 +97,7 @@
                                         <div class="gray__block courts__information">
                                             <div class="flex">
                                                 <p class="gray__text">имущество должника 1</p>
-                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1636705135040'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_1636705135040'])) ? $nd : $html !!}</p>
                                 {!! empty($html = rr($data['UF_CRM_1686038365473'])) ? $nd : $html !!}
                                             </div>
                                         </div>
@@ -143,11 +143,11 @@
                                         <div class="gray__block courts__information">
                                             <div class="flex">
                                                 <p class="gray__text">Поступление денежных средств</p>
-                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD079'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD079'])) ? $nd : $html !!}</p>
                                 
                                             </div>
                                             <div class="flex">
-                                                <p class="gray__text">Дата</p>
+                                                <p class="gray__text">дата</p>
                                                 <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD080'])) ? $nd : $html !!}</p>
                                 
                                             </div>
@@ -160,7 +160,8 @@
                                             </div>
                                             <div class="gray__block courts__information">
                                                 <p class="gray__text">Оценка имущества должностных лиц</p>
-                                                <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD082'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD082'])) ? $nd : $html !!}</p>
+                                
                                             </div>
                                         </div>
                                         <div class="gray__block courts__information">
@@ -175,7 +176,7 @@
                                             <p class="gray__text">
                                                Сумма оказанных юридических услуг
                                             </p>
-                                            <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD084'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
+                                            <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD084'])) ? $nd : $html !!}</p>
                                          </div>
                                    </div>
                                 </div>

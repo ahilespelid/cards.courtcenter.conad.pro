@@ -16,12 +16,14 @@ class History extends Migration
         Schema::connection('one')->create('history', function (Blueprint $table) {
             $table->id();
             
+            $table->integer('deal_id')->nullable();
             $table->string('instance')->nullable();
             $table->string('name')->nullable();
             $table->string('key')->nullable();
             $table->text('value')->nullable();
             
             $table->timestamps();
+            $table->index('deal_id', 'BITRIX');
         });
     }
 

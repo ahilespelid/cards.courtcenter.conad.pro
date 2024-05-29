@@ -139,7 +139,7 @@ main {
 
 .blue__text {
   color: #295a9c;
-  /* font-size: 22px; */
+  font-size: 22px;
 }
 .black__text {
   margin: 2px 0;
@@ -223,10 +223,9 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  
 }
-.instance a {
-  justify-content: end !important;
-}
+.instance a {justify-content: end !important;}
 
 .content__wrapper__block:not(:last-child) {
   margin-bottom: 29px;
@@ -386,9 +385,10 @@ main {
 
 .price {
   text-align: start;
+
   color: #000;
+
   font-size: 17px;
-  line-height: 23px;
 }
 
 .claim .flex {
@@ -620,23 +620,7 @@ main {
 .closing__arrow_mobile {
   display: none;
 }
-.date-align {
-  margin-left: 7px;
-}
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-.width-limiter {
-  max-width: 50%;
-}
-.press-to-right {
-  text-align: right;
-}
-.currency {
-  margin-left: 5px;
-}
+
 @media screen and (max-width: 1700px) {
   .content {
     padding: 0 100px;

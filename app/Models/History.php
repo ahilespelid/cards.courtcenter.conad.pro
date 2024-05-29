@@ -9,6 +9,6 @@ class History extends Model{
     use HasFactory;//, SoftDeletes;
     
     public $timestamps = true, $table = 'history';
-    protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['instance','name','key','value'], $guarded = [];
+    protected $dates = ['deleted_at'], $dateFormat = 'Y-m-d H:i:s', $fillable = ['deal','instance','name','key','value'], $guarded = [];
     protected $connection = 'one';
 }

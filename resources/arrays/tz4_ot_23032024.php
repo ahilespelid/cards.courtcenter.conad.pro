@@ -11,7 +11,7 @@ return ['FI' => [
             'UF_CRM_1686046817804'  => ['type' => 'link',       'title' => 'Стратегия'],
             'UF_CRM_CONAD_CRD003'   => ['type' => 'link',       'title' => 'Претензия'],
             'UF_CRM_1640249453073'  => ['type' => 'money',      'title' => 'Сумма иска'],
-            'UF_CRM_CONAD_CRD004'   => ['type' => 'money',      'title' => 'Госпошлина'],
+            'UF_CRM_CONAD_CRD004'   => ['type' => 'integer',    'title' => 'Госпошлина'],
             'UF_CRM_CONAD_CRD005'   => ['type' => 'link',       'title' => 'Госпошлина. Платежное поручение'],
             'UF_CRM_CONAD_CRD006'   => ['type' => 'date',       'title' => 'Дата оплаты госпошлины'],
             'BEGINDATE'             => ['type' => 'date',       'title' => 'Дата начала дела'],
@@ -36,7 +36,7 @@ return ['FI' => [
         ],'AI' => [
             'UF_CRM_CONAD_CRD021'   => ['type' => 'string',     'title' => 'Заявитель жалобы'], 
             'UF_CRM_1686046817804'  => ['type' => 'link',       'title' => 'Стратегия'], 
-            'UF_CRM_CONAD_CRD022'   => ['type' => 'money',      'title' => 'Госпошлина'], 
+            'UF_CRM_CONAD_CRD022'   => ['type' => 'integer',    'title' => 'Госпошлина'], 
             'UF_CRM_CONAD_CRD023'   => ['type' => 'link',       'title' => 'Госпошлина. Платежное поручение'], 
             'UF_CRM_CONAD_CRD026'   => ['type' => 'string',     'title' => 'Краткая апелляционная жалоба'], 
             'UF_CRM_CONAD_CRD025'   => ['type' => 'string',     'title' => 'Апелляционная жалоба'], 
@@ -59,7 +59,7 @@ return ['FI' => [
         ],'CI' => [
             'UF_CRM_CONAD_CRD037'   => ['type' => 'string',     'title' => 'Заявитель жалобы'],
             'UF_CRM_1686046817804'  => ['type' => 'link',       'title' => 'Стратегия'],
-            'UF_CRM_CONAD_CRD038'   => ['type' => 'money',      'title' => 'Госпошлина'],
+            'UF_CRM_CONAD_CRD038'   => ['type' => 'integer',      'title' => 'Госпошлина'],
             'UF_CRM_CONAD_CRD039'   => ['type' => 'link',       'title' => 'Госпошлина.Платежное поручение'],
             'UF_CRM_CONAD_CRD040'   => ['type' => 'link',       'title' => 'Кассационная жалоба'],
             'UF_CRM_CONAD_CRD041'   => ['type' => 'link',       'title' => 'Возражения на кассационную жалобу'],

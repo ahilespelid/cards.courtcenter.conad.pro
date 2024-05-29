@@ -30,11 +30,11 @@
                         <select size="1" name="{{ $k }}">
                             <option disabled>Выберите вариант</option>
                             @foreach($d['bitrix'] as $v)
-                            <option value="{{ $v ?? '' }}" @if($v == 1) selected @endif>{{ $v ?? '' }}</option>
+                            <option value="{{ $v['value'] ?? '' }}" @if(1 == $v['selected']) selected @endif>{{ $v['title'] ?? '' }}</option>
                             @endforeach
                         </select>                    
                 
-                @elseif('m' == $d['type'][0])
+                @elseif(in_array($d['type'], ['mstring','mdate','hstring']))
                         <select size="1" name="history_{{ $k }}">
                             <option disabled selected>История изменений</option>
                      @if(is_array($d['history'])) 
