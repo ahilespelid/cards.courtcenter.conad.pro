@@ -12,6 +12,7 @@ use App\Http\Controllers\BtxController; use \Crest;
 use App\Models\History;
 
 class IndexController extends Controller{
+protected $domain               = 'courtcenter.bitrix24.ru';
 protected $file_view            = ['front.index' => 'front.tz4_ot_23032024', 'front.report' => 'intro.index', 
                                                                              'front.reportFI' => 'intro.FI_AI_CI', 
                                                                              'front.reportAI' => 'intro.FI_AI_CI', 
@@ -29,59 +30,68 @@ protected $date_format_short    = 'Y-m-d';
 protected $bx, $cr;
 public function __construct(){$this->bx = new BtxController; $this->cr = new CRest;}    
 ///*/-----------------------------------Метод вывода///*/
-public function index(Request $request){ //pa($_REQUEST);
+public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()); 
     ///*/ делаем выборку из массива файлов вида в зависимости от псевдонима маршрута и инстанции ///*/
     $as_rout = $request->route()->getAction()['as'];
     $fl_view = $this->file_view[$as_rout.(('index'==$request->instance || 'front.index'==$as_rout) ?  '' : ($request->instance ?? ''))];
     ///*/ технические переменные ///*/
     $ar_sepo = $this->array_seporator;
     $nf_data = $this->not_found_data;
-    ///*/ получаем ID сделки ///*/ //pa($request->toArray());
-    $DEAL_ID = (empty($request->PLACEMENT_OPTIONS) ? false : json_decode($request->PLACEMENT_OPTIONS,true)); //$DEAL_ID = 3876;
-    $DEAL_ID = ($DEAL_ID && !empty($DEAL_ID['ID'])) ? $DEAL_ID['ID'] : $request->deal_id ?? 1666;
+    ///*/ получаем ID сделки ///*/
+    $DEAL_ID    = (empty($request->PLACEMENT_OPTIONS) ? false : json_decode($request->PLACEMENT_OPTIONS,true));
+    $DEAL_ID    = ($DEAL_ID && !empty($DEAL_ID['ID'])) ? $DEAL_ID['ID'] : $request->deal_id ?? 1666;
+    ///*/ получаем домен сервера, домен битрикса ///*/
+    $DOMAIN     = (empty($request->DOMAIN) ? false : $request->DOMAIN); 
+    $DOMAIN_BX  = parse_url($_SERVER['HTTP_ORIGIN'] ?? 'https://'.$this->domain)['host'];
     
     if($DEAL_ID){
         ///*/ ahilespelid берём число из id сделки ///*/
         $DEAL_ID = intval($DEAL_ID);
+        
         ///*/ выбираем поля сделки из битрикс ///*/
         $BX = $this->bx; $BX->crest = $this->cr;
-        $DEAL = $BX->bx24->getDeal($DEAL_ID); //pa($DEAL['UF_CRM_CONAD_CRD035']);
+        $DEAL = $BX->bx24->getDeal($DEAL_ID);
         $FIEL = $BX->bx24->getDealFields(); 
         foreach($DEAL as $k=>$v){$DEAL[$k] = ['DATA' => $v, 'INFO' => (empty($FIEL[$k]) ? '' : $FIEL[$k])];}
+        
         ///*/ формируем переменные необходимые для отображения из некоторых полей сделки ///*/
         $CATEGORY_ID = (empty($DEAL['CATEGORY_ID']['DATA'])) ? false : $DEAL['CATEGORY_ID']['DATA'];
-        $STAGE_ID = (empty($DEAL['STAGE_ID']['DATA'])) ? false : $DEAL['STAGE_ID']['DATA']; //explode(':', $DEAL['STAGE_ID']); $STAGE_ID = $STAGE_ID[1] ?? false;
+        $STAGE_ID = (empty($DEAL['STAGE_ID']['DATA'])) ? false : $DEAL['STAGE_ID']['DATA'];
+        
         ///*/ выбираем структуру данных и ключи - они же ИД пользовательских полей, из массива от марселя ///*/
         $STRUCTURE = $keys = @include(resource_path($this->array_fields));
+        
         ///*/ формируем псевдомассив с ключами битрикс полей по инстанциям, для будующего анализа принадлежности полей к инстанциям ///*/
-        array_walk($keys, function($i, $k) use(&$keys){$keys[$k] = array_keys($i);}); //pa($keys);
+        array_walk($keys, function($i, $k) use(&$keys){$keys[$k] = array_keys($i);}); 
+        
         ///*/ если инстанция не передаётся в запросе, берём первую инстанцию из псевдомассива ///*/
         $first_key_instance = array_key_first($keys);
         $INSTANCE = (('index' == $request->instance) ? (($request->session()->exists('instance')) ? $request->session()->get('instance') : $first_key_instance) : 
                                                         ($request->instance ?? $first_key_instance));
         $request->session()->flash('instance', $INSTANCE);
+        
         ///*/ формируем массив текущей инстанции для наполнения данными, для всего массива полей без учёта инстанции следует использовать $DATA = array_merge(...array_values($STRUCTURE)); ///*/
         $keys_INSTANCE = ('front.report' == $as_rout && ('FI' == $INSTANCE || 'AI' == $INSTANCE || 'CI' ==$INSTANCE)) ?
             array_flip($keys['FI'])+array_flip($keys['AI'])+array_flip($keys['CI']) : array_flip($keys[$INSTANCE]);
         $DATA = array_intersect_key(array_merge(...array_values($STRUCTURE)), $keys_INSTANCE); 
+        
         ///*/ достаём из битрикса стадию сделки по $STAGE_ID ///*/
-        $STAGES = $BX->crest->call('crm.status.list'); //pa($STAGES);exit;
+        $STAGES = $BX->crest->call('crm.status.list');
         
         if(empty($STAGES['errore'])){
             foreach(($STAGES['result'] ?? null) as $s){if($STAGE_ID == $s['STATUS_ID']){$DEAL['STAGE']['DATA'] = $s['NAME']; break;}}
         }
-        //pa($_REQUEST); pa($BX->crest->call('user.current'));
         
         foreach((empty($DATA) ? null : $DATA)  as $k => $v){ 
             ///*/ пропускаем и удаляем из результируещего массива поле, если данных для поля в битрикс нет ///*/
             // if(empty($DEAL[$k])){unset($DATA[$k]); continue;}
             
             ///*/ если данные поля строка, убираем пробелы вокруг данных ///*/
-            if(is_string($DEAL[$k]['DATA'])){$DEAL[$k]['DATA'] = trim($DEAL[$k]['DATA']);} //pa($k); pa($DATA); pa($DEAL[$k]); exit;
+            if(is_string($DEAL[$k]['DATA'])){$DEAL[$k]['DATA'] = trim($DEAL[$k]['DATA']);}
             if(in_array($DATA[$k]['type'], ['date','mdate'])){
                 $d = is_date($DEAL[$k]['DATA']); 
                 $DEAL[$k]['DATA'] = is_a($d, '\DateTime') ? $d->format(('front.index'==$as_rout) ? $this->date_format_full : $this->date_format_short) : $DEAL[$k]['DATA'];} 
-            //pa($DATA[$k]['type']);
+            
             if('money' == $DATA[$k]['type']){$DEAL[$k]['DATA'] = number_format((int)$DEAL[$k]['DATA'], 0, '', ' ');} 
             if('integer' == $DATA[$k]['type']){$DEAL[$k]['DATA'] = intval($DEAL[$k]['DATA']);} 
             if('link' == $DATA[$k]['type']){$DATA[$k]['sepo'] = $ar_sepo;} 
@@ -89,11 +99,11 @@ public function index(Request $request){ //pa($_REQUEST);
             ///*/ при выборе всех полей без учёта инстанций определяет принадлежность поля к инстанции ///*/
             $instances = array_keys(array_filter($keys, function($i, $key) use (&$k){return (in_array($k, $i));}, ARRAY_FILTER_USE_BOTH));
             $instance = (in_array($INSTANCE, $instances)) ? $INSTANCE : $instances[0]; 
+            
             ///*/ выбираем из базы историй все модификации поля, по ключу и инстанции ///*/
             $h = History::where('deal', $DEAL_ID)->where('key', $k)->where('instance', $instance);
-            //pa($DEAL_ID.'-'.$k.'-'.$instance);pa([]);
-            ///*/ если история изменений есть запоминаем в переменной, если нет то формируем из вновь прибывших данных ///*/ 
-            //pa($DEAL_ID);
+            
+            ///*/ если история изменений есть запоминаем в переменной, если нет то формируем из вновь прибывших данных ///*/
             $history = $h->exists() ? $h->orderByDesc('id')->offset(0)->limit($this->view_multifields)->get()->toArray() : 
                 [History::create([
                     'deal'      => $DEAL_ID,
@@ -103,10 +113,10 @@ public function index(Request $request){ //pa($_REQUEST);
                     ///*/ если множественное поле из битрикса пришло пишем в базу строкой по разделителю $ar_sepo ///*/ 
                     'value'     => (is_array($DEAL[$k]['DATA']) ? implode($ar_sepo, $DEAL[$k]['DATA']) : (empty($DEAL[$k]['DATA']) ? NULL : $DEAL[$k]['DATA']))]
                 )->toArray()]; //pa($history);
+            
             ///*/ для множественных полей изменяем данные изменений из строки с разделителем $ar_sepo обратно в массив ///*/
             foreach($history as $kk => $hh){$history[$kk]['value'] = (is_array($DEAL[$k]['DATA'])) ? explode($ar_sepo, $hh['value']) : [$hh['value']];}
-            //if(is_array($DEAL[$k])){
-            //    foreach($history as $kk => $hh){pa($hh); $history[$kk]['value'] = explode($ar_sepo, $hh['value']);}}
+            
             ///*/ дополняем результирующий массив данными ///*/
             $DATA[$k]['instance'] = $INSTANCE; 
             $DATA[$k]['bitrix'] = (is_array($DEAL[$k]['DATA'])) ? $DEAL[$k]['DATA'] : [$DEAL[$k]['DATA']]; 
@@ -127,13 +137,9 @@ public function index(Request $request){ //pa($_REQUEST);
                             'title' => $list[$i]['VALUE'],
                             'selected' => 0
                         ];}
-                    //foreach($list as $kl => $l){pa($list[$i]['VALUE']);
-                    //if($DEAL[$k]['DATA'] == $list[$i]['ID']){$bitrix[0] = $list[$i]['VALUE'];}else{$bitrix[$i+1] = $list[$i]['VALUE'];}
                 }
              $DATA[$k]['bitrix'] = $bitrix;}
-           
-            //if(empty($DATA[$k]['bitrix'])){$DATA[$k]['bitrix'] = $DATA[$k]['history'][0]['value'] ?? ''; pa($DATA[$k]);} 
-        }//pa($BX->bx24->getDealFields($DEAL_ID)); //pa(count($DATA)); pa($DATA); 
+        }
         ///*/ формируем данные на фронт ///*/
         $agent = new Agent();
         $veiw = view($fl_view, $ret = [
@@ -142,16 +148,18 @@ public function index(Request $request){ //pa($_REQUEST);
             'deal'          => $DEAL,
             'category_id'   => $CATEGORY_ID,
             'instance'      => $INSTANCE,
+            'domain'        => $DOMAIN,
             //'instance_sud'  => ($request->session()->exists('instance')) ? $request->session()->get('instance') : $INSTANCE,
             'nd'            => $nf_data,
             'ex'            => $ar_sepo,
             'agent'         => $agent,
-        ]);}                   
-//pa($DEAL['UF_CRM_CONAD_CRD134']);
-//pa($BX->bx24->getDealFields()); pa($DATA); pa($DEAL);
-//pa($_SERVER);
+        ]);}
+
+    ///*/ ahilespelid если открыто приложение не из битрикса убираем ID сделки ///*/
+    $DEAL_ID = ('front.index' == $as_rout && $DOMAIN <> $DOMAIN_BX) ? false : $DEAL_ID;                   
+    
     ///*/ вывод фронта ///*/        
-return ($DEAL_ID && $CATEGORY_ID) ? ((1 == $request->sync) ? response()->json($ret) : response($veiw)): view('front.undefine');}
+return ($DEAL_ID && $CATEGORY_ID) ? ((1 == $request->sync) ? response()->json($ret) : response($veiw)) : view('front.undefine');}
 ///*/-----------------------------------Метод сохранения в базу///*/
 public function save(Request $request){ //pa($_REQUEST);
     $fl_view = $this->file_view;

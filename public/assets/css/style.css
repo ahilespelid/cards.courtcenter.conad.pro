@@ -216,7 +216,6 @@ main {
 
 .content__wrapper__block,
 .flex a:not(.header__text, .ikon) {
-  white-space: nowrap;
   width: 100%;
   height: 100%;
 
@@ -433,19 +432,9 @@ main {
 
 .appeal,
 .courts__right {
-  position: absolute;
-
   width: 48%;
-
-  top: 0;
-  right: 0;
-
   margin-top: 75px;
 }
-
-/* .courts__right {
-  position: relative;
-} */
 
 .courts__right .appeal {
   position: relative;
@@ -509,8 +498,7 @@ main {
   position: absolute;
   top: -14px;
   left: 16px;
-
-  text-wrap: nowrap;
+  min-width: 350px;
 }
 
 .progress__bar__dot {
@@ -628,14 +616,25 @@ main {
   flex-direction: column;
   gap: 20px;
 }
+.column_text {
+  min-height: 37px;
+}
 .width-limiter {
-  max-width: 50%;
+  max-width: 48%;
 }
 .press-to-right {
   text-align: right;
 }
 .currency {
   margin-left: 5px;
+}
+
+.date {
+  min-width: 60px;
+}
+.date-alighn_mobile {
+  display: block;
+  margin-left: 0;
 }
 @media screen and (max-width: 1700px) {
   .content {

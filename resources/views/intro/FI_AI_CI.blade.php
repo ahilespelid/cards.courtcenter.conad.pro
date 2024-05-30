@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата начала</p>
-                                    <p class="black__text">{!! empty($html = rr($data['BEGINDATE'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['BEGINDATE'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Суд</p>
@@ -110,13 +110,13 @@
                             </div>
                             <div class="gray__block courts__information">
                                 <div class="flex">
-                                    <div class="flex files__first">     
+                                    <div class="files__first">     
                                         <div class="column">
-                                            <p class="gray__text">Претензия</p>
+                                            <p class="gray__text column_text">Претензия</p>
                                              {!! empty($html = rr($data['UF_CRM_CONAD_CRD003'])) ? $nd : $html !!}
                                         </div>  
                                     </div>
-                                    <div class="flex files__second">
+                                    <div class="files__second">
                                         <div class="column">
                                              <p class="gray__text">Результат рассмотрения дела</p>
                                              {!! empty($html = rr($data['UF_CRM_CONAD_CRD010'])) ? $nd : $html !!}<!--p class="gray__text right-column-text"></p-->
@@ -133,7 +133,7 @@
                                 <div class="gray__block courts__information ">
                                     <p class="gray__text">
                                     Дата получения решения</p>
-                                    <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD016'])) ? $nd : $html !!}</p>
+                                    <p class="black__text price date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD016'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="gray__block courts__information">
@@ -167,7 +167,7 @@
                                     <div class="flex files__first">
                                         <div>
                                             <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD004'])) ? $nd : $html !!}<span class="black__text price currency">РУБ</span></p>
-                                            <p class="gray__text">Дата оплаты: <span class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD006'])) ? $nd : $html !!}</span></p>
+                                            <p class="gray__text">Дата оплаты: <span class="black__text date-align date-alighn_mobile">{!! empty($html = rr($data['UF_CRM_CONAD_CRD006'])) ? $nd : $html !!}</span></p>
                                         </div> 
                                     </div>
                                     <div class=" files__second ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD005'])) ? $nd : $html !!}</div>
@@ -190,11 +190,11 @@
                             <div class=" courts__prices">
                                 <div class="gray__block courts__information">
                                     <p class="gray__text">Дата подачи жалобы</p>
-                                    <p class="black__text ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD018'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD018'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="gray__block courts__information">
                                     <p class="gray__text">Дата принятия жалобы</p>
-                                    <p class="black__text ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD019'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD019'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="gray__block courts__information total__price">
@@ -286,19 +286,19 @@
                             <div class="gray__block courts__information">
                                 <div class="flex">
                                     <p class="gray__text">Дата подачи жалобы</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD027'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD027'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата принятия судом</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD028'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD028'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата фактического изготовления апелляционного определения</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD033'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD033'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата получения апелляционного определения</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD034'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD034'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="courts__information white__block">
@@ -310,7 +310,7 @@
                                 </div>
                             </div>
                             <div class="gray__block courts__information progress">
-                                <p class="progress__header gray__text">Дата назначения слушания</p>
+                                <p class="progress__header gray__text date">Дата назначения слушания</p>
                                 {!! empty($html = rr($data['UF_CRM_CONAD_CRD134'])) ? $nd : $html !!}
                             </div>
                             <div class="gray__block requests courts__information">
@@ -370,14 +370,14 @@
                             <div class="third__apellation appeal {{ 'CI' == $instance ? '' : 'none' }}">
                             <div class="gray__block courts__information">
                                 <div class="flex">
-                                    <p class="gray__text">Номер дела в суде кассационной инстанции</p>
+                                    <p class="gray__text width-limite">Номер дела в суде кассационной инстанции</p>
                                     <p class="blue__text">
                                     {!! empty($html = rr($data['UF_CRM_CONAD_CRD102'])) ? $nd : (empty($link = rr($data['UF_CRM_CONAD_CRD137'])) ? $html : '<a target="_blank" href="'.$link.'">'.$html.'</a>') !!}
                                     </p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Суд</p>
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD128'])) ? $nd : $html !!}</p>
+                                    <p class="black__text width-limite">{!! empty($html = rr($data['UF_CRM_CONAD_CRD128'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Судья</p>
@@ -510,7 +510,7 @@
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата начала</p>
-                                    <p class="black__text">{!! empty($html = rr($data['BEGINDATE'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['BEGINDATE'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Суд</p>
@@ -522,7 +522,7 @@
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Ближайшее заседание</p>
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_1702719450'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_1702719450'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="gray__block courts__information">
@@ -570,17 +570,17 @@
                             <div class="courts__prices">
                                 <div class="gray__block courts__information ">
                                     <p class="gray__text">Дата фактического изготовления судом решения</p>
-                                    <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD015'])) ? $nd : $html !!}</p>
+                                    <p class="black__text price date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD015'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="gray__block courts__information ">
                                     <p class="gray__text">Дата получения решения</p>
-                                    <p class="black__text price">{!! empty($html = rr($data['UF_CRM_CONAD_CRD016'])) ? $nd : $html !!}</p>
+                                    <p class="black__text price date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD016'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="gray__block courts__information">
                                 <div class="flex">
                                     <p class="gray__text">Срок на обжалование решения</p>
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD014'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD014'])) ? $nd : $html !!}</p>
                                 </div> 
                             </div>
                             <div class="gray__block courts__information">
@@ -625,17 +625,17 @@
                             <div class="gray__block courts__information">
                                 <div class="flex">
                                     <p class="gray__text">Дата вступления судебного акта в законную силу</p>
-                                    <p class="black__text ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD013'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD013'])) ? $nd : $html !!}</p>
                                 </div> 
                             </div>
                             <div class=" courts__prices">
                                 <div class="gray__block courts__information">
                                     <p class="gray__text">Дата подачи жалобы</p>
-                                    <p class="black__text ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD018'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD018'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="gray__block courts__information">
                                     <p class="gray__text">Дата принятия жалобы</p>
-                                    <p class="black__text ">{!! empty($html = rr($data['UF_CRM_CONAD_CRD019'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD019'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="gray__block courts__information total__price">
@@ -714,19 +714,19 @@
                             <div class="gray__block courts__information">
                                 <div class="flex">
                                     <p class="gray__text">Дата подачи жалобы</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD027'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD027'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата принятия судом</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD028'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD028'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата фактического изготовления апелляционного определения</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD033'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD033'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата получения апелляционного определения</p>
-                                    <p class="black__text date-align">{!! empty($html = rr($data['UF_CRM_CONAD_CRD034'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date-align date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD034'])) ? $nd : $html !!}</p>
                                 </div>
                             </div>
                             <div class="courts__information white__block">
@@ -833,11 +833,11 @@
                             <div class="gray__block courts__information">
                                 <div class="flex">
                                     <p class="gray__text">Дата фактического изготовления судебного акта </p>
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD046'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD046'])) ? $nd : $html !!}</p>
                                 </div>
                                 <div class="flex">
                                     <p class="gray__text">Дата получения постановления суда</p>
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD047'])) ? $nd : $html !!}</p>
+                                    <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD047'])) ? $nd : $html !!}</p>
                                 </div>
                             </div> 
                             <div class="gray__block courts__information">

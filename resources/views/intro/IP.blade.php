@@ -49,21 +49,21 @@
                         <div class="gray__block courts__information">
                             <div class="flex">
                                 <p class="gray__text">Дата подачи исполнительного листа в ФССП</p>
-                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD056'])) ? $nd : $html !!}</p>
+                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD056'])) ? $nd : $html !!}</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Дата возбуждения исполнительного производства </p>
-                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD057'])) ? $nd : $html !!}</p>
+                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD057'])) ? $nd : $html !!}</p>
                             </div>
                         </div>
                         <div class="gray__block courts__information ">
                             <div class="flex">
                                 <p class="gray__text">Дата вступления решения в законную силу</p>
-                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD052'])) ? $nd : $html !!}</p>
+                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD052'])) ? $nd : $html !!}</p>
                             </div>
                             <div class="flex">
                                 <p class="gray__text">Срок для предъявления исполнительного листа к исполнению</p>
-                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD053'])) ? $nd : $html !!}</p>
+                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD053'])) ? $nd : $html !!}</p>
                             </div>
                         </div>
                         <div class="gray__block courts__information">
@@ -90,12 +90,11 @@
                                 </div>
                                 <div class="gray__block courts__information visit__dates">
                                     <p class="gray__text">Судебный пристав-исполнитель</p> 
-                                    <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD058'])) ? $nd : $html !!}</p>
+                                   <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD058'])) ? $nd : $html !!}</p>
                                 </div>
-                                <div class="gray__block courts__information visit__dates">
-                                    <p class="gray__text">Даты посещения судебного пристава-исполнителя для контроля его действий и уточнения информации</p>      
-                                    {!! empty($html = rr($data['UF_CRM_CONAD_CRD062'])) ? $nd : $html !!} <!--p class="gray__text"></p-->   
-
+                                <div class="gray__block courts__information progress">
+                                    <p class="progress__header gray__text">Даты посещения судебного пристава-исполнителя для контроля его действий и уточнения информации</p>
+                                    {!! empty($html = rr($data['UF_CRM_CONAD_CRD062'])) ? $nd : $html !!}
                                 </div>
                                 <div class="instances">
                                     <div class="prohibitions flex">
@@ -147,21 +146,21 @@
                                     <div class="gray__block courts__information">
                                         <div class="flex">
                                             <p class="gray__text small-width">Планируемая дата перечисления денежных средств</p>
-                                            <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD066'])) ? $nd : $html !!}</p>
+                                            <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD066'])) ? $nd : $html !!}</p>
                                         </div>
                                      </div>
                                     <div class="gray__block courts__information">
                                         <div class="flex">
                                             <p class="gray__text small-width">Дата поступления денежных средств ИП взыскателю</p>
-                                            <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD139'])) ? $nd : $html !!}</p>
+                                            <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD139'])) ? $nd : $html !!}</p>
                                         </div>
                                         <div class="flex"> 
                                             <p class="gray__text">Дата завершения исполнительного производства</p>
-                                            <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD069'])) ? $nd : $html !!}</p>
+                                            <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD069'])) ? $nd : $html !!}</p>
                                         </div>
                                         <div class="flex">
                                             <p class="gray__text">Дата окончания следующей подачи исполнительного листа</p>
-                                            <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD070'])) ? $nd : $html !!}</p>
+                                            <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD070'])) ? $nd : $html !!}</p>
                                         </div>
                                         <div class="flex">
                                             <p class="gray__text">Основание окончания исполнительного производства</p>

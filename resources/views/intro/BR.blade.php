@@ -61,7 +61,7 @@
                             </div>
                             <div class="gray__block courts__information">
                                 <p class="gray__text">Дата окончания текущей стадии</p>  
-                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD075'])) ? $nd : $html !!}</p>
+                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD075'])) ? $nd : $html !!}</p>
                             </div>
                         </div>
                         <div class="gray__block requests courts__information">
@@ -148,7 +148,7 @@
                                             </div>
                                             <div class="flex">
                                                 <p class="gray__text">Дата</p>
-                                                <p class="black__text">{!! empty($html = rr($data['UF_CRM_CONAD_CRD080'])) ? $nd : $html !!}</p>
+                                                <p class="black__text date">{!! empty($html = rr($data['UF_CRM_CONAD_CRD080'])) ? $nd : $html !!}</p>
                                 
                                             </div>
                                         </div>
