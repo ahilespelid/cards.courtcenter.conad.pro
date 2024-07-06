@@ -498,7 +498,7 @@ main {
   position: absolute;
   top: -14px;
   left: 16px;
-  min-width: 350px;
+  min-width: 250px;
 }
 
 .progress__bar__dot {
@@ -579,10 +579,6 @@ main {
   margin-top: 20px;
 }
 
-.property .flex > div {
-  /* width: 50%; */
-}
-
 .prohibitions.active .big_arrow {
   transform: rotate(-90deg);
 }
@@ -630,7 +626,7 @@ main {
 }
 
 .date {
-  min-width: 60px;
+  min-width: 75px;
 }
 .date-alighn_mobile {
   display: block;
@@ -650,11 +646,6 @@ main {
   .content.main__page .content__wrapper__block h2 {
     padding-right: 20px;
   }
-
-  /* .courts__prices,
-  .courts__dates {
-    gap: 5px;
-  } */
 }
 
 @media screen and (max-width: 1200px) {
@@ -671,7 +662,7 @@ main {
   .main__links {
     flex-direction: column;
 
-    gap: 29px;
+    gap: 0;
   }
 
   .main_class {

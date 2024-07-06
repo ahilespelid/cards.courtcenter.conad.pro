@@ -27,6 +27,7 @@ protected $not_found_data       = 'н/д';
 protected $view_multifields     = '3';
 protected $date_format_full     = 'Y-m-d H:i:s';
 protected $date_format_short    = 'Y-m-d';
+protected $uf_conad             = 'UF_CRM_CONAD';
 protected $bx, $cr;
 public function __construct(){$this->bx = new BtxController; $this->cr = new CRest;}    
 ///*/-----------------------------------Метод вывода///*/
@@ -39,7 +40,7 @@ public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()
     $nf_data = $this->not_found_data;
     ///*/ получаем ID сделки ///*/
     $DEAL_ID    = (empty($request->PLACEMENT_OPTIONS) ? false : json_decode($request->PLACEMENT_OPTIONS,true));
-    $DEAL_ID    = ($DEAL_ID && !empty($DEAL_ID['ID'])) ? $DEAL_ID['ID'] : $request->deal_id ?? 1666;
+    $DEAL_ID    = ($DEAL_ID && !empty($DEAL_ID['ID'])) ? $DEAL_ID['ID'] : $request->deal_id ?? null;
     ///*/ получаем домен сервера, домен битрикса ///*/
     $DOMAIN     = (empty($request->DOMAIN) ? false : $request->DOMAIN); 
     $DOMAIN_BX  = parse_url($_SERVER['HTTP_ORIGIN'] ?? 'https://'.$this->domain)['host'];
@@ -51,11 +52,28 @@ public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()
         ///*/ выбираем поля сделки из битрикс ///*/
         $BX = $this->bx; $BX->crest = $this->cr;
         $DEAL = $BX->bx24->getDeal($DEAL_ID);
-        $FIEL = $BX->bx24->getDealFields(); 
-        foreach($DEAL as $k=>$v){$DEAL[$k] = ['DATA' => $v, 'INFO' => (empty($FIEL[$k]) ? '' : $FIEL[$k])];}
+        $FIEL = $BX->bx24->getDealFields();
+        $CATEGORYS[] = $CATEGORY_ID = (empty($DEAL['CATEGORY_ID'])) ? null : $DEAL['CATEGORY_ID'];
         
+        if(isset($_GET['dev'])){
+
+        ///*/ достаём из битрикса дочерние сделки ///*/
+        $CHILDS = $BX->crest->call('crm.deal.list', ['ORDER' => ['ID' => 'ASC'], 'FILTER' => ['UF_CRM_1683462809' => $DEAL['ID']], 'SELECT' => ['*','UF_*']]);
+        if(!empty($CHILDS = $CHILDS['result'] ?? false)){
+            foreach($CHILDS as $i => $CHILD){
+                if(empty($CHILD) || !is_array($CHILD) || $CHILD['ID'] == $DEAL['ID']){continue;}
+                $CATEGORYS[] = (empty($CHILD['CATEGORY_ID'])) ? null : $CHILD['CATEGORY_ID'];
+                foreach($CHILD as $k => $field){
+                    if(strncmp($this->uf_conad, $k, 12) === 0){
+                        $ret[$i][$k] = $field;
+                        $DEAL[$k] = (empty($DEAL[$k])) ? $field : $DEAL[$k];
+        }}}}
+        pa($CATEGORYS, 2, 'воронки');
+        }
+        ///*/ соединяем данные полей с их свойствами ///*/ 
+        foreach($DEAL as $k=>$v){$DEAL[$k] = ['DATA' => $v, 'INFO' => (empty($FIEL[$k]) ? '' : $FIEL[$k])];}
+
         ///*/ формируем переменные необходимые для отображения из некоторых полей сделки ///*/
-        $CATEGORY_ID = (empty($DEAL['CATEGORY_ID']['DATA'])) ? false : $DEAL['CATEGORY_ID']['DATA'];
         $STAGE_ID = (empty($DEAL['STAGE_ID']['DATA'])) ? false : $DEAL['STAGE_ID']['DATA'];
         
         ///*/ выбираем структуру данных и ключи - они же ИД пользовательских полей, из массива от марселя ///*/
@@ -146,6 +164,7 @@ public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()
             'data'          => $DATA,
             'deal_id'       => $DEAL_ID,
             'deal'          => $DEAL,
+            'categorys'   => $CATEGORYS,
             'category_id'   => $CATEGORY_ID,
             'instance'      => $INSTANCE,
             'domain'        => $DOMAIN,

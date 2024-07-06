@@ -1,13 +1,1 @@
-[Mon May 06 16:09:11.584251 2024] [php7:error] [pid 8449] [client 10.10.0.24:46504] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /var/www/bitrix24LocAPP/app/Refcurl.php on line 13, referer: https://web.telegram.org/
-[Mon May 06 17:50:57.574009 2024] [php7:error] [pid 1930] [client 10.10.0.24:37376] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /var/www/bitrix24LocAPP/app/Refcurl.php on line 13, referer: https://web.telegram.org/
-[Mon May 06 21:40:58.116524 2024] [core:alert] [pid 22461] [client 10.0.0.21:43874] /var/www/bitrix24LocAPP/public/.htaccess: RewriteCond: bad flag delimiters
-[Mon May 06 21:45:05.007742 2024] [core:alert] [pid 23463] [client 10.0.0.101:50042] /var/www/bitrix24LocAPP/public/.htaccess: RewriteCond: bad flag delimiters
-[Mon May 06 21:45:18.466181 2024] [core:alert] [pid 23464] [client 10.0.0.101:50050] /var/www/bitrix24LocAPP/public/.htaccess: RewriteCond: bad flag delimiters
-[Mon May 06 21:46:43.695694 2024] [core:alert] [pid 23541] [client 10.0.0.101:50056] /var/www/bitrix24LocAPP/public/.htaccess: RewriteCond: bad flag delimiters
-[Tue May 07 00:07:43.608223 2024] [authz_core:error] [pid 31009] [client 10.0.0.101:51139] AH01630: client denied by server configuration: /var/www/bitrix24LocAPP/public/server-status
-[Tue May 07 00:07:46.690166 2024] [authz_core:error] [pid 31009] [client 10.0.0.101:51139] AH01630: client denied by server configuration: /var/www/bitrix24LocAPP/public/server-status
-[Tue May 07 00:42:56.440400 2024] [authz_core:error] [pid 31524] [client 10.0.0.101:51399] AH01630: client denied by server configuration: /var/www/html/server-status
-[Tue May 07 00:43:17.307162 2024] [authz_core:error] [pid 31530] [client 10.0.0.101:51408] AH01630: client denied by server configuration: /var/www/html/server-status
-[Tue May 07 00:46:48.911151 2024] [authz_core:error] [pid 31530] [client 10.0.0.101:51426] AH01630: client denied by server configuration: /var/www/html/server-status
-[Tue May 07 00:47:40.172508 2024] [authz_core:error] [pid 31648] [client 10.0.0.101:51436] AH01630: client denied by server configuration: /var/www/bitrix24LocAPP/public/server-status
-[Tue May 07 00:47:41.843225 2024] [authz_core:error] [pid 31648] [client 10.0.0.101:51436] AH01630: client denied by server configuration: /var/www/bitrix24LocAPP/public/server-status
+[Sat Jul 06 23:54:34.672563 2024] [php7:error] [pid 35672] [client 10.10.0.24:48280] PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted (tried to allocate 903872520 bytes) in /var/www/bitrix24LocAPP/app/functions.php on line 5
