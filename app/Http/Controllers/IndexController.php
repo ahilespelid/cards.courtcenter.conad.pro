@@ -54,28 +54,7 @@ public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()
         $DEAL = $BX->bx24->getDeal($DEAL_ID);
         $FIEL = $BX->bx24->getDealFields();
         $CATEGORYS[] = $CATEGORY_ID = (empty($DEAL['CATEGORY_ID'])) ? null : $DEAL['CATEGORY_ID'];
-        
-        if(isset($_GET['dev'])){
 
-        ///*/ достаём из битрикса дочерние сделки ///*/
-        $CHILDS = $BX->crest->call('crm.deal.list', ['ORDER' => ['ID' => 'ASC'], 'FILTER' => ['UF_CRM_1683462809' => $DEAL['ID']], 'SELECT' => ['*','UF_*']]);
-        if(!empty($CHILDS = $CHILDS['result'] ?? false)){
-            foreach($CHILDS as $i => $CHILD){
-                if(empty($CHILD) || !is_array($CHILD) || $CHILD['ID'] == $DEAL['ID']){continue;}
-                $CATEGORYS[] = (empty($CHILD['CATEGORY_ID'])) ? null : $CHILD['CATEGORY_ID'];
-                foreach($CHILD as $k => $field){
-                    if(strncmp($this->uf_conad, $k, 12) === 0){
-                        $ret[$i][$k] = $field;
-                        $DEAL[$k] = (empty($DEAL[$k])) ? $field : $DEAL[$k];
-        }}}}
-        pa($CATEGORYS, 2, 'воронки');
-        }
-        ///*/ соединяем данные полей с их свойствами ///*/ 
-        foreach($DEAL as $k=>$v){$DEAL[$k] = ['DATA' => $v, 'INFO' => (empty($FIEL[$k]) ? '' : $FIEL[$k])];}
-
-        ///*/ формируем переменные необходимые для отображения из некоторых полей сделки ///*/
-        $STAGE_ID = (empty($DEAL['STAGE_ID']['DATA'])) ? false : $DEAL['STAGE_ID']['DATA'];
-        
         ///*/ выбираем структуру данных и ключи - они же ИД пользовательских полей, из массива от марселя ///*/
         $STRUCTURE = $keys = @include(resource_path($this->array_fields));
         
@@ -88,6 +67,58 @@ public function index(Request $request){ //pa($_REQUEST); pa($request->toArray()
                                                         ($request->instance ?? $first_key_instance));
         $request->session()->flash('instance', $INSTANCE);
         
+        if(isset($_GET['dev'])){
+        
+        ///*/ формируем массив отношений ///*/
+        $ships = ['MD' => [4], 'FI' => [6], 'AI' => [6], 'CI' => [6], 'RE' => [6], 'BR' => [8, 10], 'IP' => [12]];
+        ///*/ достаём из битрикса дочерние сделки ///*/
+        $CHILDS = $BX->crest->call('crm.deal.list', ['ORDER' => ['ID' => 'ASC'], 'FILTER' => ['UF_CRM_1683462809' => $DEAL['ID']], 'SELECT' => ['*','UF_*']]);
+        
+        if(!empty($CHILDS = $CHILDS['result'] ?? false)){
+            foreach($CHILDS as $i => $CHILD){
+                //pa([],5,'дочь '. $CHILD['ID']);
+                if(empty($CHILD) || !is_array($CHILD) || $CHILD['ID'] == $DEAL['ID']){continue;}
+                $CATEGORYS[] = (empty($CHILD['CATEGORY_ID'])) ? null : $CHILD['CATEGORY_ID'];
+                foreach($CHILD as $k => $field){
+                    if(strncmp($this->uf_conad, $k, 12) === 0){
+                        $ret[$i][$k] = $field;
+                        $DEAL[$k] = (empty($DEAL[$k])) ? $field : $DEAL[$k];
+                    }
+                    if(4 == $CHILD['CATEGORY_ID'] && in_array($CHILD['CATEGORY_ID'], $ships[$INSTANCE])){
+                        if('UF_CRM_1636705135040' == $k || 'STAGE_ID' == $k || 'UF_CRM_1686038365473' == $k){
+                            $DEAL[$k] = $field;
+                            //pa($k.' => '.$field);
+                    }}
+                    if((8 == $CHILD['CATEGORY_ID'] || 10 == $CHILD['CATEGORY_ID']) && in_array($CHILD['CATEGORY_ID'], $ships[$INSTANCE])){
+                        if('UF_CRM_1636705135040' == $k || 'UF_CRM_1679485736362' == $k || 'STAGE_ID' == $k || 'UF_CRM_1686038365473' == $k){
+                            $DEAL[$k] = $field;
+                            //pa($k.' => '.$field);
+                    }}
+                    if(12 == $CHILD['CATEGORY_ID'] && in_array($CHILD['CATEGORY_ID'], $ships[$INSTANCE])){
+                        if('UF_CRM_CONAD_CRD060' == $k || 'UF_CRM_CONAD_CRD062' == $k || 'UF_CRM_1636705135040' == $k){
+                            $DEAL[$k] = $field;
+                            //pa($k);
+                            //pa($field);
+                    }}
+            }}}
+        
+        //pa($ret);
+        //
+        /*/ pa($CHILDS, 2, '');
+        pa($DEAL, 2, 'Родительская');
+        pa(array_column($CHILDS,'ID'), 2, '');
+        pa(array_column($CHILDS,'UF_CRM_CONAD_CRD073'), 2, 'UF_CRM_CONAD_CRD073');
+        //pa(array_column($CHILDS,'UF_CRM_CONAD_CRD070'), 2, 'UF_CRM_CONAD_CRD070');
+        pa(['UF_CRM_CONAD_CRD073' => $DEAL['UF_CRM_CONAD_CRD073']], 10, 'Родительская изменённая');
+        pa($CATEGORYS, 2, 'воронки');
+        ///*/
+        }
+        ///*/ соединяем данные полей с их свойствами ///*/ 
+        foreach($DEAL as $k=>$v){$DEAL[$k] = ['DATA' => $v, 'INFO' => (empty($FIEL[$k]) ? '' : $FIEL[$k])];}
+
+        ///*/ формируем переменные необходимые для отображения из некоторых полей сделки ///*/
+        $STAGE_ID = (empty($DEAL['STAGE_ID']['DATA'])) ? false : $DEAL['STAGE_ID']['DATA'];
+                
         ///*/ формируем массив текущей инстанции для наполнения данными, для всего массива полей без учёта инстанции следует использовать $DATA = array_merge(...array_values($STRUCTURE)); ///*/
         $keys_INSTANCE = ('front.report' == $as_rout && ('FI' == $INSTANCE || 'AI' == $INSTANCE || 'CI' ==$INSTANCE)) ?
             array_flip($keys['FI'])+array_flip($keys['AI'])+array_flip($keys['CI']) : array_flip($keys[$INSTANCE]);

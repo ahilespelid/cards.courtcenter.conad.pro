@@ -1,1 +1,0 @@
-[Sat Jul 06 23:54:34.672563 2024] [php7:error] [pid 35672] [client 10.10.0.24:48280] PHP Fatal error:  Allowed memory size of 1073741824 bytes exhausted (tried to allocate 903872520 bytes) in /var/www/bitrix24LocAPP/app/functions.php on line 5
