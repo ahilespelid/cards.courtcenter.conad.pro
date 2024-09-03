@@ -14,7 +14,7 @@
                     <input type="hidden" name="deal_id" value="{{ $deal_id ?? '' }}">
                     <input type="hidden" name="instance" value="{{ $instance ?? '' }}">
                 </td></tr>      
-@foreach($data as $k => $d)
+@foreach($data as $k => $d) 
                 <tr>
                     <td><label for="{{ $k }}">{{ $d['title'] ?? '' }} : </label></td>
                     <td>
@@ -23,6 +23,32 @@
                         <textarea rows="1" cols="66" id="{{ $k }}" name="{{ $k }}">{{ $d['bitrix'][0] ?? '' }}</textarea>
                 @elseif('integer' == $d['type'])
                         <input type="number" id="{{ $k }}" name="{{ $k }}" value="{{ $d['bitrix'][0] ?? '' }}">
+                @elseif('disabled' == $d['type'])
+                        
+                    @if(in_array($d['otype'], ['mstring','mdate','hstring']))
+                        <select size="1" name="history_{{ $k }}">
+                            <option disabled selected>История изменений</option>
+                        @if(is_array($d['history'])) @php //pa($d); @endphp 
+                            @foreach($d['history'] as $ch) 
+                                @if(empty($ch['value'])) @php continue; @endphp @endif
+                            <option disabled>{{ date('Y d M в H:i', strtotime($ch['created_at'] ?? 'now')) ?? '' }} - <b>{{ $ch['value'][0] ?? '' }}</b></option>
+                            @endforeach
+                        @else
+                            <option disabled>{{ $d['bitrix'][0] ?? '' }}</option>
+                        @endif
+                        </select> 
+                    @endif 
+
+
+
+
+                    {{!dump($d['bitrix'][0] ?? $d['bitrix'])}}
+
+
+
+
+
+
                 @elseif('date' == $d['type'])
                         <input type="text" disabled value="{{ $d['bitrix'][0] ?? '' }}"><br>
                         <input type="text" id="{{ $k }}" name="{{ $k }}" value="{{ $d['bitrix'][0] ?? '' }}" class="date">
@@ -43,7 +69,7 @@
                             <option disabled>{{ date('Y d M в H:i', strtotime($h['created_at'] ?? 'now')) ?? '' }} - <b>{{ $h['value'][0] ?? '' }}</b></option>
                      @endforeach
                      @else
-                            <option disabled>{{ $d['value'][0] ?? '' }}</option>
+                            <option disabled>{{ $d['bitrix'][0] ?? '' }}</option>
                      @endif
                         </select> @php //pa($d); @endphp                   
                      
